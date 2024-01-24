@@ -1,15 +1,18 @@
 package com.greengrim.green.core.chat;
 
+import jakarta.persistence.Column;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-public class ChatMessage {
+@Document
+public class ChatMessage  {
 
   public enum MessageType {
     ENTER, TALK, EXIT, CERT
@@ -24,6 +27,9 @@ public class ChatMessage {
   private String certImg;
   private String sentDate;
   private String sentTime;
+
+  @Column(name = "created_at")
+  private Long createdAt;
 
   public
   ChatMessage() {
@@ -42,12 +48,15 @@ public class ChatMessage {
     this.certImg = certImg;
   }
 
-  public void setSentTime() {
+  public void setTime() {
     LocalDateTime now = LocalDateTime.now();
+    System.out.println(now);
 
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일", Locale.KOREAN);
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("a h시 m분", Locale.KOREAN);
+    DateTimeFormatter createAtFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
+    this.createdAt = Long.valueOf(now.format(createAtFormatter));
     this.sentDate = now.format(dateFormatter);
     this.sentTime = now.format(timeFormatter);
   }
