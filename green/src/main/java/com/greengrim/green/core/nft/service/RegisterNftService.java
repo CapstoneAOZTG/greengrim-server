@@ -2,10 +2,7 @@ package com.greengrim.green.core.nft.service;
 
 import static com.greengrim.green.common.kas.KasConstants.MINTING_FEE;
 
-import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.s3.S3Service;
-import com.greengrim.green.core.grim.Grim;
-import com.greengrim.green.core.grim.repository.GrimRepository;
 import com.greengrim.green.common.kas.KasProperties;
 import com.greengrim.green.common.kas.KasService;
 import com.greengrim.green.common.kas.NftManager.NftManagerService;
@@ -38,11 +35,10 @@ public class RegisterNftService {
     private final WalletService walletService;
     private final NftManagerService nftManagerService;
     private final NftRepository nftRepository;
-    private final GrimRepository grimRepository;
     private final RegisterTransactionService registerTransactionService;
 
     public Nft register(Member member, RegisterNft registerNft, String nftId,
-                        String contracts, String txHash, String imgUrl, Grim grim) {
+                        String contracts, String txHash, String imgUrl) {
         Nft nft = Nft.builder()
                 .nftId(nftId)
                 .contracts(contracts)
@@ -53,7 +49,6 @@ public class RegisterNftService {
                 .reportCount(0)
                 .status(true)
                 .member(member)
-                .grim(grim)
                 .market(null)
                 .build();
         nftRepository.save(nft);
@@ -62,8 +57,6 @@ public class RegisterNftService {
 
     public NftId registerNft(Member member, RegisterNft registerNft)
             throws IOException, ParseException, java.text.ParseException, InterruptedException {
-        Grim grim = grimRepository.findByIdAndStatusIsTrue(registerNft.getGrimId())
-                .orElseThrow(() -> new BaseException(GrimErrorCode.EMPTY_GRIM));
 
         Wallet wallet = member.getWallet();
         // 비밀번호 맞는지 확인 및 지갑 사용 처리
@@ -78,7 +71,7 @@ public class RegisterNftService {
 
         log.info("=============================================");
         // Asset 업로드하고 imgUrl 받아오기
-        String asset = kasService.uploadAsset(s3Service.parseFileName(grim.getImgUrl()));
+        String asset = kasService.uploadAsset(s3Service.parseFileName("temp Url"));
         log.info("asset: {} \n", asset);
         // MetaData 업로드하고 받아오기
         String imgUrl = kasService.uploadMetadata(registerNft, asset);
@@ -95,12 +88,10 @@ public class RegisterNftService {
                 nftId,
                 kasProperties.getNftContractAddress(),
                 txHash,
-                asset,
-                grim
+                asset
         );
         log.info("nft 객체 생성 완료!");
-        grim.setNft(nft);
-        log.info("grimId {}에 nftId {} 할당 완료", grim.getId(), nft.getId());
+        log.info("grimId {}에 nftId {} 할당 완료", "temp Grim",nft.getId());
         registerTransactionService.saveMintingTransaction(
                 new MintingTransactionDto(member.getId(), nft,
                         new TransactionSetDto("", txHash, sendFee)));

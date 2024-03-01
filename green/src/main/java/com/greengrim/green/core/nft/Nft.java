@@ -1,7 +1,6 @@
 package com.greengrim.green.core.nft;
 
 import com.greengrim.green.common.entity.BaseTime;
-import com.greengrim.green.core.grim.Grim;
 import com.greengrim.green.core.market.Market;
 import com.greengrim.green.core.member.Member;
 import jakarta.persistence.CascadeType;
@@ -49,15 +48,12 @@ public class Nft extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Grim grim;
 
     @OneToOne(mappedBy = "nft", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private Market market;
 
     public void delete() {
         this.status = false;
-        this.grim = null;
     }
 
     public boolean isMarketed() {

@@ -2,7 +2,6 @@ package com.greengrim.green.core.nft.service;
 
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
-import com.greengrim.green.core.grim.repository.GrimRepository;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.repository.NftRepository;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class UpdateNftService {
 
     private final NftRepository nftRepository;
-    private final GrimRepository grimRepository;
 
     @Transactional
     public void delete(Member member, Long id) {
@@ -27,8 +25,6 @@ public class UpdateNftService {
         checkIsMarketed(nft);
 
         nft.delete();
-        nft.getGrim().setNft(null);
-        grimRepository.save(nft.getGrim());
     }
 
     private void checkIsMine(Long viewerId, Long ownerId) {

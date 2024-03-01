@@ -28,7 +28,7 @@ public class NftResponseDto {
 
         public NftInfo(Nft nft) {
             this.id = nft.getId();
-            this.imgUrl = nft.getGrim().getImgUrl();
+            this.imgUrl = "temp Url";
             this.title = nft.getTitle();
             this.description = nft.getDescription();
             this.createdAt = calculateTime(nft.getCreatedAt(), 1);
@@ -68,7 +68,7 @@ public class NftResponseDto {
 
         public NftSimpleInfo(Nft nft) {
             this.id = nft.getId();
-            this.imgUrl = nft.getGrim().getImgUrl();
+            this.imgUrl = "temp Url";
             this.title = nft.getTitle();
         }
     }
