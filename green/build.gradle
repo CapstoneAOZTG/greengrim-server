@@ -54,9 +54,6 @@ dependencies {
 	// Firebase
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
 
-	// WebFlux
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux'
-
 	// Dev
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
