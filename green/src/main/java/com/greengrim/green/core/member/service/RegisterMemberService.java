@@ -3,7 +3,6 @@ package com.greengrim.green.core.member.service;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.MemberErrorCode;
 import com.greengrim.green.common.jwt.JwtTokenProvider;
-import com.greengrim.green.core.keyword.member.KeywordMemberService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.Role;
 import com.greengrim.green.core.member.dto.MemberRequestDto;
@@ -20,7 +19,6 @@ public class RegisterMemberService {
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final KeywordMemberService keywordMemberService;
 
     public void save(Member member) {
         memberRepository.save(member);
@@ -42,7 +40,6 @@ public class RegisterMemberService {
                 .role(Role.ROLE_VISITOR)
                 .build();
         save(member);
-        keywordMemberService.addBasicKeyword(member);
         return member;
     }
 

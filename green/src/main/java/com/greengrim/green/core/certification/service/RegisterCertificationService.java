@@ -8,9 +8,6 @@ import com.greengrim.green.core.certification.repository.CertificationRepository
 import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.service.GetChallengeService;
-import com.greengrim.green.core.keyword.Keyword;
-import com.greengrim.green.core.keyword.Keyword.keywordType;
-import com.greengrim.green.core.keyword.KeywordService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -23,7 +20,6 @@ import org.springframework.stereotype.Service;
 public class RegisterCertificationService {
 
     private final GetChallengeService getChallengeService;
-    private final KeywordService keywordService;
 
     private final FcmService fcmService;
     private final MemberRepository memberRepository;
@@ -52,7 +48,6 @@ public class RegisterCertificationService {
         // 인증 성공
         successCertification(member, challenge);
         // 챌린지 성공했으면 보상 제공
-        successChallenge(challenge, certification);
 
         Category category = certification.getChallenge().getCategory();
         String fcmString = category.getName() + "인증 활동";
@@ -70,15 +65,4 @@ public class RegisterCertificationService {
         memberRepository.save(member);
     }
 
-    /**
-     * 챌린지 성공, 키워드 제공
-     */
-    public void successChallenge(Challenge challenge, Certification certification) {
-        if(challenge.getGoalCount() == certification.getRound()) {
-            // 키워드 획득
-            keywordService.addMemberKeyword(new Keyword("성공", keywordType.NOUN), certification.getMember());
-            // 챌린지 티켓 하나 감소
-            challenge.minusTicketCurrentCount();
-        }
-    }
 }
