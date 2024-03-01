@@ -6,8 +6,6 @@ import static com.greengrim.green.common.util.UtilService.getPageable;
 import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.exception.BaseException;
-import com.greengrim.green.common.exception.errorCode.GrimErrorCode;
-import com.greengrim.green.common.util.UtilService;
 import com.greengrim.green.core.grim.Grim;
 import com.greengrim.green.core.grim.dto.GrimResponseDto.GrimDetailInfo;
 import com.greengrim.green.core.grim.dto.GrimResponseDto.GrimInfo;
@@ -18,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service

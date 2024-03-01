@@ -1,7 +1,6 @@
 package com.greengrim.green.core.grim.service;
 
 import com.greengrim.green.common.exception.BaseException;
-import com.greengrim.green.common.exception.errorCode.GrimErrorCode;
 import com.greengrim.green.core.grim.Grim;
 import com.greengrim.green.core.grim.dto.GrimRequestDto.UpdateTitle;
 import com.greengrim.green.core.grim.repository.GrimRepository;
