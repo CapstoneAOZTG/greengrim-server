@@ -9,7 +9,6 @@ import com.greengrim.green.common.exception.errorCode.ChattingErrorCode;
 import com.greengrim.green.core.chat.ChatMessage;
 import com.greengrim.green.core.chatparticipant.Chatparticipant;
 import com.greengrim.green.core.chatparticipant.ChatparticipantService;
-import com.greengrim.green.core.grim.dto.GrimResponseDto.GrimInfo;
 import com.greengrim.green.core.member.Member;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,30 +48,6 @@ public class FcmService {
         throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
       }
     });
-  }
-
-  public void sendGrimGenerationSuccess(GrimInfo grimInfo, String token) {
-    Message message = Message.builder()
-        .putData("type", "SUCCESS")
-        .putData("grimId", String.valueOf(grimInfo.getId()))
-        .putData("grimImgUrl", grimInfo.getImgUrl())
-        .putData("grimTitle", grimInfo.getTitle())
-        .putData("memberId", String.valueOf(grimInfo.getMemberSimpleInfo().getId()))
-        .putData("nickName", grimInfo.getMemberSimpleInfo().getNickName())
-        .putData("profileImgUrl", grimInfo.getMemberSimpleInfo().getProfileImgUrl())
-        .setToken(token)
-        .build();
-
-    send(message);
-  }
-
-  public void sendGrimGenerationFail(String token) {
-    Message message = Message.builder()
-        .putData("type", "FAIL")
-        .setToken(token)
-        .build();
-
-    send(message);
   }
 
   public void sendChatMessage(ChatMessage chatMessage) {
