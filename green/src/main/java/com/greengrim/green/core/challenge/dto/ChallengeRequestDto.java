@@ -1,7 +1,6 @@
 package com.greengrim.green.core.challenge.dto;
 
 import com.greengrim.green.core.challenge.Category;
-import com.greengrim.green.core.keyword.Keyword;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -34,7 +33,5 @@ public class ChallengeRequestDto {
         @NotNull
         @Max(100)
         private int capacity;           // 수용 가능 인원
-        @NotNull
-        private String keyword;         // 획득 키워드
     }
 }

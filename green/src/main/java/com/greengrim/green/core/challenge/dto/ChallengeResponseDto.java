@@ -34,7 +34,6 @@ public class ChallengeResponseDto {
         private String ticketCount;
         private String goalCount;
         private String weekMinCount;
-        private String keyword;
         private String participantCount;
 
         public ChallengeTags(Challenge challenge) {
@@ -42,7 +41,6 @@ public class ChallengeResponseDto {
             this.goalCount = challenge.getGoalCountTag();
             this.ticketCount = challenge.getTicketCountTag();
             this.weekMinCount = challenge.getWeekMinCountTag();
-            this.keyword = challenge.getKeywordTag();
             this.participantCount = challenge.getParticipantCountTag();
         }
     }
@@ -53,13 +51,11 @@ public class ChallengeResponseDto {
         private Category category;
         private String ticketCount;
         private String goalCount;
-        private String keyword;
 
         public ChallengeSimpleTags(Challenge challenge) {
             this.category = challenge.getCategory();
             this.goalCount = challenge.getGoalCountTag();
             this.ticketCount = challenge.getTicketCountTag();
-            this.keyword = challenge.getKeywordTag();
         }
     }
 
@@ -117,12 +113,10 @@ public class ChallengeResponseDto {
     public static class HotChallengeTags {
         private Category category;
         private String ticketCount;
-        private String keyword;
 
         public HotChallengeTags(Challenge challenge) {
             this.category = challenge.getCategory();
             this.ticketCount = challenge.getTicketCountTag();
-            this.keyword = challenge.getKeywordTag();
         }
     }
 

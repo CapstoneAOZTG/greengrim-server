@@ -55,8 +55,6 @@ public class Challenge extends BaseTime {
     @NotNull
     @Max(100)
     private int headCount;          // 현재 인원
-    @NotNull
-    private String keyword;
 
     private boolean status;
 
@@ -73,10 +71,6 @@ public class Challenge extends BaseTime {
     public String getTicketCountTag() {
         return "티켓 " + (this.ticketTotalCount - this.ticketCurrentCount)
                 + "/" + this.ticketTotalCount;
-    }
-
-    public String getKeywordTag() {
-        return "#키워드 " + this.keyword;
     }
 
     public String getWeekMinCountTag() {

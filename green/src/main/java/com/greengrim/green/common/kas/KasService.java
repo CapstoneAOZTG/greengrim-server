@@ -169,7 +169,7 @@ public class KasService {
                         "}"
         );
         return useKasApi(url, "POST", body, "transactionHash", NftErrorCode.FAILED_SEND_NFT);
-    }
+}
 
     /**
      * 클레이 외부 전송
