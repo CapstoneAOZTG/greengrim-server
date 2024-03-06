@@ -1,14 +1,28 @@
 package com.greengrim.green.core.chat.service;
 
+import static com.greengrim.green.common.util.UtilService.getPageable;
+
+import com.greengrim.green.common.entity.SortOption;
+import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.chat.ChatMessage;
 import com.greengrim.green.core.chat.ChatMessage.MessageType;
+import com.greengrim.green.core.chat.repository.ChatRepository;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.service.GetMemberService;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +34,8 @@ public class ChatService {
 
   private final GetMemberService getMemberService;
   private final FcmService fcmService;
+  private final ChatRepository chatRepository;
+  private final MongoTemplate mongoTemplate;
 
   public String getRoomId(String destination) {
     int lastIndex = destination.lastIndexOf('/');
@@ -31,7 +47,7 @@ public class ChatService {
 
   public void sendChatMessage(ChatMessage chatMessage) {
 
-    chatMessage.setSentTime();
+    chatMessage.setTime();
 
     // CERT 타입이 아닐 떄
     if(!MessageType.CERT.equals(chatMessage.getType())) {
@@ -53,5 +69,40 @@ public class ChatService {
 
     redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
     fcmService.sendChatMessage(chatMessage);
+    chatRepository.save(chatMessage);
   }
+
+  public PageResponseDto<List<ChatMessage>> getMessages(Long roomId, int page, int size) {
+    Page<ChatMessage> messages = chatRepository.findByRoomId(roomId, getPageable(page, size,SortOption.DESC));
+    return pagingChatMessage(messages);
+  }
+
+  private PageResponseDto<List<ChatMessage>> pagingChatMessage(Page<ChatMessage> chatMessages) {
+    List<ChatMessage> messages = new ArrayList<>();
+    chatMessages.forEach(message -> messages.add(message));
+    return new PageResponseDto<>(chatMessages.getNumber(), chatMessages.hasNext(), messages);
+  }
+
+//  public PageResponseDto<List<ChatMessage>> getMessages(Long roomId ,int page, int size) {
+//
+//    Pageable pageable = getPageable(page, size,SortOption.DESC);
+//
+//    Query query = new Query()
+//        .with(pageable)
+//        .skip(pageable.getPageSize() * pageable.getPageNumber()) // offset
+//        .limit(pageable.getPageSize());
+//
+//    //Add Filtered
+//    query.addCriteria(Criteria.where("roomId").is(roomId));
+//
+//    List<ChatMessage> filteredMetaData = mongoTemplate.find(query, ChatMessage.class, "chatMessage");
+//    Page<ChatMessage> metaDataPage = PageableExecutionUtils.getPage(
+//        filteredMetaData,
+//        pageable,
+//        () -> mongoTemplate.count(query.skip(-1).limit(-1),ChatMessage.class)
+//        // query.skip(-1).limit(-1)의 이유는 현재 쿼리가 페이징 하려고 하는 offset 까지만 보기에 이를 맨 처음부터 끝까지로 set 해줘 정확한 도큐먼트 개수를 구한다.
+//    );
+//
+//    return pagingChatMessage(metaDataPage);
+//  }
 }

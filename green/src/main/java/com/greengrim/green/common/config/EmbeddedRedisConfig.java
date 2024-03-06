@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import redis.embedded.RedisServer;
 
-@Profile("local")
+@Profile("temp") // 일시적으로 local 해제
 @Configuration
 public class EmbeddedRedisConfig {
 
