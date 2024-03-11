@@ -11,9 +11,11 @@ public class WalletRequestDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CheckPassword {
-        @NotBlank(message = "비밀번호는 빈 칸일 수 없습니다.")
-        private String password;
+    public static class WalletRequest {
+        @NotBlank(message = "지갑 이름은 빈 칸일 수 없습니다.")
+        private String name;
+        @NotBlank(message = "지갑 주소는 빈 칸일 수 없습니다.")
+        private String address;
     }
 
 }

@@ -23,26 +23,19 @@ public class Wallet extends BaseTime {
     private Long id;
 
     @NotNull
+    private String name;
+
+    @NotNull
     private String address;
 
-    @NotNull
-    private String password;
-
-    @NotNull
-    private int wrongCount;
-
-    public Wallet(String address, String password) {
+    public Wallet(String name, String address) {
+        this.name = name;
         this.address = address;
-        this.password = password;
-        this.wrongCount = 0;
     }
 
-    public void initWrongCount() {
-        this.wrongCount = 0;
-    }
-
-    public void plusWrongCount() {
-        this.wrongCount++;
+    public void changeWallet(String name, String address) {
+        this.name = name;
+        this.address = address;
     }
 
 }
