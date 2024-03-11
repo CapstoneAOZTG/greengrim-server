@@ -33,4 +33,9 @@ public class Wallet extends BaseTime {
         this.address = address;
     }
 
+    public void changeWallet(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
 }

@@ -2,7 +2,7 @@ package com.greengrim.green.core.wallet.controller;
 
 import com.greengrim.green.common.auth.CurrentMember;
 import com.greengrim.green.core.member.Member;
-import com.greengrim.green.core.wallet.dto.WalletRequestDto;
+import com.greengrim.green.core.wallet.dto.WalletRequestDto.WalletRequest;
 import com.greengrim.green.core.wallet.dto.WalletResponseDto.ExistsWalletInfo;
 import com.greengrim.green.core.wallet.dto.WalletResponseDto.WalletDetailInfo;
 import com.greengrim.green.core.wallet.service.WalletService;
@@ -28,8 +28,19 @@ public class WalletController {
     @Operation(summary = "지갑 추가하기")
     @PostMapping("/visitor/wallets")
     public ResponseEntity<Integer> registerWallet(
-            @Valid @RequestBody WalletRequestDto.WalletRequest walletRequest, @CurrentMember Member member) {
+            @Valid @RequestBody WalletRequest walletRequest, @CurrentMember Member member) {
         walletService.registerWallet(member, walletRequest);
+        return new ResponseEntity<>(200, HttpStatus.OK);
+    }
+
+    /**
+     * [PATCH] 지갑 수정하기
+     */
+    @Operation(summary = "지갑 수정하기")
+    @PostMapping("/member/wallets")
+    public ResponseEntity<Integer> modifyWallet(
+            @Valid @RequestBody WalletRequest walletRequest, @CurrentMember Member member) {
+        walletService.modifyWallet(member, walletRequest);
         return new ResponseEntity<>(200, HttpStatus.OK);
     }
 

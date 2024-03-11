@@ -45,6 +45,13 @@ public class WalletService {
     }
 
     /**
+     * 지갑 수정하기
+     */
+    public void modifyWallet(Member member, WalletRequest walletRequest) {
+        member.getWallet().changeWallet(walletRequest.getName(), walletRequest.getAddress());
+    }
+
+    /**
      * 지갑 존재 유무 조회하기
      */
     public ExistsWalletInfo existsWallet(Member member) {
