@@ -1,38 +1,15 @@
 package com.greengrim.green.core.wallet.service;
 
-import static com.greengrim.green.common.kas.KasConstants.PURCHASE_FEE;
-
-import com.greengrim.green.common.exception.BaseException;
-import com.greengrim.green.common.exception.errorCode.WalletErrorCode;
-import com.greengrim.green.common.kas.KasService;
-import com.greengrim.green.common.password.BcryptService;
-import com.greengrim.green.core.market.Market;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.Role;
 import com.greengrim.green.core.member.service.RegisterMemberService;
-import com.greengrim.green.core.nft.Nft;
-import com.greengrim.green.core.transaction.dto.TransactionRequestDto.PurchaseNftOnMarketTransactionDto;
-import com.greengrim.green.core.transaction.dto.TransactionRequestDto.TransactionSetDto;
-import com.greengrim.green.core.transaction.service.RegisterTransactionService;
 import com.greengrim.green.core.wallet.Wallet;
-import com.greengrim.green.core.wallet.dto.WalletRequestDto.CheckPassword;
 import com.greengrim.green.core.wallet.dto.WalletRequestDto.WalletRequest;
-import com.greengrim.green.core.wallet.dto.WalletResponseDto.CheckPasswordInfo;
 import com.greengrim.green.core.wallet.dto.WalletResponseDto.ExistsWalletInfo;
 import com.greengrim.green.core.wallet.dto.WalletResponseDto.WalletDetailInfo;
 import com.greengrim.green.core.wallet.repository.WalletRepository;
 import jakarta.transaction.Transactional;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 @Transactional
