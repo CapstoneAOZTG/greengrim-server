@@ -22,7 +22,6 @@ public class UpdateNftService {
         Nft nft = nftRepository.findByIdAndStatusTrue(id)
                 .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
         checkIsMine(member.getId(), nft.getMember().getId());
-        checkIsMarketed(nft);
 
         nft.delete();
     }
@@ -33,9 +32,4 @@ public class UpdateNftService {
         }
     }
 
-    private void checkIsMarketed(Nft nft) {
-        if(nft.isMarketed()) {
-           throw new BaseException(NftErrorCode.UNABLE_DELETE);
-        }
-    }
 }

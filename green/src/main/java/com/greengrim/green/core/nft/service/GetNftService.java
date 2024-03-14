@@ -97,7 +97,7 @@ public class GetNftService {
             throw new BaseException(MarketErrorCode.UNABLE_PURCHASE);
         }
 
-        double total = nft.getMarket().getPrice() + PURCHASE_FEE;
+        double total = PURCHASE_FEE;
         double balance = kasService.getKlay(member.getWallet());
         double balanceAfterPurchase = balance - total;
 
@@ -120,11 +120,8 @@ public class GetNftService {
     }
 
     private String getPrice(Nft nft) {
-        if (!nft.isMarketed()) {
-            return "NOT SALE";
-        } else {
-            return priceDoubleToString(nft.getMarket().getPrice());
-        }
+        // 임시
+        return "NOT SALE";
     }
 
     private String priceDoubleToString(double price) {

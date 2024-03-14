@@ -2,10 +2,10 @@ package com.greengrim.green.core.nft.service;
 
 import static com.greengrim.green.common.kas.KasConstants.MINTING_FEE;
 
-import com.greengrim.green.common.s3.S3Service;
 import com.greengrim.green.common.kas.KasProperties;
 import com.greengrim.green.common.kas.KasService;
 import com.greengrim.green.common.kas.NftManager.NftManagerService;
+import com.greengrim.green.common.s3.S3Service;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.dto.NftRequestDto.RegisterNft;
@@ -49,7 +49,6 @@ public class RegisterNftService {
                 .reportCount(0)
                 .status(true)
                 .member(member)
-                .market(null)
                 .build();
         nftRepository.save(nft);
         return nft;
@@ -60,7 +59,6 @@ public class RegisterNftService {
 
         Wallet wallet = member.getWallet();
         // 비밀번호 맞는지 확인 및 지갑 사용 처리
-        walletService.checkPayPassword(wallet, registerNft.getPassword());
         //walletService.useWallet(wallet);
 
         // TODO: 수수료 납부 설정하기
