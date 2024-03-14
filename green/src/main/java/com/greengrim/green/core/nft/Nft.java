@@ -1,16 +1,13 @@
 package com.greengrim.green.core.nft;
 
 import com.greengrim.green.common.entity.BaseTime;
-import com.greengrim.green.core.market.Market;
 import com.greengrim.green.core.member.Member;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,20 +45,8 @@ public class Nft extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-
-    @OneToOne(mappedBy = "nft", cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private Market market;
-
     public void delete() {
         this.status = false;
-    }
-
-    public boolean isMarketed() {
-        return this.market != null;
-    }
-
-    public void setMarket(Market market) {
-        this.market = market;
     }
 
     public void setMember(Member member) {
