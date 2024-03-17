@@ -26,4 +26,13 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     Page<Challenge> findHotChallenges(Pageable pageable);
 
     Challenge findByChatroomId(Long chatroomId);
+
+    /**
+     * Category 입력되지 않으면 전체 챌린지 조회, 입력되면 해당 Category 의 챌린지만 조회
+     */
+    @Query("SELECT c FROM Challenge c WHERE( (LOWER(c.title) LIKE LOWER(concat('%', :keyword, '%')))"
+            + "OR (LOWER(c.description) LIKE LOWER(concat('%', :keyword, '%')))) "
+            + "AND c.status = true AND (:category IS NULL OR c.category <> :category) "
+            + "ORDER BY c.createdAt DESC")
+    Page<Challenge> searchChallenges(@Param("keyword") String keyword, @Param("category") Category category, Pageable pageable);
 }

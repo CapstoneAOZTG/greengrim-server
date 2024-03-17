@@ -143,4 +143,14 @@ public class GetChallengeService {
         return myChatrooms;
     }
 
+    /**
+     * 키워드로 챌린지 검색하기
+     * TODO: 차단 구현 후 member 이용해서 차단한 리소스 걸러내기
+     */
+    public PageResponseDto<List<ChallengeSimpleInfo>> searchChallenges(
+            Member member, Category category, int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Challenge> challenges = challengeRepository.searchChallenges(keyword, category, pageable);
+        return makeChallengesSimpleInfoList(challenges);
+    }
 }
