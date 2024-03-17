@@ -31,11 +31,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         // 헤더에 refreshToken을 보냈다면 refreshToken 유효성 검사 및 authentication 세팅
         if (refreshToken != null && ((HttpServletRequest) request).getRequestURI()
                 .equals("/visitor/refresh") && jwtTokenProvider.validateRefreshToken(refreshToken)) {
+            if (refreshToken.startsWith("Bearer ")) refreshToken = refreshToken.substring(7);
             Authentication authentication = jwtTokenProvider.getRefreshAuthentication(refreshToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         // 헤더에 aceessToken을 보냈다면 accessToken 유효성 검사 및 authentication 세팅
         else if (token != null && jwtTokenProvider.validateAccessToken(token)) {
+            if (token.startsWith("Bearer ")) token = token.substring(7);
             Authentication authentication = jwtTokenProvider.getAccessAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
