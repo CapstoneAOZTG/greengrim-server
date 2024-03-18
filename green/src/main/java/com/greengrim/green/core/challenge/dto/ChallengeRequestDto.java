@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 public class ChallengeRequestDto {
@@ -37,6 +38,7 @@ public class ChallengeRequestDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class SearchRequest {
         @NotNull
