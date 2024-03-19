@@ -156,22 +156,6 @@ public class ChallengeResponseDto {
 
     @Getter
     @RequiredArgsConstructor
-    public static class ChallengePreviewInfo {
-        private int round;  // 몇 회차 인증할 차례인지
-        private String title;
-        private Category category;
-        private String ticketCount;
-
-        public ChallengePreviewInfo(Challenge challenge, int round) {
-            this.round = round;
-            this.title = challenge.getTitle();
-            this.category = challenge.getCategory();
-            this.ticketCount = challenge.getTicketCountTag();
-        }
-    }
-
-    @Getter
-    @RequiredArgsConstructor
     public static class MyChatroom {
         private Long challengeId;
         private Long chatroomId;

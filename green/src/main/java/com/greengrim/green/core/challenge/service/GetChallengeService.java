@@ -10,7 +10,6 @@ import com.greengrim.green.core.certification.service.GetCertificationService;
 import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
-import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengePreviewInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HomeChallenges;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HotChallengeInfo;
@@ -111,14 +110,6 @@ public class GetChallengeService {
                 challengeSimpleInfoList.add(new ChallengeSimpleInfo(challenge)));
 
         return new PageResponseDto<>(challenges.getNumber(), challenges.hasNext(), challengeSimpleInfoList);
-    }
-
-    public ChallengePreviewInfo getChallengePreviewInfo(Member member, Long id) {
-        Challenge challenge = findByIdWithValidation(id);
-        return new ChallengePreviewInfo(
-                challenge,
-                getCertificationService.getRoundByMemberAndChallenge(member, challenge)
-        );
     }
 
     /**
