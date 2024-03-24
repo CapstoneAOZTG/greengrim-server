@@ -23,12 +23,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     @Query(value = "SELECT c FROM Challenge c WHERE c.member=:member AND c.status=true")
     Page<Challenge> findByMemberAndStateIsTrue(@Param("member") Member member, Pageable pageable);
 
-    /**
-     * 핫 챌린지 조회 - 참여 인원이 가장 많은
-     */
-    @Query(value = "SELECT c FROM Challenge c WHERE c.status=true ORDER BY c.headCount DESC")
-    Page<Challenge> findHotChallengesByHeadCount(Pageable pageable);
-
     Challenge findByChatroomId(Long chatroomId);
 
     /**
@@ -40,9 +34,28 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
             + "ORDER BY c.createdAt DESC")
     Page<Challenge> searchChallenges(@Param("keyword") String keyword, @Param("category") Category category, Pageable pageable);
 
-    Page<Challenge> findAllAndStatusIsTrue(Pageable pageable);
+    /**
+     * 핫 챌린지 조회 - 참여 인원이 가장 많은
+     */
+    @Query(value = "SELECT c FROM Challenge c WHERE c.status=true ORDER BY c.headCount DESC")
+    Page<Challenge> findHotChallengesByHeadCount(Pageable pageable);
 
-    @Query("SELECT c FROM Challenge c WHERE c IN (SELECT cc.challenge FROM Certification cc WHERE cc.createdAt >= :weekAgo GROUP BY cc.challenge ORDER BY COUNT(cc) DESC)")
+    /**
+     * 핫 챌린지 조회 - 가장 최근에 생성된
+     */
+    @Query(value = "SELECT c FROM Challenge c WHERE c.status=true ORDER BY c.createdAt DESC")
+    Page<Challenge> findAllAndStatusIsTrueDesc(Pageable pageable);
+
+    /**
+     * 핫 챌린지 조회 - 일주일 내의 인증이 가장 많은
+     */
+    @Query("SELECT c FROM Challenge c "
+            + "WHERE c IN "
+            + "(SELECT cc.challenge FROM Certification cc "
+            + "WHERE cc.createdAt >= :weekAgo "
+            + "AND cc.status=true "
+            + "GROUP BY cc.challenge "
+            + "ORDER BY COUNT(cc) DESC)")
     Page<Challenge> findMostCertifiedChallengesWithinAWeek(@Param("weekAgo")LocalDateTime weekAgo, Pageable pageable);
 
 }

@@ -1,7 +1,7 @@
 package com.greengrim.green.core.challenge.service;
 
-import static com.greengrim.green.common.util.UtilService.getPageable;
 import static com.greengrim.green.common.entity.Time.calculateTime;
+import static com.greengrim.green.common.util.UtilService.getPageable;
 
 import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -88,20 +87,24 @@ public class GetChallengeService {
      * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
      */
     public HomeChallenges getHotChallenges(Member member) {
+        Pageable pageable = PageRequest.of(0, 1);
         Page<Challenge> challenges;
         List<HotChallengeInfo> hotChallengeInfoList = new ArrayList<>();
         // 1번 최근에 신설된
-        challenges = challengeRepository.findAllAndStatusIsTrue(PageRequest.of(0, 1, Direction.DESC));
+        challenges = challengeRepository.findAllAndStatusIsTrueDesc(pageable);
         challenges.forEach(challenge -> hotChallengeInfoList.add(
-                new HotChallengeInfo(challenge, calculateTime(challenge.getCreatedAt(),3) + HotChallengeOption.MOST_RECENT.getSubTitle())));
+                new HotChallengeInfo(challenge,
+                        calculateTime(challenge.getCreatedAt(), 3) + HotChallengeOption.MOST_RECENT.getSubTitle())));
         // 2번 참여 인원이 가장 많은
-        challenges = challengeRepository.findHotChallengesByHeadCount(PageRequest.of(0, 1));
+        challenges = challengeRepository.findHotChallengesByHeadCount(pageable);
         challenges.forEach(challenge -> hotChallengeInfoList.add(
-                        new HotChallengeInfo(challenge, challenge.getHeadCount() + HotChallengeOption.MOST_HEADCOUNT.getSubTitle())));
+                new HotChallengeInfo(challenge,
+                        challenge.getHeadCount() + HotChallengeOption.MOST_HEADCOUNT.getSubTitle())));
         //3번 일주일 내 인증이 가장 많은
-        challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(LocalDateTime.now().minusWeeks(1), PageRequest.of(0, 1));
+        challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(LocalDateTime.now().minusWeeks(1),
+                pageable);
         challenges.forEach(challenge -> hotChallengeInfoList.add(
-                new HotChallengeInfo(challenge, challenge.getHeadCount() + HotChallengeOption.MOST_CERTIFICATION.getSubTitle())));
+                new HotChallengeInfo(challenge, HotChallengeOption.MOST_CERTIFICATION.getSubTitle())));
         return new HomeChallenges(hotChallengeInfoList);
     }
 
@@ -109,9 +112,16 @@ public class GetChallengeService {
      * 핫 챌린지 더보기
      * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
      */
-    public PageResponseDto<List<ChallengeSimpleInfo>> getMoreHotChallenges(Member member, int page, int size) {
+    public PageResponseDto<List<ChallengeSimpleInfo>> getMoreHotChallenges(Member member, HotChallengeOption option,
+                                                                           int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Challenge> challenges = challengeRepository.findHotChallenges(pageable);
+        Page<Challenge> challenges = null;
+        switch (option) {
+            case MOST_RECENT -> challenges = challengeRepository.findAllAndStatusIsTrueDesc(pageable);
+            case MOST_CERTIFICATION -> challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(
+                    LocalDateTime.now().minusWeeks(1), pageable);
+            case MOST_HEADCOUNT -> challenges = challengeRepository.findHotChallengesByHeadCount(pageable);
+        }
         return makeChallengesSimpleInfoList(challenges);
     }
 

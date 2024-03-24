@@ -4,6 +4,7 @@ import com.greengrim.green.common.auth.CurrentMember;
 import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.challenge.Category;
+import com.greengrim.green.core.challenge.HotChallengeOption;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HomeChallenges;
@@ -85,9 +86,10 @@ public class GetChallengeController {
     @GetMapping("/hot-challenges")
     public ResponseEntity<PageResponseDto<List<ChallengeSimpleInfo>>> getMoreHotChallenges(
             @CurrentMember Member member,
+            @RequestParam(value = "option") HotChallengeOption option,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size) {
-        return ResponseEntity.ok(getChallengeService.getMoreHotChallenges(member, page, size));
+        return ResponseEntity.ok(getChallengeService.getMoreHotChallenges(member, option, page, size));
     }
 
     /**
