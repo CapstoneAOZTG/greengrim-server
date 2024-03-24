@@ -75,7 +75,7 @@ public class GetChallengeController {
     @GetMapping("/home/challenges")
     public ResponseEntity<HomeChallenges> getHotChallenges(
             @CurrentMember Member member) {
-        return ResponseEntity.ok(getChallengeService.getHotChallenges(member, 5));
+        return ResponseEntity.ok(getChallengeService.getHotChallenges(member));
     }
 
     /**

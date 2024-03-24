@@ -1,6 +1,7 @@
 package com.greengrim.green.core.challenge.service;
 
 import static com.greengrim.green.common.util.UtilService.getPageable;
+import static com.greengrim.green.common.entity.Time.calculateTime;
 
 import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
@@ -9,6 +10,7 @@ import com.greengrim.green.common.exception.errorCode.ChallengeErrorCode;
 import com.greengrim.green.core.certification.service.GetCertificationService;
 import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.Challenge;
+import com.greengrim.green.core.challenge.HotChallengeOption;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HomeChallenges;
@@ -23,10 +25,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -83,14 +87,21 @@ public class GetChallengeService {
      * 홈 화면 핫 챌린지 조회
      * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
      */
-    public HomeChallenges getHotChallenges(Member member, int size) {
-        Pageable pageable = PageRequest.of(0, size);
-        Page<Challenge> challenges = challengeRepository.findHotChallenges(pageable);
-
+    public HomeChallenges getHotChallenges(Member member) {
+        Page<Challenge> challenges;
         List<HotChallengeInfo> hotChallengeInfoList = new ArrayList<>();
-        challenges.forEach(challenge ->
-                hotChallengeInfoList.add(new HotChallengeInfo(challenge)));
-
+        // 1번 최근에 신설된
+        challenges = challengeRepository.findAllAndStatusIsTrue(PageRequest.of(0, 1, Direction.DESC));
+        challenges.forEach(challenge -> hotChallengeInfoList.add(
+                new HotChallengeInfo(challenge, calculateTime(challenge.getCreatedAt(),3) + HotChallengeOption.MOST_RECENT.getSubTitle())));
+        // 2번 참여 인원이 가장 많은
+        challenges = challengeRepository.findHotChallengesByHeadCount(PageRequest.of(0, 1));
+        challenges.forEach(challenge -> hotChallengeInfoList.add(
+                        new HotChallengeInfo(challenge, challenge.getHeadCount() + HotChallengeOption.MOST_HEADCOUNT.getSubTitle())));
+        //3번 일주일 내 인증이 가장 많은
+        challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(LocalDateTime.now().minusWeeks(1), PageRequest.of(0, 1));
+        challenges.forEach(challenge -> hotChallengeInfoList.add(
+                new HotChallengeInfo(challenge, challenge.getHeadCount() + HotChallengeOption.MOST_CERTIFICATION.getSubTitle())));
         return new HomeChallenges(hotChallengeInfoList);
     }
 
@@ -110,6 +121,15 @@ public class GetChallengeService {
                 challengeSimpleInfoList.add(new ChallengeSimpleInfo(challenge)));
 
         return new PageResponseDto<>(challenges.getNumber(), challenges.hasNext(), challengeSimpleInfoList);
+    }
+
+    // makeChallengesSimpleInfoList 함수 Template 적용 버전
+    // 사용 예시: makeChallengesList(challenges, HotChallengeInfo::new);
+    private <T> PageResponseDto<List<T>> makeChallengesList(Page<Challenge> challenges, Function<Challenge, T> mapper) {
+        List<T> challengeList = new ArrayList<>();
+        challenges.forEach(challenge -> challengeList.add(mapper.apply(challenge)));
+
+        return new PageResponseDto<>(challenges.getNumber(), challenges.hasNext(), challengeList);
     }
 
     /**

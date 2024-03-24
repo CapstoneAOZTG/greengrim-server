@@ -93,11 +93,11 @@ public class ChallengeResponseDto {
     @RequiredArgsConstructor
     public static class HotChallengeInfo {
         private ChallengeInfo challengeInfo;
-        private HotChallengeTags hotChallengeTags;
+        private HotChallengeTag hotChallengeTag;
 
-        public HotChallengeInfo(Challenge challenge) {
+        public HotChallengeInfo(Challenge challenge, String subTitle) {
             this.challengeInfo = new ChallengeInfo(challenge);
-            this.hotChallengeTags = new HotChallengeTags(challenge);
+            this.hotChallengeTag = new HotChallengeTag(subTitle);
         }
     }
 
@@ -110,14 +110,9 @@ public class ChallengeResponseDto {
 
     @Getter
     @RequiredArgsConstructor
-    public static class HotChallengeTags {
-        private Category category;
-        private String ticketCount;
-
-        public HotChallengeTags(Challenge challenge) {
-            this.category = challenge.getCategory();
-            this.ticketCount = challenge.getTicketCountTag();
-        }
+    @AllArgsConstructor
+    public static class HotChallengeTag {
+        private String subTitle;
     }
 
     @Getter
