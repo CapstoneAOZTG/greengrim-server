@@ -26,13 +26,11 @@ public class Nft extends BaseTime {
     private Long id;
 
     @NotNull
-    private String nftId;
+    private String tokenId;
     @NotNull
     private String title;
     @NotNull
     private String description;
-    @NotNull
-    private String contracts;
     @NotNull
     private String txHash;
     @NotNull
