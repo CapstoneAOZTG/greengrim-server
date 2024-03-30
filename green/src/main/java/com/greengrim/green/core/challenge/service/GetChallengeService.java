@@ -12,9 +12,9 @@ import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.HotChallengeOption;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
+import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HomeChallenges;
-import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HotChallengeInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.MyChatroom;
 import com.greengrim.green.core.challenge.repository.ChallengeRepository;
 import com.greengrim.green.core.chatparticipant.Chatparticipant;
@@ -89,23 +89,23 @@ public class GetChallengeService {
     public HomeChallenges getHotChallenges(Member member) {
         Pageable pageable = PageRequest.of(0, 1);
         Page<Challenge> challenges;
-        List<HotChallengeInfo> hotChallengeInfoList = new ArrayList<>();
+        List<ChallengeInfo> challengeInfoList = new ArrayList<>();
         // 1번 최근에 신설된
         challenges = challengeRepository.findAllAndStatusIsTrueDesc(pageable);
-        challenges.forEach(challenge -> hotChallengeInfoList.add(
-                new HotChallengeInfo(challenge,
+        challenges.forEach(challenge -> challengeInfoList.add(
+                new ChallengeInfo(challenge,
                         calculateTime(challenge.getCreatedAt(), 3) + HotChallengeOption.MOST_RECENT.getSubTitle())));
         // 2번 참여 인원이 가장 많은
         challenges = challengeRepository.findHotChallengesByHeadCount(pageable);
-        challenges.forEach(challenge -> hotChallengeInfoList.add(
-                new HotChallengeInfo(challenge,
+        challenges.forEach(challenge -> challengeInfoList.add(
+                new ChallengeInfo(challenge,
                         challenge.getHeadCount() + HotChallengeOption.MOST_HEADCOUNT.getSubTitle())));
         //3번 일주일 내 인증이 가장 많은
         challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(LocalDateTime.now().minusWeeks(1),
                 pageable);
-        challenges.forEach(challenge -> hotChallengeInfoList.add(
-                new HotChallengeInfo(challenge, HotChallengeOption.MOST_CERTIFICATION.getSubTitle())));
-        return new HomeChallenges(hotChallengeInfoList);
+        challenges.forEach(challenge -> challengeInfoList.add(
+                new ChallengeInfo(challenge, HotChallengeOption.MOST_CERTIFICATION.getSubTitle())));
+        return new HomeChallenges(challengeInfoList);
     }
 
     /**
