@@ -7,7 +7,7 @@ import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.dto.NftResponseDto.HomeNfts;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
-import com.greengrim.green.core.nft.service.GetNftService;
+import com.greengrim.green.core.nft.usecase.GetNftUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class GetNftController {
 
-    private final GetNftService getNftService;
+    private final GetNftUseCase getNftUseCase;
 
     /**
      * [GET] NFT 상세 조회
@@ -33,7 +33,7 @@ public class GetNftController {
             @CurrentMember Member member,
             @PathVariable("id") Long id) {
         return new ResponseEntity<>(
-                getNftService.getNftDetailInfo(member, id),
+            getNftUseCase.getNftDetailInfo(member, id),
                 HttpStatus.OK);
     }
 
@@ -44,7 +44,7 @@ public class GetNftController {
     @GetMapping("/home/nfts")
     public ResponseEntity<HomeNfts> getHotNfts(
             @CurrentMember Member member) {
-        return ResponseEntity.ok(getNftService.getHomeNfts(member, 0,5, SortOption.DESC));
+        return ResponseEntity.ok(getNftUseCase.getHomeNfts(member, 0,5, SortOption.DESC));
     }
 
     /**
@@ -57,7 +57,7 @@ public class GetNftController {
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") SortOption sort) {
-        return ResponseEntity.ok(getNftService.getMoreHotNfts(member, page, size, sort));
+        return ResponseEntity.ok(getNftUseCase.getMoreHotNfts(member, page, size, sort));
     }
 
     /**
@@ -70,7 +70,7 @@ public class GetNftController {
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") SortOption sort) {
-        return ResponseEntity.ok(getNftService.getMemberNfts(member, page, size, sort));
+        return ResponseEntity.ok(getNftUseCase.getMemberNfts(member, page, size, sort));
     }
 
     /**
@@ -81,7 +81,7 @@ public class GetNftController {
     public ResponseEntity<NftAndMemberInfo> getNftInfoBeforeSale(
             @CurrentMember Member member,
             @PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok(getNftService.getNftInfoBeforeSale(member, id));
+        return ResponseEntity.ok(getNftUseCase.getNftInfoBeforeSale(member, id));
     }
 
 }
