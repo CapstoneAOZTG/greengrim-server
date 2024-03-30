@@ -35,7 +35,7 @@ public class RegisterChallengeService {
                 .ticketCurrentCount(registerChallenge.getTicketTotalCount())
                 .weekMinCount(registerChallenge.getWeekMinCount())
                 .capacity(registerChallenge.getCapacity())
-                .headCount(1)
+                .headCount(0)
                 .status(true)
                 .member(member)
                 .chatroom(chatroom)
