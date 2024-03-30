@@ -70,7 +70,7 @@ public class NftResponseDto {
     @Getter
     @AllArgsConstructor
     public static class HomeNfts {
-        private List<HomeNftInfo> homeNftInfos;
+        private List<NftAndMemberInfo> homeNftInfos;
     }
 
     @Getter
@@ -86,15 +86,5 @@ public class NftResponseDto {
         }
     }
 
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class HomeNftInfo {
-        private NftAndMemberInfo nftAndMemberInfo;
-
-        public HomeNftInfo(Nft nft) {
-            this.nftAndMemberInfo = new NftAndMemberInfo(nft);
-        }
-    }
 
 }

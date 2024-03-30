@@ -9,11 +9,11 @@ import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
-import com.greengrim.green.core.nft.dto.NftResponseDto.HomeNftInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.HomeNfts;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
 import com.greengrim.green.core.nft.repository.NftRepository;
+import com.greengrim.green.core.nft.usecase.GetNftUseCase;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class GetNftService {
+public class GetNftService implements GetNftUseCase {
 
     private final NftRepository nftRepository;
 
@@ -40,9 +40,9 @@ public class GetNftService {
     public HomeNfts getHomeNfts(Member member, int page, int size, SortOption sortOption) {
         Page<Nft> nfts = nftRepository.findHomeNfts(getPageable(page, size, sortOption));
 
-        List<HomeNftInfo> homeNftInfoList = new ArrayList<>();
+        List<NftAndMemberInfo> homeNftInfoList = new ArrayList<>();
         nfts.forEach(nft ->
-                homeNftInfoList.add(new HomeNftInfo(nft)));
+                homeNftInfoList.add(new NftAndMemberInfo(nft)));
 
         return new HomeNfts(homeNftInfoList);
     }
@@ -51,16 +51,16 @@ public class GetNftService {
      * 핫 NFTS 더보기
      * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
      */
-    public PageResponseDto<List<HomeNftInfo>> getMoreHotNfts(Member member, int page, int size, SortOption sortOption) {
+    public PageResponseDto<List<NftAndMemberInfo>> getMoreHotNfts(Member member, int page, int size, SortOption sortOption) {
         Page<Nft> nfts = nftRepository.findHomeNfts(getPageable(page, size, sortOption));
         return makeNftsInfoList(nfts);
     }
 
     /**
-     * 내 NFTS 더보기
+     * Profile NFTS 보기
      * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
      */
-    public PageResponseDto<List<HomeNftInfo>> getMyHotNfts(Member member, int page, int size, SortOption sortOption) {
+    public PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, int page, int size, SortOption sortOption) {
         Page<Nft> nfts = nftRepository.findMyNfts(member, getPageable(page, size, sortOption));
         return makeNftsInfoList(nfts);
     }
@@ -77,12 +77,12 @@ public class GetNftService {
         return new NftAndMemberInfo(nft);
     }
 
-    private PageResponseDto<List<HomeNftInfo>> makeNftsInfoList(Page<Nft> nfts) {
-        List<HomeNftInfo> homeNftInfos = new ArrayList<>();
+    public PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Page<Nft> nfts) {
+        List<NftAndMemberInfo> memberNftInfos = new ArrayList<>();
         nfts.forEach(nft ->
-                homeNftInfos.add(new HomeNftInfo(nft)));
+            memberNftInfos.add(new NftAndMemberInfo(nft)));
 
-        return new PageResponseDto<>(nfts.getNumber(), nfts.hasNext(), homeNftInfos);
+        return new PageResponseDto<>(nfts.getNumber(), nfts.hasNext(), memberNftInfos);
     }
 
 }
