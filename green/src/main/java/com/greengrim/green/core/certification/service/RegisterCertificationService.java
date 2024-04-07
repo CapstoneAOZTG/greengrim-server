@@ -41,6 +41,7 @@ public class RegisterCertificationService {
                 .member(member)
                 .challenge(challenge)
                 .status(true)
+                .reportCount(0)
                 .build();
 
         certificationRepository.save(certification);

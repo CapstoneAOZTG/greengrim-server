@@ -53,4 +53,7 @@ public class Nft extends BaseTime {
         this.member = member;
     }
 
+    public void plusReportCount() {
+        this.reportCount++;
+    }
 }

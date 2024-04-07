@@ -101,4 +101,8 @@ public class Member extends BaseTime {
         this.role = role;
     }
 
+    public void plusReportCount() {
+        this.reportCount++;
+    }
+
 }

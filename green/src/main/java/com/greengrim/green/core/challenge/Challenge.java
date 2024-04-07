@@ -56,6 +56,9 @@ public class Challenge extends BaseTime {
     @Max(100)
     private int headCount;          // 현재 인원
 
+    @NotNull
+    private int reportCount;
+
     private boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -89,5 +92,9 @@ public class Challenge extends BaseTime {
         if(this.ticketCurrentCount != 0) {
             this.ticketCurrentCount--;
         }
+    }
+
+    public void plusReportCount() {
+        this.reportCount++;
     }
 }
