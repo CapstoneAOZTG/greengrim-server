@@ -49,13 +49,14 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     /**
      * 핫 챌린지 조회 - 일주일 내의 인증이 가장 많은
      */
-    @Query("SELECT c FROM Challenge c "
-            + "WHERE c IN "
-            + "(SELECT cc.challenge FROM Certification cc "
-            + "WHERE cc.createdAt >= :weekAgo "
-            + "AND cc.status=true "
-            + "GROUP BY cc.challenge "
-            + "ORDER BY COUNT(cc) DESC)")
+    @Query("SELECT c "
+            + "FROM Challenge c "
+            + "JOIN Certification cert ON c = cert.challenge "
+            + "WHERE cert.createdAt >= :weekAgo "
+            + "AND cert.status = true "
+            + "AND c.status = true "
+            + "GROUP BY c "
+            + "ORDER BY COUNT(cert) DESC")
     Page<Challenge> findMostCertifiedChallengesWithinAWeek(@Param("weekAgo")LocalDateTime weekAgo, Pageable pageable);
 
 }
