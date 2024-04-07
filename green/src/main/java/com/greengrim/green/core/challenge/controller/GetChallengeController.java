@@ -4,8 +4,8 @@ import com.greengrim.green.common.auth.CurrentMember;
 import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.challenge.Category;
+import com.greengrim.green.core.challenge.HotChallengeOption;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
-import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengePreviewInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HomeChallenges;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.MyChatroom;
@@ -26,19 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class GetChallengeController {
 
     private final GetChallengeService getChallengeService;
-
-    /**
-     * [GET] 인증하기 전 정보 조회
-     */
-    @Operation(summary = "인증하기 전 정보 조회")
-    @GetMapping("/visitor/challenges/preview/{id}")
-    public ResponseEntity<ChallengePreviewInfo> getChallengePreviewInfo(
-            @CurrentMember Member member,
-            @PathVariable("id") Long id) {
-        return new ResponseEntity<>(
-                getChallengeService.getChallengePreviewInfo(member, id),
-                HttpStatus.OK);
-    }
 
     /**
      * [GET] 챌린지 상세 조회
@@ -89,7 +76,7 @@ public class GetChallengeController {
     @GetMapping("/home/challenges")
     public ResponseEntity<HomeChallenges> getHotChallenges(
             @CurrentMember Member member) {
-        return ResponseEntity.ok(getChallengeService.getHotChallenges(member, 5));
+        return ResponseEntity.ok(getChallengeService.getHotChallenges(member));
     }
 
     /**
@@ -99,9 +86,10 @@ public class GetChallengeController {
     @GetMapping("/hot-challenges")
     public ResponseEntity<PageResponseDto<List<ChallengeSimpleInfo>>> getMoreHotChallenges(
             @CurrentMember Member member,
+            @RequestParam(value = "option") HotChallengeOption option,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size) {
-        return ResponseEntity.ok(getChallengeService.getMoreHotChallenges(member, page, size));
+        return ResponseEntity.ok(getChallengeService.getMoreHotChallenges(member, option, page, size));
     }
 
     /**

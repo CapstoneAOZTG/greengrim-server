@@ -25,6 +25,13 @@ public class ChallengeResponseDto {
             this.description = challenge.getDescription();
             this.imgUrl = challenge.getImgUrl();
         }
+
+        public ChallengeInfo(Challenge challenge, String description) {
+            this.id = challenge.getId();
+            this.title = challenge.getTitle();
+            this.description = description;
+            this.imgUrl = challenge.getImgUrl();
+        }
     }
 
     @Getter
@@ -91,33 +98,9 @@ public class ChallengeResponseDto {
 
     @Getter
     @RequiredArgsConstructor
-    public static class HotChallengeInfo {
-        private ChallengeInfo challengeInfo;
-        private HotChallengeTags hotChallengeTags;
-
-        public HotChallengeInfo(Challenge challenge) {
-            this.challengeInfo = new ChallengeInfo(challenge);
-            this.hotChallengeTags = new HotChallengeTags(challenge);
-        }
-    }
-
-    @Getter
-    @RequiredArgsConstructor
     @AllArgsConstructor
     public static class HomeChallenges {
-        private List<HotChallengeInfo> hotChallengeInfos;
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class HotChallengeTags {
-        private Category category;
-        private String ticketCount;
-
-        public HotChallengeTags(Challenge challenge) {
-            this.category = challenge.getCategory();
-            this.ticketCount = challenge.getTicketCountTag();
-        }
+        private List<ChallengeInfo> challengeInfos;
     }
 
     @Getter
@@ -151,22 +134,6 @@ public class ChallengeResponseDto {
             this.title = challenge.getTitle();
             this.imgUrl = challenge.getImgUrl();
             this.category = challenge.getCategory();
-        }
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class ChallengePreviewInfo {
-        private int round;  // 몇 회차 인증할 차례인지
-        private String title;
-        private Category category;
-        private String ticketCount;
-
-        public ChallengePreviewInfo(Challenge challenge, int round) {
-            this.round = round;
-            this.title = challenge.getTitle();
-            this.category = challenge.getCategory();
-            this.ticketCount = challenge.getTicketCountTag();
         }
     }
 

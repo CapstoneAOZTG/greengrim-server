@@ -15,7 +15,10 @@ public enum Category {
     ELECTRIC_CAR("전기차", 1.5, 10),
     PUBLIC_TRANSPORTATION("대중 교통 이용", 1.5, 10),
     MAINTAINING_TEMPERATURE("적정 온도 유지", 1.5, 10),
-    RECYCLING("분리수거 라벨 제거", 1.5, 10);
+    RECYCLING("분리수거 라벨 제거", 1.5, 10),
+    USING_STAIRS("계단 이용", 1.5, 10),
+    USING_BICYCLE("자전거 이용", 1.5, 10),
+    ECO_EVENT("환경 행사 참여", 2, 10);
 
     private final String name;
     private final double carbonReduction;
