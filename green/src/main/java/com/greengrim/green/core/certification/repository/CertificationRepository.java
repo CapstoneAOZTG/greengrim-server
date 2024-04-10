@@ -17,6 +17,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CertificationRepository extends JpaRepository<Certification, Long> {
 
+    Optional<Certification> findByIdAndStatusIsTrue(@Param("id") Long id);
+
     @Query("SELECT COUNT(c) FROM Certification c WHERE c.member= :member AND c.challenge= :challenge")
     int countsByMemberAndChallenge(
             @Param("member") Member member,
@@ -38,6 +40,5 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
             + "WHERE c.id NOT IN (SELECT v.certificationId FROM Verification v WHERE v.memberId=:memberId AND v.certificationId=c.id)"
             + "AND c.validation = 0 AND c.member.id!=:memberId ORDER BY c.verificationCount limit 1")
     Optional<Long> findCertificationForVerification(@Param("memberId") Long memberId);
-
 
 }

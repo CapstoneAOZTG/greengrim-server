@@ -43,6 +43,9 @@ public class Certification extends BaseTime {
     @Max(10)
     private int verificationCount;      // 남은 상호 인증 횟수
 
+    @NotNull
+    private int reportCount;
+
     private boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -63,5 +66,9 @@ public class Certification extends BaseTime {
 
     public void minusVerificationCount() {
         this.verificationCount--;
+    }
+
+    public void plusReportCount() {
+        this.reportCount++;
     }
 }

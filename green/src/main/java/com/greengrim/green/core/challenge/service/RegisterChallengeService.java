@@ -37,6 +37,7 @@ public class RegisterChallengeService {
                 .capacity(registerChallenge.getCapacity())
                 .headCount(0)
                 .status(true)
+                .reportCount(0)
                 .member(member)
                 .chatroom(chatroom)
                 .build();
