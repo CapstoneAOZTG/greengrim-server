@@ -9,8 +9,10 @@ import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
+import com.greengrim.green.core.nft.NftGrade;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
+import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nft.usecase.GetNftUseCase;
 import java.util.ArrayList;
@@ -37,6 +39,14 @@ public class GetNftService implements GetNftUseCase {
         return new NftDetailInfo(nft, isMine, traits);
     }
 
+    /**
+     * 교환할 NFT 조회
+     */
+    public NftStockInfo getNftStockInfo(NftGrade grade) {
+        Nft nft = nftRepository.findRandomByGrade(grade)
+            .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
+        return new NftStockInfo(nft, traits);
+    }
 
     /**
      * 교환된 NFT List 조회

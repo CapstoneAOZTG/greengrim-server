@@ -49,6 +49,18 @@ public class NftResponseDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    public static class NftStockInfo {
+        private int tokenId;
+        private TraitsInfo traitsInfo;
+
+        public NftStockInfo(Nft nft, String [][] traits) {
+            this.tokenId = nft.getTokenId();
+            this.traitsInfo = new TraitsInfo(traits, nft.getTraits());
+        }
+    }
+
+    @Getter
     @Builder
     @AllArgsConstructor
     public static class NftSimpleInfo {
