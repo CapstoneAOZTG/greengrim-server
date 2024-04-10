@@ -9,7 +9,6 @@ import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
-import com.greengrim.green.core.nft.dto.NftResponseDto.HomeNfts;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
 import com.greengrim.green.core.nft.repository.NftRepository;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class GetNftService implements GetNftUseCase {
 
     private final NftRepository nftRepository;
+    private final String[][] traits;
 
     public NftDetailInfo getNftDetailInfo(Member member, Long id) {
         Nft nft = nftRepository.findByIdAndStatusTrue(id)
@@ -34,47 +34,26 @@ public class GetNftService implements GetNftUseCase {
         if (member != null) { // 로그인 했다면
             isMine = checkIsMine(member.getId(), nft.getMember().getId());
         }
-        return new NftDetailInfo(nft, isMine);
+        return new NftDetailInfo(nft, isMine, traits);
     }
 
-    public HomeNfts getHomeNfts(Member member, int page, int size, SortOption sortOption) {
-        Page<Nft> nfts = nftRepository.findHomeNfts(getPageable(page, size, sortOption));
-
-        List<NftAndMemberInfo> homeNftInfoList = new ArrayList<>();
-        nfts.forEach(nft ->
-                homeNftInfoList.add(new NftAndMemberInfo(nft)));
-
-        return new HomeNfts(homeNftInfoList);
-    }
 
     /**
-     * 핫 NFTS 더보기
-     * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
+     * 교환된 NFT List 조회
+     * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기, 좋아요 순 추가하기
      */
-    public PageResponseDto<List<NftAndMemberInfo>> getMoreHotNfts(Member member, int page, int size, SortOption sortOption) {
-        Page<Nft> nfts = nftRepository.findHomeNfts(getPageable(page, size, sortOption));
+    public PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, SortOption sortOption) {
+        Page<Nft> nfts = nftRepository.findExchangedNfts(getPageable(page, size, sortOption));
         return makeNftsInfoList(nfts);
     }
 
     /**
      * Profile NFTS 보기
-     * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
+     * TODO: @memberId 를 이용해 차단 목록에 있다면 보여주지 않기
      */
-    public PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, int page, int size, SortOption sortOption) {
-        Page<Nft> nfts = nftRepository.findMyNfts(member, getPageable(page, size, sortOption));
+    public PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Long memberId, int page, int size, SortOption sortOption) {
+        Page<Nft> nfts = nftRepository.findMemberNfts(memberId, getPageable(page, size, sortOption));
         return makeNftsInfoList(nfts);
-    }
-
-    /**
-     * NFT 판매 전 정보 조회
-     */
-    public NftAndMemberInfo getNftInfoBeforeSale(Member member, Long id) {
-        Nft nft = nftRepository.findByIdAndStatusTrue(id)
-                .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
-        if (!checkIsMine(member.getId(), nft.getMember().getId())) {
-            throw new BaseException(NftErrorCode.NO_AUTHORIZATION);
-        }
-        return new NftAndMemberInfo(nft);
     }
 
     public PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Page<Nft> nfts) {

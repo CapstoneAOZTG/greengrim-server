@@ -4,7 +4,6 @@ import com.greengrim.green.common.auth.CurrentMember;
 import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.member.Member;
-import com.greengrim.green.core.nft.dto.NftResponseDto.HomeNfts;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
 import com.greengrim.green.core.nft.usecase.GetNftUseCase;
@@ -38,50 +37,29 @@ public class GetNftController {
     }
 
     /**
-     * [GET] 홈 화면 NFT 5개 조회
+     * [GET] 교환된 NFT List 보기
      */
-    @Operation(summary = "홈 화면 NFT 조회")
-    @GetMapping("/home/nfts")
-    public ResponseEntity<HomeNfts> getHotNfts(
-            @CurrentMember Member member) {
-        return ResponseEntity.ok(getNftUseCase.getHomeNfts(member, 0,5, SortOption.DESC));
-    }
-
-    /**
-     * [GET] NFT 더보기
-     */
-    @Operation(summary = "NFT 더보기")
-    @GetMapping("/hot-nfts")
-    public ResponseEntity<PageResponseDto<List<NftAndMemberInfo>>> getMoreHotNfts(
+    @Operation(summary = "교환된 NFT List 보기")
+    @GetMapping("/visitor/nfts")
+    public ResponseEntity<PageResponseDto<List<NftAndMemberInfo>>> getExchangedNfts(
             @CurrentMember Member member,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") SortOption sort) {
-        return ResponseEntity.ok(getNftUseCase.getMoreHotNfts(member, page, size, sort));
+        return ResponseEntity.ok(getNftUseCase.getExchangedNfts(member, page, size, sort));
     }
 
     /**
-     * [GET] 내 NFT 조회
+     * [GET] Member NFT 조회
      */
-    @Operation(summary = "내 NFT 조회")
-    @GetMapping("/member/nfts")
-    public ResponseEntity<PageResponseDto<List<NftAndMemberInfo>>> getMoreHotChallenges(
-            @CurrentMember Member member,
+    @Operation(summary = "Profile NFT 조회")
+    @GetMapping("/visitor/nfts/profile/{memberId}")
+    public ResponseEntity<PageResponseDto<List<NftAndMemberInfo>>> getProfileNfts(
+            @RequestParam(value = "memberId") Long memberId,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") SortOption sort) {
-        return ResponseEntity.ok(getNftUseCase.getMemberNfts(member, page, size, sort));
-    }
-
-    /**
-     * [GET] NFT 판매 전 정보 조회
-     */
-    @Operation(summary = "NFT 판매 전 정보 조회")
-    @GetMapping("/member/nfts/{id}/sales")
-    public ResponseEntity<NftAndMemberInfo> getNftInfoBeforeSale(
-            @CurrentMember Member member,
-            @PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok(getNftUseCase.getNftInfoBeforeSale(member, id));
+        return ResponseEntity.ok(getNftUseCase.getMemberNfts(memberId, page, size, sort));
     }
 
 }
