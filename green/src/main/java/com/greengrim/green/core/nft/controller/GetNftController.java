@@ -64,16 +64,18 @@ public class GetNftController {
     }
 
     /**
-     * [GET] Member NFT 조회
+     * [GET] 멤버 별 NFT 조회
      */
-    @Operation(summary = "Profile NFT 조회")
+    @Operation(summary = "멤버 별 NFT 조회",
+        description = "자신의 것을 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
     @GetMapping("/visitor/nfts/profile/{memberId}")
     public ResponseEntity<PageResponseDto<List<NftAndMemberInfo>>> getProfileNfts(
-            @RequestParam(value = "memberId") Long memberId,
+            @CurrentMember Member member,
+            @RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") SortOption sort) {
-        return ResponseEntity.ok(getNftUseCase.getMemberNfts(memberId, page, size, sort));
+        return ResponseEntity.ok(getNftUseCase.getMemberNfts(member, memberId, page, size, sort));
     }
 
 }

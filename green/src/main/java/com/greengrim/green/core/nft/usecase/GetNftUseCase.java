@@ -17,7 +17,7 @@ public interface GetNftUseCase {
 
     NftStockInfo getNftStockInfo(NftGrade grade);
 
-    PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Long memberId, int page, int size, SortOption sortOption);
+    PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, Long memberId, int page, int size, SortOption sortOption);
 
     PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, SortOption sortOption);
 
