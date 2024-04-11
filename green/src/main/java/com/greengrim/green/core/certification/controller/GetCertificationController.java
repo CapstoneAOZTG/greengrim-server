@@ -79,15 +79,17 @@ public class GetCertificationController {
     /**
      * [GET] 멤버 별 인증 목록 조회 - DATE
      */
-    @Operation(summary = "멤버 별 챌린지 인증 내역 조회 - DATE")
+    @Operation(summary = "멤버 별 챌린지 인증 내역 조회 - DATE",
+            description = "자신의 것을 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
     @GetMapping("/visitor/certifications/date")
-    public ResponseEntity<PageResponseDto<List<CertificationsByMemberDate>>> getCertificationsByChallengeDate(
+    public ResponseEntity<PageResponseDto<List<CertificationsByMemberDate>>> getCertificationsByMemberDate(
             @CurrentMember Member member,
+            @RequestParam(value = "memberId", required = false) Long id,
             @RequestParam(value = "date") String date,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size) { // 2023-11-07
         return ResponseEntity.ok(getCertificationService.getCertificationsByMemberDate(
-                member, date, page, size));
+                id, member, date, page, size));
     }
 
     /**

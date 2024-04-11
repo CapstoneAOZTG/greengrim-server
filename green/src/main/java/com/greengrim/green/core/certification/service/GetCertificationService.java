@@ -104,11 +104,14 @@ public class GetCertificationService {
      * 멤버 날짜 별 인증 반환
      */
     public PageResponseDto<List<CertificationsByMemberDate>> getCertificationsByMemberDate(
-            Member member, String date, int page, int size) {
+            Long memberId, Member member, String date, int page, int size) {
+        if(memberId == null) {
+            memberId = member.getId();
+        }
         List<CertificationsByMemberDate> certificationsByMemberDates = new ArrayList<>();
 
         Page<Certification> certifications = certificationRepository.findCertificationsByMemberDate(
-                date, member.getId(), PageRequest.of(page, size));
+                date, memberId, PageRequest.of(page, size));
 
         certifications.forEach(certification ->
                 certificationsByMemberDates.add(new CertificationsByMemberDate(certification)));
