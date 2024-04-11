@@ -34,7 +34,7 @@ public class GetCertificationService {
      */
     public CertificationDetailInfo getCertificationInfo(Member member, Long id) {
         Certification certification = certificationRepository.findById(id)
-                .orElseThrow(() -> new BaseException(CertificationErrorCode.EMPTY_CHALLENGE));
+                .orElseThrow(() -> new BaseException(CertificationErrorCode.EMPTY_CERTIFICATION));
 
         VerificationFlag isVerified = checkVerificationFlag(member, certification);
         boolean isMine = checkIsMine(member.getId(), certification.getMember().getId());
