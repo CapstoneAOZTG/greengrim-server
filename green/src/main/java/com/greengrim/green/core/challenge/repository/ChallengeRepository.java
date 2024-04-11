@@ -26,6 +26,16 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     @Query(value = "SELECT c FROM Challenge c WHERE c.member=:member AND c.status=true")
     Page<Challenge> findByMemberAndStateIsTrue(@Param("member") Member member, Pageable pageable);
 
+    /**
+     * 멤버 별 참여중인 챌린지 조회 - 최신순, 오래된 순, 인원 많은 순, 인원 적은 순
+     */
+    @Query(value = "SELECT c "
+            + "FROM Challenge c "
+            + "JOIN Chatroom cr ON c.chatroom.id = cr.id "
+            + "JOIN Chatparticipant cp ON cr.id = cp.chatroom.id "
+            + "WHERE cp.member.id = :memberId AND c.status = true")
+    Page<Challenge> findByMemberIdAndStateIsTrue(@Param("memberId") Long memberId, Pageable pageable);
+
     Challenge findByChatroomId(Long chatroomId);
 
     /**

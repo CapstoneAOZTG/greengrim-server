@@ -34,7 +34,7 @@ public class GetCertificationService {
      */
     public CertificationDetailInfo getCertificationInfo(Member member, Long id) {
         Certification certification = certificationRepository.findById(id)
-                .orElseThrow(() -> new BaseException(CertificationErrorCode.EMPTY_CHALLENGE));
+                .orElseThrow(() -> new BaseException(CertificationErrorCode.EMPTY_CERTIFICATION));
 
         VerificationFlag isVerified = checkVerificationFlag(member, certification);
         boolean isMine = checkIsMine(member.getId(), certification.getMember().getId());
@@ -76,8 +76,11 @@ public class GetCertificationService {
     /**
      * 멤버 월 별 인증 유무를 date 리스트 형식으로 반환
      */
-    public CertificationsByMonth getCertificationsByMemberMonth(Member member) {
-        List<String> date = certificationRepository.findCertificationsByMemberMonth(member.getId());
+    public CertificationsByMonth getCertificationsByMemberMonth(Long memberId, Member member) {
+        if(memberId == null) {
+            memberId = member.getId();
+        }
+        List<String> date = certificationRepository.findCertificationsByMemberMonth(memberId);
         return new CertificationsByMonth(date);
     }
 
@@ -101,11 +104,14 @@ public class GetCertificationService {
      * 멤버 날짜 별 인증 반환
      */
     public PageResponseDto<List<CertificationsByMemberDate>> getCertificationsByMemberDate(
-            Member member, String date, int page, int size) {
+            Long memberId, Member member, String date, int page, int size) {
+        if(memberId == null) {
+            memberId = member.getId();
+        }
         List<CertificationsByMemberDate> certificationsByMemberDates = new ArrayList<>();
 
         Page<Certification> certifications = certificationRepository.findCertificationsByMemberDate(
-                date, member.getId(), PageRequest.of(page, size));
+                date, memberId, PageRequest.of(page, size));
 
         certifications.forEach(certification ->
                 certificationsByMemberDates.add(new CertificationsByMemberDate(certification)));

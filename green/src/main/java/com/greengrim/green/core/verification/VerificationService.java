@@ -24,7 +24,7 @@ public class VerificationService {
 
     public void register(Member member, RegisterVerification registerVerification) {
         Certification certification = certificationRepository.findById(registerVerification.getCertificationId())
-                .orElseThrow(() -> new BaseException(CertificationErrorCode.EMPTY_CHALLENGE));
+                .orElseThrow(() -> new BaseException(CertificationErrorCode.EMPTY_CERTIFICATION));
 
         // 예외 검사
         validateDuplicationAndSelfVerification(member, certification);

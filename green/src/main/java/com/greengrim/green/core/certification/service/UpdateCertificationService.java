@@ -19,7 +19,7 @@ public class UpdateCertificationService {
 
     public void delete(Member member, Long id) {
         Certification certification = certificationRepository.findById(id)
-                .orElseThrow(() -> new BaseException(CertificationErrorCode.EMPTY_CHALLENGE));
+                .orElseThrow(() -> new BaseException(CertificationErrorCode.EMPTY_CERTIFICATION));
         // 내꺼인지 확인
         checkIsMine(member.getId(), certification.getMember().getId());
         // s3에서 인증 사진 삭제
