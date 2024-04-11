@@ -4,18 +4,12 @@ import static com.greengrim.green.common.entity.Time.calculateTime;
 
 import com.greengrim.green.core.member.dto.MemberResponseDto.MemberSimpleInfo;
 import com.greengrim.green.core.nft.Nft;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 public class NftResponseDto {
-
-    @Getter
-    @AllArgsConstructor
-    public static class NftId {
-        private Long id;
-    }
 
     @Getter
     @AllArgsConstructor
@@ -28,7 +22,7 @@ public class NftResponseDto {
 
         public NftInfo(Nft nft) {
             this.id = nft.getId();
-            this.imgUrl = "temp Url";
+            this.imgUrl = nft.getImgUrl();
             this.title = nft.getTitle();
             this.description = nft.getDescription();
             this.createdAt = calculateTime(nft.getCreatedAt(), 1);
@@ -41,18 +35,28 @@ public class NftResponseDto {
     public static class NftDetailInfo {
         private MemberSimpleInfo memberSimpleInfo;
         private NftInfo nftInfo;
-        private String contracts;
-        private String tokenId;
-        private String price;
+        private int tokenId;
         private boolean isMine;
+        private TraitsInfo traitsInfo;
 
-        public NftDetailInfo(Nft nft, String price, boolean isMine) {
+        public NftDetailInfo(Nft nft, boolean isMine, String [][] traits) {
             this.memberSimpleInfo = new MemberSimpleInfo(nft.getMember());
             this.nftInfo = new NftInfo(nft);
-            this.contracts = nft.getContracts();
-            this.tokenId = nft.getNftId();
-            this.price = price;
+            this.tokenId = nft.getTokenId();
             this.isMine = isMine;
+            this.traitsInfo = new TraitsInfo(traits, nft.getTraits());
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class NftStockInfo {
+        private int tokenId;
+        private TraitsInfo traitsInfo;
+
+        public NftStockInfo(Nft nft, String [][] traits) {
+            this.tokenId = nft.getTokenId();
+            this.traitsInfo = new TraitsInfo(traits, nft.getTraits());
         }
     }
 
@@ -66,15 +70,9 @@ public class NftResponseDto {
 
         public NftSimpleInfo(Nft nft) {
             this.id = nft.getId();
-            this.imgUrl = "temp Url";
+            this.imgUrl = nft.getImgUrl();
             this.title = nft.getTitle();
         }
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public static class HomeNfts {
-        private List<HomeNftInfo> homeNftInfos;
     }
 
     @Getter
@@ -91,38 +89,22 @@ public class NftResponseDto {
     }
 
     @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class HomeNftInfo {
-        private NftAndMemberInfo nftAndMemberInfo;
-        private String price;
+    @RequiredArgsConstructor
+    public static class TraitsInfo {
+        public String background;
+        public String hair;
+        public String face;
+        public String gesture;
+        public String accessory;
+        public String shoes;
 
-        public HomeNftInfo(Nft nft, String price) {
-            this.nftAndMemberInfo = new NftAndMemberInfo(nft);
-            this.price = price;
-        }
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class NftInfoBeforePurchase {
-        private NftAndMemberInfo nftAndMemberInfo;
-        private String price;
-        private String fee;
-        private String total;
-        private String balance;
-        private String balanceAfterPurchase;
-
-        public NftInfoBeforePurchase(Nft nft, String price, String fee, String total,
-                                     String balance, String balanceAfterPurchase) {
-            this.nftAndMemberInfo = new NftAndMemberInfo(nft);
-
-            this.price = price;
-            this.fee = fee;
-            this.total = total;
-            this.balance = balance;
-            this.balanceAfterPurchase = balanceAfterPurchase;
+        TraitsInfo(String [][] traits, String traitsString) {
+            this.background = traits[0][traitsString.charAt(0) - '0'];
+            this.hair = traits[1][traitsString.charAt(1) - '0'];
+            this.face = traits[2][traitsString.charAt(2) - '0'];
+            this.gesture = traits[3][traitsString.charAt(3) - '0'];
+            this.accessory = traits[4][traitsString.charAt(4) - '0'];
+            this.shoes = traits[5][traitsString.charAt(5) - '0'];
         }
     }
 

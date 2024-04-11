@@ -4,17 +4,14 @@ import com.greengrim.green.common.auth.CurrentMember;
 import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.member.Member;
-import com.greengrim.green.core.nft.dto.NftResponseDto.HomeNftInfo;
-import com.greengrim.green.core.nft.dto.NftResponseDto.HomeNfts;
+import com.greengrim.green.core.nft.NftGrade;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
-import com.greengrim.green.core.nft.dto.NftResponseDto.NftInfoBeforePurchase;
-import com.greengrim.green.core.nft.service.GetNftService;
+import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
+import com.greengrim.green.core.nft.usecase.GetNftUseCase;
 import io.swagger.v3.oas.annotations.Operation;
-import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class GetNftController {
 
-    private final GetNftService getNftService;
+    private final GetNftUseCase getNftUseCase;
 
     /**
      * [GET] NFT 상세 조회
@@ -37,66 +34,48 @@ public class GetNftController {
             @CurrentMember Member member,
             @PathVariable("id") Long id) {
         return new ResponseEntity<>(
-                getNftService.getNftDetailInfo(member, id),
+            getNftUseCase.getNftDetailInfo(member, id),
                 HttpStatus.OK);
     }
 
     /**
-     * [GET] 홈 화면 NFT 5개 조회
+     * [GET] 교환할 NFT 조회
      */
-    @Operation(summary = "홈 화면 NFT 조회")
-    @GetMapping("/home/nfts")
-    public ResponseEntity<HomeNfts> getHotNfts(
-            @CurrentMember Member member) {
-        return ResponseEntity.ok(getNftService.getHomeNfts(member, 0,5, SortOption.DESC));
+    @Operation(summary = "교환할 NFT 조회")
+    @GetMapping("/visitor/nfts/stock")
+    public ResponseEntity<NftStockInfo> getNftStockInfo(
+        @RequestParam(value = "grade") NftGrade grade) {
+        return new ResponseEntity<>(
+            getNftUseCase.getNftStockInfo(grade),
+            HttpStatus.OK);
     }
 
     /**
-     * [GET] NFT 더보기
+     * [GET] 교환된 NFT List 보기
      */
-    @Operation(summary = "NFT 더보기")
-    @GetMapping("/hot-nfts")
-    public ResponseEntity<PageResponseDto<List<HomeNftInfo>>> getMoreHotNfts(
+    @Operation(summary = "교환된 NFT List 보기")
+    @GetMapping("/visitor/nfts")
+    public ResponseEntity<PageResponseDto<List<NftAndMemberInfo>>> getExchangedNfts(
             @CurrentMember Member member,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") SortOption sort) {
-        return ResponseEntity.ok(getNftService.getMoreHotNfts(member, page, size, sort));
+        return ResponseEntity.ok(getNftUseCase.getExchangedNfts(member, page, size, sort));
     }
 
     /**
-     * [GET] 내 NFT 조회
+     * [GET] 멤버 별 NFT 조회
      */
-    @Operation(summary = "내 NFT 조회")
-    @GetMapping("/member/nfts")
-    public ResponseEntity<PageResponseDto<List<HomeNftInfo>>> getMoreHotChallenges(
+    @Operation(summary = "멤버 별 NFT 조회",
+        description = "자신의 것을 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
+    @GetMapping("/visitor/nfts/profile")
+    public ResponseEntity<PageResponseDto<List<NftAndMemberInfo>>> getProfileNfts(
             @CurrentMember Member member,
+            @RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") SortOption sort) {
-        return ResponseEntity.ok(getNftService.getMyHotNfts(member, page, size, sort));
+        return ResponseEntity.ok(getNftUseCase.getMemberNfts(member, memberId, page, size, sort));
     }
 
-    /**
-     * [GET] NFT 판매 전 정보 조회
-     */
-    @Operation(summary = "NFT 판매 전 정보 조회")
-    @GetMapping("/member/nfts/{id}/sales")
-    public ResponseEntity<NftAndMemberInfo> getNftInfoBeforeSale(
-            @CurrentMember Member member,
-            @PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok(getNftService.getNftInfoBeforeSale(member, id));
-    }
-
-    /**
-     * [GET] NFT 구매 전 정보 조회
-     */
-    @Operation(summary = "NFT 구매 전 정보 조회")
-    @GetMapping("/member/nfts/{id}/purchases")
-    public ResponseEntity<NftInfoBeforePurchase> getNftInfoBeforePurchase(
-            @CurrentMember Member member,
-            @PathVariable(value = "id") Long id)
-            throws IOException, ParseException, java.text.ParseException, InterruptedException {
-        return ResponseEntity.ok(getNftService.getNftInfoBeforePurchase(member, id));
-    }
 }

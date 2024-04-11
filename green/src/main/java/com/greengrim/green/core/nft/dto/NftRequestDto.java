@@ -11,8 +11,6 @@ public class NftRequestDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RegisterNft {
-        @NotBlank(message = "비밀번호가 일치하지 않습니다.")
-        private String password;
         @NotBlank(message = "그림 ID는 빈 값일 수 없습니다.")
         private Long grimId;
         @NotBlank(message = "제목은 빈 값일 수 없습니다.")
@@ -20,4 +18,6 @@ public class NftRequestDto {
         @NotBlank(message = "설명은 빈 값일 수 없습니다.")
         private String description;
     }
+
+
 }
