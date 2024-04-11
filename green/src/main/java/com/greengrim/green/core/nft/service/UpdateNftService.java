@@ -20,7 +20,7 @@ public class UpdateNftService {
     @Transactional
     public void delete(Member member, Long id) {
         Nft nft = nftRepository.findByIdAndStatusTrue(id)
-                .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
+            .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
         checkIsMine(member.getId(), nft.getMember().getId());
 
         nft.delete();
