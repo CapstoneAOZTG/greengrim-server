@@ -76,8 +76,11 @@ public class GetCertificationService {
     /**
      * 멤버 월 별 인증 유무를 date 리스트 형식으로 반환
      */
-    public CertificationsByMonth getCertificationsByMemberMonth(Member member) {
-        List<String> date = certificationRepository.findCertificationsByMemberMonth(member.getId());
+    public CertificationsByMonth getCertificationsByMemberMonth(Long memberId, Member member) {
+        if(memberId == null) {
+            memberId = member.getId();
+        }
+        List<String> date = certificationRepository.findCertificationsByMemberMonth(memberId);
         return new CertificationsByMonth(date);
     }
 
