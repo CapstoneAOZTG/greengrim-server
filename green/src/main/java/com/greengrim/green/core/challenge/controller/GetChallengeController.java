@@ -70,6 +70,22 @@ public class GetChallengeController {
     }
 
     /**
+     * [GET] 멤버 별 참여중인 챌린지 목록 조회
+     */
+    @Operation(summary = "멤버 별 참여중인 챌린지 목록 조회",
+            description = "자신이 참여중인 챌린지를 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
+    @GetMapping("/visitor/challenges/members")
+    public ResponseEntity<PageResponseDto<List<ChallengeSimpleInfo>>> getMyChallenges(
+            @CurrentMember Member member,
+            @RequestParam(value = "memberId", required = false) Long id,
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size") int size,
+            @RequestParam(value = "sort") SortOption sort) {
+        return ResponseEntity.ok(getChallengeService.getChallengesByMemberId(
+                id, member, page, size, sort));
+    }
+
+    /**
      * [GET] 홈 화면 핫 챌린지 5개 조회
      */
     @Operation(summary = "홈 화면 핫 챌린지 조회")
