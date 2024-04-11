@@ -68,7 +68,7 @@ public class GetNftController {
      */
     @Operation(summary = "멤버 별 NFT 조회",
         description = "자신의 것을 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
-    @GetMapping("/visitor/nfts/profile/{memberId}")
+    @GetMapping("/visitor/nfts/profile")
     public ResponseEntity<PageResponseDto<List<NftAndMemberInfo>>> getProfileNfts(
             @CurrentMember Member member,
             @RequestParam(value = "memberId", required = false) Long memberId,
