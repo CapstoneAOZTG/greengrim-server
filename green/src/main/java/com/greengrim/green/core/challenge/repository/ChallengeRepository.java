@@ -40,8 +40,14 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
             + "FROM Challenge c "
             + "JOIN Chatroom cr ON c.chatroom.id = cr.id "
             + "JOIN Chatparticipant cp ON cr.id = cp.chatroom.id "
-            + "WHERE cp.member.id = :memberId AND c.status = true")
-    Page<Challenge> findByMemberIdAndStateIsTrue(@Param("memberId") Long memberId, Pageable pageable);
+            + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+            + "LEFT JOIN ChallengeHiding ch ON c.id = ch.challengeId AND ch.memberId = :memberId "
+            + "WHERE cp.member.id = :targetId AND c.status = true "
+            + "AND mh.hiddenMember IS NULL "
+            + "AND ch.challengeId IS NULL ")
+    Page<Challenge> findByMemberIdAndStateIsTrue(@Param("memberId") Long memberId,
+                                                 @Param("targetId") Long targetId,
+                                                 Pageable pageable);
 
     Challenge findByChatroomId(Long chatroomId);
 

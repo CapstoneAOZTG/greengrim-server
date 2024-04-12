@@ -77,13 +77,13 @@ public class GetChallengeService {
      * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
      */
     public PageResponseDto<List<ChallengeSimpleInfo>> getChallengesByMemberId(
-            Long memberId, Member member, int page, int size, SortOption sort) {
+            Long targetId, Member member, int page, int size, SortOption sort) {
         // 만약 조회할 memberId가 넘어오지 않았다면 자신의 것 조회!
-        if(memberId == null) {
-            memberId = member.getId();
+        if(targetId == null) {
+            targetId = member.getId();
         }
         Page<Challenge> challenges = challengeRepository.findByMemberIdAndStateIsTrue(
-                memberId, getPageable(page, size, sort));
+                member.getId(), targetId, getPageable(page, size, sort));
         return makeChallengesSimpleInfoList(challenges);
     }
 
