@@ -75,13 +75,11 @@ public class MemberResponseDto {
         private MemberInfo memberInfo;
         private String email;
         private int point;
-        private boolean isWallet;
 
         public MyInfo(Member member) {
             this.memberInfo = new MemberInfo(member, true);
             this.email = member.getEmail();
             this.point = member.getPoint();
-            this.isWallet = (member.getWallet() != null);
         }
     }
 }
