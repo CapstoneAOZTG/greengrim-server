@@ -18,11 +18,13 @@ public class GetMemberService {
     private final MemberRepository memberRepository;
 
     public MemberInfo getMemberInfo(Member member, Long memberId) {
+        boolean isMine = true;
         if(memberId != null) {
             member = memberRepository.findByIdAndStatusTrue(memberId)
                     .orElseThrow(() -> new BaseException(MemberErrorCode.EMPTY_MEMBER));
+            isMine = false;
         }
-        return new MemberInfo(member);
+        return new MemberInfo(member, isMine);
     }
     public Optional<Member> findMemberById(Long id) {return memberRepository.findById(id); }
 
