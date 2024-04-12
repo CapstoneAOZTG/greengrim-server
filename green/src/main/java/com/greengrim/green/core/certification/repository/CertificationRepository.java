@@ -58,9 +58,18 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
                                                        @Param("targetId") Long targetId,
                                                        Pageable pageable);
 
-    @Query("SELECT c.id FROM Certification c "
-            + "WHERE c.id NOT IN (SELECT v.certificationId FROM Verification v WHERE v.memberId=:memberId AND v.certificationId=c.id)"
-            + "AND c.validation = 0 AND c.member.id!=:memberId ORDER BY c.verificationCount limit 1")
+    @Query("SELECT c.id "
+            + "FROM Certification c "
+            + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+            + "LEFT JOIN ChallengeHiding ch ON c.id = ch.challengeId AND ch.memberId = :memberId "
+            + "LEFT JOIN CertificationHiding cth ON c.id = cth.certificationId AND cth.memberId = :memberId "
+            + "WHERE c.id NOT IN (SELECT v.certificationId FROM Verification v WHERE v.memberId=:memberId AND v.certificationId=c.id) "
+            + "AND c.validation = 0 "
+            + "AND c.member.id!=:memberId "
+            + "AND mh.hiddenMember IS NULL "
+            + "AND ch.challengeId IS NULL "
+            + "AND cth.certificationId IS NULL "
+            + "ORDER BY c.verificationCount limit 1")
     Optional<Long> findCertificationForVerification(@Param("memberId") Long memberId);
 
 }

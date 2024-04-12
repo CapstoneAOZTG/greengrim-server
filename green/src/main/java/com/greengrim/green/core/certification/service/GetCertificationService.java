@@ -124,6 +124,7 @@ public class GetCertificationService {
      * 조건 1. certification.validation = 0
      * 조건 2. certification.verificationCount 가 작은 순
      * 조건 3. 이미 참여했거나 내 인증은 제외
+     * 조건 4. 차단한 Member, 차단한 Challenge, 차단한 Certification 제외
      */
     public Long findCertificationForVerification(Member member) {
         return certificationRepository.findCertificationForVerification(member.getId())
