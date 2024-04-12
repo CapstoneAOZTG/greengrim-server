@@ -68,7 +68,7 @@ public class GetCertificationService {
     /**
      * 챌린지 월 별 인증 유무를 date 리스트 형식으로 반환
      */
-    public CertificationsByMonth getCertificationsByChallengeMonth(Member member, Long challengeId) {
+    public CertificationsByMonth getCertificationsByChallengeMonth(Long challengeId) {
         List<String> date = certificationRepository.findCertificationsByChallengeMonth(challengeId);
         return new CertificationsByMonth(date);
     }
@@ -92,7 +92,7 @@ public class GetCertificationService {
         List<CertificationsByChallengeDate> certificationsByChallengeDates = new ArrayList<>();
 
         Page<Certification> certifications = certificationRepository.findCertificationsByChallengeDate(
-                date, challengeId, PageRequest.of(page, size));
+                member.getId(), date, challengeId, PageRequest.of(page, size));
 
         certifications.forEach(certification ->
                 certificationsByChallengeDates.add(new CertificationsByChallengeDate(certification)));

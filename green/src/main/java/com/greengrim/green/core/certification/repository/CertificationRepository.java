@@ -30,8 +30,19 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
     @Query("SELECT DISTINCT date_format(c.createdAt, '%Y-%m-%d') FROM Certification c WHERE c.member.id = :memberId ORDER BY c.createdAt")
     List<String> findCertificationsByMemberMonth(@Param("memberId") Long memberId);
 
-    @Query("SELECT c FROM Certification c WHERE date_format(c.createdAt, '%Y-%m-%d') = :date and c.challenge.id = :challengeId ORDER BY c.createdAt")
-    Page<Certification> findCertificationsByChallengeDate(@Param("date") String date, @Param("challengeId") Long challengeId, Pageable pageable);
+    @Query("SELECT c "
+            + "FROM Certification c "
+            + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+            + "LEFT JOIN CertificationHiding ch ON c.id = ch.certificationId AND ch.memberId = :memberId "
+            + "WHERE date_format(c.createdAt, '%Y-%m-%d') = :date "
+            + "AND c.challenge.id = :challengeId "
+            + "AND mh.hiddenMember IS NULL "
+            + "AND ch.certificationId IS NULL "
+            + "ORDER BY c.createdAt")
+    Page<Certification> findCertificationsByChallengeDate(@Param("memberId") Long memberId,
+                                                          @Param("date") String date,
+                                                          @Param("challengeId") Long challengeId,
+                                                          Pageable pageable);
 
     @Query("SELECT c FROM Certification c WHERE date_format(c.createdAt, '%Y-%m-%d') = :date and c.member.id = :memberId ORDER BY c.createdAt")
     Page<Certification> findCertificationsByMemberDate(@Param("date") String date, @Param("memberId") Long memberId, Pageable pageable);
