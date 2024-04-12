@@ -57,14 +57,28 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     /**
      * 핫 챌린지 조회 - 참여 인원이 가장 많은
      */
-    @Query(value = "SELECT c FROM Challenge c WHERE c.status=true ORDER BY c.headCount DESC")
-    Page<Challenge> findHotChallengesByHeadCount(Pageable pageable);
+    @Query(value = "SELECT c "
+            + "FROM Challenge c "
+            + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+            + "LEFT JOIN ChallengeHiding ch ON c.id = ch.challengeId AND ch.memberId = :memberId "
+            + "WHERE c.status = true "
+            + "AND mh.hiddenMember IS NULL "
+            + "AND ch.challengeId IS NULL "
+            + "ORDER BY c.headCount DESC")
+    Page<Challenge> findHotChallengesByHeadCount(@Param("memberId") Long memberId, Pageable pageable);
 
     /**
      * 핫 챌린지 조회 - 가장 최근에 생성된
      */
-    @Query(value = "SELECT c FROM Challenge c WHERE c.status=true ORDER BY c.createdAt DESC")
-    Page<Challenge> findAllAndStatusIsTrueDesc(Pageable pageable);
+    @Query(value = "SELECT c "
+            + "FROM Challenge c "
+            + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+            + "LEFT JOIN ChallengeHiding ch ON c.id = ch.challengeId AND ch.memberId = :memberId "
+            + "WHERE c.status = true "
+            + "AND mh.hiddenMember IS NULL "
+            + "AND ch.challengeId IS NULL "
+            + "ORDER BY c.createdAt DESC")
+    Page<Challenge> findAllAndStatusIsTrueDesc(@Param("memberId") Long memberId, Pageable pageable);
 
     /**
      * 핫 챌린지 조회 - 일주일 내의 인증이 가장 많은
@@ -72,11 +86,18 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     @Query("SELECT c "
             + "FROM Challenge c "
             + "JOIN Certification cert ON c = cert.challenge "
+            + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+            + "LEFT JOIN ChallengeHiding ch ON c.id = ch.challengeId AND ch.memberId = :memberId "
             + "WHERE cert.createdAt >= :weekAgo "
             + "AND cert.status = true "
             + "AND c.status = true "
+            + "AND mh.hiddenMember IS NULL "
+            + "AND ch.challengeId IS NULL "
             + "GROUP BY c "
             + "ORDER BY COUNT(cert) DESC")
-    Page<Challenge> findMostCertifiedChallengesWithinAWeek(@Param("weekAgo")LocalDateTime weekAgo, Pageable pageable);
+    Page<Challenge> findMostCertifiedChallengesWithinAWeek(
+            @Param("memberId") Long memberId,
+            @Param("weekAgo")LocalDateTime weekAgo,
+            Pageable pageable);
 
 }
