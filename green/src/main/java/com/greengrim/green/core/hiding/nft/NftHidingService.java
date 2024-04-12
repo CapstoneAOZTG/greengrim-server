@@ -37,7 +37,7 @@ public class NftHidingService {
 
     private void checkNftValidation(Long nftId) {
         nftRepository.findByIdAndStatusTrue(nftId)
-                .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
+                .orElseThrow(() -> new BaseException(NftErrorCode.INVALID_NFT));
     }
 
     private boolean checkNonExistingHiding(Long memberId, Long nftId) {
