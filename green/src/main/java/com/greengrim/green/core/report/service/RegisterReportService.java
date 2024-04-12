@@ -67,7 +67,7 @@ public class RegisterReportService {
     }
 
     public void reportChallenge(Member member, ReportType type, RegisterReport registerReport) {
-        Challenge reportedChallenge = challengeRepository.findByIdAndStatusTrue(registerReport.getResourceId())
+        Challenge reportedChallenge = challengeRepository.findByIdAndStatusIsTrue(registerReport.getResourceId())
                 .orElseThrow(() -> new BaseException(ChallengeErrorCode.EMPTY_CHALLENGE));
         register(member, ReportType.CHALLENGE, registerReport);
         reportedChallenge.plusReportCount();

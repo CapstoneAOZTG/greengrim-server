@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
-    Optional<Challenge> findByIdAndStatusTrue(@Param("id") Long id);
+    Optional<Challenge> findByIdAndStatusIsTrue(@Param("id") Long id);
 
     @Query(value = "SELECT c FROM Challenge c WHERE c.category=:category AND c.status=true")
     Page<Challenge> findByCategoryAndStateIsTrue(@Param("category") Category category, Pageable pageable);
