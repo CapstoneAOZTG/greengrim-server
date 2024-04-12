@@ -76,11 +76,11 @@ public class GetCertificationService {
     /**
      * 멤버 월 별 인증 유무를 date 리스트 형식으로 반환
      */
-    public CertificationsByMonth getCertificationsByMemberMonth(Long memberId, Member member) {
-        if(memberId == null) {
-            memberId = member.getId();
+    public CertificationsByMonth getCertificationsByMemberMonth(Long targetId, Member member) {
+        if(targetId == null) {
+            targetId = member.getId();
         }
-        List<String> date = certificationRepository.findCertificationsByMemberMonth(memberId);
+        List<String> date = certificationRepository.findCertificationsByMemberMonth(targetId);
         return new CertificationsByMonth(date);
     }
 
@@ -104,14 +104,14 @@ public class GetCertificationService {
      * 멤버 날짜 별 인증 반환
      */
     public PageResponseDto<List<CertificationsByMemberDate>> getCertificationsByMemberDate(
-            Long memberId, Member member, String date, int page, int size) {
-        if(memberId == null) {
-            memberId = member.getId();
+            Long targetId, Member member, String date, int page, int size) {
+        if(targetId == null) {
+            targetId = member.getId();
         }
         List<CertificationsByMemberDate> certificationsByMemberDates = new ArrayList<>();
 
         Page<Certification> certifications = certificationRepository.findCertificationsByMemberDate(
-                date, memberId, PageRequest.of(page, size));
+                member.getId(), date, targetId, PageRequest.of(page, size));
 
         certifications.forEach(certification ->
                 certificationsByMemberDates.add(new CertificationsByMemberDate(certification)));
