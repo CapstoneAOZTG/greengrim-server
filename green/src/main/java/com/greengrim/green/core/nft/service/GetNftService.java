@@ -59,13 +59,12 @@ public class GetNftService implements GetNftUseCase {
 
     /**
      * 멤버 별 NFTS 보기
-     * TODO: @memberId 를 이용해 차단 목록에 있다면 보여주지 않기
      */
-    public PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, Long memberId, int page, int size, SortOption sortOption) {
-        if(memberId == null) {
-            memberId = member.getId();
+    public PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, Long targetId, int page, int size, SortOption sortOption) {
+        if(targetId == null) {
+            targetId = member.getId();
         }
-        Page<Nft> nfts = nftRepository.findMemberNfts(memberId, getPageable(page, size, sortOption));
+        Page<Nft> nfts = nftRepository.findMemberNfts(member.getId(), targetId, getPageable(page, size, sortOption));
         return makeNftsInfoList(nfts);
     }
 
