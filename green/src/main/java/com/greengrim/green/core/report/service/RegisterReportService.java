@@ -9,6 +9,10 @@ import com.greengrim.green.core.certification.Certification;
 import com.greengrim.green.core.certification.repository.CertificationRepository;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.repository.ChallengeRepository;
+import com.greengrim.green.core.hiding.certification.CertificationHidingService;
+import com.greengrim.green.core.hiding.challenge.ChallengeHidingService;
+import com.greengrim.green.core.hiding.member.MemberHidingService;
+import com.greengrim.green.core.hiding.nft.NftHidingService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import com.greengrim.green.core.nft.Nft;
@@ -32,6 +36,11 @@ public class RegisterReportService {
     private final CertificationRepository certificationRepository;
     private final NftRepository nftRepository;
 
+    private final MemberHidingService memberHidingService;
+    private final ChallengeHidingService challengeHidingService;
+    private final CertificationHidingService certificationHidingService;
+    private final NftHidingService nftHidingService;
+
     public void register(Member member, ReportType type, RegisterReport registerReport) {
         Report report = Report.builder()
                 .type(type)
@@ -46,54 +55,58 @@ public class RegisterReportService {
     public void registerReport(Member member, ReportType type, RegisterReport registerReport) {
         switch (type) {
             case MEMBER:
-                reportMember(member, ReportType.MEMBER, registerReport);
+                reportMember(member, registerReport);
             case CHALLENGE:
-                reportChallenge(member, ReportType.CHALLENGE, registerReport);
+                reportChallenge(member, registerReport);
             case CERTIFICATION:
-                reportCertification(member, ReportType.CERTIFICATION, registerReport);
+                reportCertification(member, registerReport);
             case NFT:
-                reportNft(member, ReportType.NFT, registerReport);
+                reportNft(member, registerReport);
         }
     }
 
-    public void reportMember(Member member, ReportType type, RegisterReport registerReport) {
+    public void reportMember(Member member, RegisterReport registerReport) {
         Member reportedMember = memberRepository.findByIdAndStatusTrue(registerReport.getResourceId())
                 .orElseThrow(() -> new BaseException(MemberErrorCode.EMPTY_MEMBER));
         register(member, ReportType.MEMBER, registerReport);
         reportedMember.plusReportCount();
 
-        // TODO: 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
+        // 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
+        memberHidingService.hideMember(member, reportedMember.getId());
         // TODO: 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리 및 이메일 전송
     }
 
-    public void reportChallenge(Member member, ReportType type, RegisterReport registerReport) {
+    public void reportChallenge(Member member, RegisterReport registerReport) {
         Challenge reportedChallenge = challengeRepository.findByIdAndStatusIsTrue(registerReport.getResourceId())
                 .orElseThrow(() -> new BaseException(ChallengeErrorCode.EMPTY_CHALLENGE));
         register(member, ReportType.CHALLENGE, registerReport);
         reportedChallenge.plusReportCount();
 
-        // TODO: 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
+        // 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
+        challengeHidingService.hideChallenge(member, reportedChallenge.getId());
         // TODO: 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리 및 이메일 전송
     }
 
-    public void reportCertification(Member member, ReportType type, RegisterReport registerReport) {
+    public void reportCertification(Member member, RegisterReport registerReport) {
         Certification reportedCertification = certificationRepository.findByIdAndStatusIsTrue(
                         registerReport.getResourceId())
                 .orElseThrow(() -> new BaseException(CertificationErrorCode.EMPTY_CERTIFICATION));
         register(member, ReportType.CERTIFICATION, registerReport);
         reportedCertification.plusReportCount();
 
-        // TODO: 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
+        // 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
+        certificationHidingService.hideCertification(member, reportedCertification.getId());
         // TODO: 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리 및 이메일 전송
     }
 
-    public void reportNft(Member member, ReportType type, RegisterReport registerReport) {
+    public void reportNft(Member member, RegisterReport registerReport) {
         Nft reportedNft = nftRepository.findByIdAndStatusTrue(registerReport.getResourceId())
                 .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
         register(member, ReportType.NFT, registerReport);
         reportedNft.plusReportCount();
 
-        // TODO: 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
+        // 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
+        nftHidingService.hideNft(member, reportedNft.getId());
         // TODO: 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리 및 이메일 전송
     }
 
