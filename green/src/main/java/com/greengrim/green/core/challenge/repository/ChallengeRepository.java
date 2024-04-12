@@ -48,11 +48,19 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     /**
      * Category 입력되지 않으면 전체 챌린지 조회, 입력되면 해당 Category 의 챌린지만 조회
      */
-    @Query("SELECT c FROM Challenge c WHERE( (LOWER(c.title) LIKE LOWER(concat('%', :keyword, '%')))"
+    @Query("SELECT c "
+            + "FROM Challenge c "
+            + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+            + "LEFT JOIN ChallengeHiding ch ON c.id = ch.challengeId AND ch.memberId = :memberId "
+            + "WHERE( (LOWER(c.title) LIKE LOWER(concat('%', :keyword, '%')))"
             + "OR (LOWER(c.description) LIKE LOWER(concat('%', :keyword, '%')))) "
             + "AND c.status = true AND (:category IS NULL OR c.category <> :category) "
+            + "AND mh.hiddenMember IS NULL "
+            + "AND ch.challengeId IS NULL "
             + "ORDER BY c.createdAt DESC")
-    Page<Challenge> searchChallenges(@Param("keyword") String keyword, @Param("category") Category category, Pageable pageable);
+    Page<Challenge> searchChallenges(@Param("memberId") Long memberId,
+                                     @Param("keyword") String keyword,
+                                     @Param("category") Category category, Pageable pageable);
 
     /**
      * 핫 챌린지 조회 - 참여 인원이 가장 많은
