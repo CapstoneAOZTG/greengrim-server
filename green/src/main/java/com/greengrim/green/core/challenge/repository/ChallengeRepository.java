@@ -17,8 +17,15 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     Optional<Challenge> findByIdAndStatusIsTrue(@Param("id") Long id);
 
-    @Query(value = "SELECT c FROM Challenge c WHERE c.category=:category AND c.status=true")
-    Page<Challenge> findByCategoryAndStateIsTrue(@Param("category") Category category, Pageable pageable);
+    @Query(value = "SELECT c " +
+            "FROM Challenge c " +
+            "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId " +
+            "LEFT JOIN ChallengeHiding ch ON c.id = ch.challengeId AND ch.memberId = :memberId " +
+            "WHERE c.category = :category AND c.status = true " +
+            "AND mh.hiddenMember IS NULL " +
+            "AND ch.challengeId IS NULL")
+    Page<Challenge> findByCategoryAndStateIsTrue(
+            @Param("memberId") Long memberId, @Param("category") Category category, Pageable pageable);
 
     /**
      * 내가 만든 챌린지 조회 - 최신순, 오래된 순, 인원 많은 순, 인원 적은 순

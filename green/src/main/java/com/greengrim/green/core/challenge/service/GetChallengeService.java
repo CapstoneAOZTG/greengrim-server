@@ -58,7 +58,7 @@ public class GetChallengeService {
     public PageResponseDto<List<ChallengeSimpleInfo>> getChallengesByCategory(
             Member member, Category category, int page, int size, SortOption sort) {
         Page<Challenge> challenges = challengeRepository.findByCategoryAndStateIsTrue(
-                category, getPageable(page, size, sort));
+                member.getId(), category, getPageable(page, size, sort));
 
         return makeChallengesSimpleInfoList(challenges);
     }
