@@ -26,7 +26,8 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
             + "WHERE n.status = true "
             + "AND n.member IS NOT NULL "
             + "AND mh.hiddenMember IS NULL "
-            + "AND nh.nftId IS NULL")
+            + "AND nh.nftId IS NULL "
+            + "AND n.status = true")
     Page<Nft> findExchangedNfts(@Param("memberId") Long memberId, Pageable pageable);
 
     @Query(value = "SELECT n "
@@ -36,11 +37,10 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
             + "WHERE n.status = true "
             + "AND n.member IS NOT NULL "
             + "AND mh.hiddenMember IS NULL "
-            + "AND n.member.id=:targetId")
+            + "AND n.member.id=:targetId "
+            + "AND n.status = true")
     Page<Nft> findMemberNfts(@Param("memberId") Long memberId,
                              @Param("targetId") Long targetId,
                              Pageable pageable);
-
-
 
 }
