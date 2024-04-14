@@ -22,6 +22,7 @@ import com.greengrim.green.core.chatparticipant.Chatparticipant;
 import com.greengrim.green.core.chatparticipant.ChatparticipantService;
 import com.greengrim.green.core.member.Member;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -187,6 +188,9 @@ public class GetChallengeService {
         Challenge challenge = findByIdWithValidation(id);
         // 현재 내 인증 횟수
         int certificationCount = certificationRepository.countsByMemberAndChallenge(member, challenge);
-        return new ChatroomTopBarInfo(challenge, certificationCount);
+        // 오늘 인증 여부
+        String date = String.valueOf(LocalDate.now());
+        boolean todayCertification = certificationRepository.findByDateAndMemberAndChallenge(date, member, challenge).isPresent();
+        return new ChatroomTopBarInfo(challenge, certificationCount, todayCertification);
     }
 }

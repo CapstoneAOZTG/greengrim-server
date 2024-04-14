@@ -177,12 +177,14 @@ public class ChallengeResponseDto {
         private String ticketCount;
         private String goalCount;
         private int certificationCount;
+        private boolean todayCertification; // 오늘 인증했는지 여부
 
-        public ChatroomTopBarInfo(Challenge challenge, int certificationCount) {
+        public ChatroomTopBarInfo(Challenge challenge, int certificationCount, boolean todayCertification) {
             this.category = challenge.getCategory();
             this.ticketCount = challenge.getTicketCountTag();
             this.goalCount = "인증 " + certificationCount + "/" + challenge.getGoalCount() + "회";
             this.certificationCount = certificationCount;
+            this.todayCertification = todayCertification;
         }
     }
 }
