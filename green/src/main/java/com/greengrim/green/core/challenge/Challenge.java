@@ -97,4 +97,8 @@ public class Challenge extends BaseTime {
     public void plusReportCount() {
         this.reportCount++;
     }
+
+    public void setStatusFalse() {
+        this.status = false;
+    }
 }
