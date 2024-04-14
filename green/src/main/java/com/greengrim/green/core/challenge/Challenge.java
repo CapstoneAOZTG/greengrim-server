@@ -46,7 +46,7 @@ public class Challenge extends BaseTime {
     @NotNull
     private int ticketCurrentCount; // 현재 남은 티켓 개수
     @NotNull
-    @Min(2)
+    @Min(0)
     @Max(6)
     private int weekMinCount;       // 주 최소 인증 횟수
     @NotNull
