@@ -169,4 +169,20 @@ public class ChallengeResponseDto {
             this.title = challenge.getTitle();
         }
     }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class ChatroomTopBarInfo {
+        private Category category;
+        private String ticketCount;
+        private String goalCount;
+        private int certificationCount;
+
+        public ChatroomTopBarInfo(Challenge challenge, int certificationCount) {
+            this.category = challenge.getCategory();
+            this.ticketCount = challenge.getTicketCountTag();
+            this.goalCount = "인증 " + certificationCount + "/" + challenge.getGoalCount() + "회";
+            this.certificationCount = certificationCount;
+        }
+    }
 }
