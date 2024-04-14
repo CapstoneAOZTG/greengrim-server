@@ -68,7 +68,7 @@ public class GetCertificationService {
     /**
      * 챌린지 월 별 인증 유무를 date 리스트 형식으로 반환
      */
-    public CertificationsByMonth getCertificationsByChallengeMonth(Member member, Long challengeId) {
+    public CertificationsByMonth getCertificationsByChallengeMonth(Long challengeId) {
         List<String> date = certificationRepository.findCertificationsByChallengeMonth(challengeId);
         return new CertificationsByMonth(date);
     }
@@ -76,11 +76,11 @@ public class GetCertificationService {
     /**
      * 멤버 월 별 인증 유무를 date 리스트 형식으로 반환
      */
-    public CertificationsByMonth getCertificationsByMemberMonth(Long memberId, Member member) {
-        if(memberId == null) {
-            memberId = member.getId();
+    public CertificationsByMonth getCertificationsByMemberMonth(Long targetId, Member member) {
+        if(targetId == null) {
+            targetId = member.getId();
         }
-        List<String> date = certificationRepository.findCertificationsByMemberMonth(memberId);
+        List<String> date = certificationRepository.findCertificationsByMemberMonth(targetId);
         return new CertificationsByMonth(date);
     }
 
@@ -92,7 +92,7 @@ public class GetCertificationService {
         List<CertificationsByChallengeDate> certificationsByChallengeDates = new ArrayList<>();
 
         Page<Certification> certifications = certificationRepository.findCertificationsByChallengeDate(
-                date, challengeId, PageRequest.of(page, size));
+                member.getId(), date, challengeId, PageRequest.of(page, size));
 
         certifications.forEach(certification ->
                 certificationsByChallengeDates.add(new CertificationsByChallengeDate(certification)));
@@ -104,14 +104,14 @@ public class GetCertificationService {
      * 멤버 날짜 별 인증 반환
      */
     public PageResponseDto<List<CertificationsByMemberDate>> getCertificationsByMemberDate(
-            Long memberId, Member member, String date, int page, int size) {
-        if(memberId == null) {
-            memberId = member.getId();
+            Long targetId, Member member, String date, int page, int size) {
+        if(targetId == null) {
+            targetId = member.getId();
         }
         List<CertificationsByMemberDate> certificationsByMemberDates = new ArrayList<>();
 
         Page<Certification> certifications = certificationRepository.findCertificationsByMemberDate(
-                date, memberId, PageRequest.of(page, size));
+                member.getId(), date, targetId, PageRequest.of(page, size));
 
         certifications.forEach(certification ->
                 certificationsByMemberDates.add(new CertificationsByMemberDate(certification)));
@@ -124,6 +124,7 @@ public class GetCertificationService {
      * 조건 1. certification.validation = 0
      * 조건 2. certification.verificationCount 가 작은 순
      * 조건 3. 이미 참여했거나 내 인증은 제외
+     * 조건 4. 차단한 Member, 차단한 Challenge, 차단한 Certification 제외
      */
     public Long findCertificationForVerification(Member member) {
         return certificationRepository.findCertificationForVerification(member.getId())

@@ -43,10 +43,9 @@ public class GetCertificationController {
     @Operation(summary = "챌린지 별 인증 내역 조회 - MONTH")
     @GetMapping("/certifications/month")
     public ResponseEntity<CertificationsByMonth> getCertificationsByChallengeMonth(
-            @CurrentMember Member member,
             @RequestParam(value = "challengeId") Long challengeId) {
         return ResponseEntity.ok(getCertificationService.getCertificationsByChallengeMonth(
-                member, challengeId));
+                challengeId));
     }
 
     /**

@@ -36,7 +36,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class GetChallengeService {
 
-    private final GetCertificationService getCertificationService;
     private final ChallengeRepository challengeRepository;
     private final ChatparticipantService chatparticipantService;
 
@@ -53,12 +52,11 @@ public class GetChallengeService {
 
     /**
      * 카테고리 별 챌린지 조회
-     * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
      */
     public PageResponseDto<List<ChallengeSimpleInfo>> getChallengesByCategory(
             Member member, Category category, int page, int size, SortOption sort) {
         Page<Challenge> challenges = challengeRepository.findByCategoryAndStateIsTrue(
-                category, getPageable(page, size, sort));
+                member.getId(), category, getPageable(page, size, sort));
 
         return makeChallengesSimpleInfoList(challenges);
     }
@@ -79,13 +77,13 @@ public class GetChallengeService {
      * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
      */
     public PageResponseDto<List<ChallengeSimpleInfo>> getChallengesByMemberId(
-            Long memberId, Member member, int page, int size, SortOption sort) {
+            Long targetId, Member member, int page, int size, SortOption sort) {
         // 만약 조회할 memberId가 넘어오지 않았다면 자신의 것 조회!
-        if(memberId == null) {
-            memberId = member.getId();
+        if(targetId == null) {
+            targetId = member.getId();
         }
         Page<Challenge> challenges = challengeRepository.findByMemberIdAndStateIsTrue(
-                memberId, getPageable(page, size, sort));
+                member.getId(), targetId, getPageable(page, size, sort));
         return makeChallengesSimpleInfoList(challenges);
     }
 
@@ -100,24 +98,25 @@ public class GetChallengeService {
 
     /**
      * 홈 화면 핫 챌린지 조회
-     * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
      */
     public HomeChallenges getHotChallenges(Member member) {
         Pageable pageable = PageRequest.of(0, 1);
         Page<Challenge> challenges;
         List<ChallengeInfo> challengeInfoList = new ArrayList<>();
         // 1번 최근에 신설된
-        challenges = challengeRepository.findAllAndStatusIsTrueDesc(pageable);
+        challenges = challengeRepository.findAllAndStatusIsTrueDesc(member.getId(), pageable);
         challenges.forEach(challenge -> challengeInfoList.add(
                 new ChallengeInfo(challenge,
                         calculateTime(challenge.getCreatedAt(), 3) + HotChallengeOption.MOST_RECENT.getSubTitle())));
         // 2번 참여 인원이 가장 많은
-        challenges = challengeRepository.findHotChallengesByHeadCount(pageable);
+        challenges = challengeRepository.findHotChallengesByHeadCount(member.getId(), pageable);
         challenges.forEach(challenge -> challengeInfoList.add(
                 new ChallengeInfo(challenge,
                         challenge.getHeadCount() + HotChallengeOption.MOST_HEADCOUNT.getSubTitle())));
         //3번 일주일 내 인증이 가장 많은
-        challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(LocalDateTime.now().minusWeeks(1),
+        challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(
+                member.getId(),
+                LocalDateTime.now().minusWeeks(1),
                 pageable);
         challenges.forEach(challenge -> challengeInfoList.add(
                 new ChallengeInfo(challenge, HotChallengeOption.MOST_CERTIFICATION.getSubTitle())));
@@ -126,17 +125,16 @@ public class GetChallengeService {
 
     /**
      * 핫 챌린지 더보기
-     * TODO: @param member 를 이용해 차단 목록에 있다면 보여주지 않기
      */
     public PageResponseDto<List<ChallengeSimpleInfo>> getMoreHotChallenges(Member member, HotChallengeOption option,
                                                                            int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Challenge> challenges = null;
         switch (option) {
-            case MOST_RECENT -> challenges = challengeRepository.findAllAndStatusIsTrueDesc(pageable);
+            case MOST_RECENT -> challenges = challengeRepository.findAllAndStatusIsTrueDesc(member.getId(), pageable);
             case MOST_CERTIFICATION -> challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(
-                    LocalDateTime.now().minusWeeks(1), pageable);
-            case MOST_HEADCOUNT -> challenges = challengeRepository.findHotChallengesByHeadCount(pageable);
+                    member.getId(), LocalDateTime.now().minusWeeks(1), pageable);
+            case MOST_HEADCOUNT -> challenges = challengeRepository.findHotChallengesByHeadCount(member.getId(), pageable);
         }
         return makeChallengesSimpleInfoList(challenges);
     }
@@ -147,15 +145,6 @@ public class GetChallengeService {
                 challengeSimpleInfoList.add(new ChallengeSimpleInfo(challenge)));
 
         return new PageResponseDto<>(challenges.getNumber(), challenges.hasNext(), challengeSimpleInfoList);
-    }
-
-    // makeChallengesSimpleInfoList 함수 Template 적용 버전
-    // 사용 예시: makeChallengesList(challenges, HotChallengeInfo::new);
-    private <T> PageResponseDto<List<T>> makeChallengesList(Page<Challenge> challenges, Function<Challenge, T> mapper) {
-        List<T> challengeList = new ArrayList<>();
-        challenges.forEach(challenge -> challengeList.add(mapper.apply(challenge)));
-
-        return new PageResponseDto<>(challenges.getNumber(), challenges.hasNext(), challengeList);
     }
 
     /**
@@ -182,12 +171,11 @@ public class GetChallengeService {
 
     /**
      * 키워드로 챌린지 검색하기
-     * TODO: 차단 구현 후 member 이용해서 차단한 리소스 걸러내기
      */
     public PageResponseDto<List<ChallengeSimpleInfo>> searchChallenges(
             Member member, Category category, int page, int size, String keyword) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Challenge> challenges = challengeRepository.searchChallenges(keyword, category, pageable);
+        Page<Challenge> challenges = challengeRepository.searchChallenges(member.getId(), keyword, category, pageable);
         return makeChallengesSimpleInfoList(challenges);
     }
 }

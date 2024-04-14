@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,13 +21,15 @@ public class GetMemberController {
     private final GetMemberService getMemberService;
 
     /**
-     * [GET] 내 프로필 조회
+     * [GET] 프로필 조회
      */
-    @Operation(summary = "내 프로필 조회")
+    @Operation(summary = "프로필 조회",
+            description = "자신의 것을 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
     @GetMapping("/visitor/profile")
     public ResponseEntity<MemberInfo> getCurrentMemberInfo(
-            @CurrentMember Member member) {
-        return new ResponseEntity<>(getMemberService.getMemberInfo(member),
+            @CurrentMember Member member,
+            @RequestParam(value = "memberId", required = false) Long memberId) {
+        return new ResponseEntity<>(getMemberService.getMemberInfo(member, memberId),
                 HttpStatus.OK);
     }
 

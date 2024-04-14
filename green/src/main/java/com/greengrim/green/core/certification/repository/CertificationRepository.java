@@ -27,18 +27,49 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
     @Query("SELECT DISTINCT date_format(c.createdAt, '%Y-%m-%d') FROM Certification c WHERE c.challenge.id = :challengeId ORDER BY c.createdAt")
     List<String> findCertificationsByChallengeMonth(@Param("challengeId") Long challengeId);
 
-    @Query("SELECT DISTINCT date_format(c.createdAt, '%Y-%m-%d') FROM Certification c WHERE c.member.id = :memberId ORDER BY c.createdAt")
-    List<String> findCertificationsByMemberMonth(@Param("memberId") Long memberId);
+    @Query("SELECT DISTINCT date_format(c.createdAt, '%Y-%m-%d') FROM Certification c WHERE c.member.id = :targetId ORDER BY c.createdAt")
+    List<String> findCertificationsByMemberMonth(@Param("targetId") Long targetId);
 
-    @Query("SELECT c FROM Certification c WHERE date_format(c.createdAt, '%Y-%m-%d') = :date and c.challenge.id = :challengeId ORDER BY c.createdAt")
-    Page<Certification> findCertificationsByChallengeDate(@Param("date") String date, @Param("challengeId") Long challengeId, Pageable pageable);
+    @Query("SELECT c "
+            + "FROM Certification c "
+            + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+            + "LEFT JOIN CertificationHiding ch ON c.id = ch.certificationId AND ch.memberId = :memberId "
+            + "WHERE date_format(c.createdAt, '%Y-%m-%d') = :date "
+            + "AND c.challenge.id = :challengeId "
+            + "AND mh.hiddenMember IS NULL "
+            + "AND ch.certificationId IS NULL "
+            + "ORDER BY c.createdAt")
+    Page<Certification> findCertificationsByChallengeDate(@Param("memberId") Long memberId,
+                                                          @Param("date") String date,
+                                                          @Param("challengeId") Long challengeId,
+                                                          Pageable pageable);
 
-    @Query("SELECT c FROM Certification c WHERE date_format(c.createdAt, '%Y-%m-%d') = :date and c.member.id = :memberId ORDER BY c.createdAt")
-    Page<Certification> findCertificationsByMemberDate(@Param("date") String date, @Param("memberId") Long memberId, Pageable pageable);
+    @Query("SELECT c "
+            + "FROM Certification c "
+            + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+            + "LEFT JOIN CertificationHiding ch ON c.id = ch.certificationId AND ch.memberId = :memberId "
+            + "WHERE date_format(c.createdAt, '%Y-%m-%d') = :date "
+            + "AND c.member.id = :targetId "
+            + "AND mh.hiddenMember IS NULL "
+            + "AND ch.certificationId IS NULL "
+            + "ORDER BY c.createdAt")
+    Page<Certification> findCertificationsByMemberDate(@Param("memberId") Long memberId,
+                                                       @Param("date") String date,
+                                                       @Param("targetId") Long targetId,
+                                                       Pageable pageable);
 
-    @Query("SELECT c.id FROM Certification c "
-            + "WHERE c.id NOT IN (SELECT v.certificationId FROM Verification v WHERE v.memberId=:memberId AND v.certificationId=c.id)"
-            + "AND c.validation = 0 AND c.member.id!=:memberId ORDER BY c.verificationCount limit 1")
+    @Query("SELECT c.id "
+            + "FROM Certification c "
+            + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+            + "LEFT JOIN ChallengeHiding ch ON c.challenge.id = ch.challengeId AND ch.memberId = :memberId "
+            + "LEFT JOIN CertificationHiding cth ON c.id = cth.certificationId AND cth.memberId = :memberId "
+            + "WHERE c.id NOT IN (SELECT v.certificationId FROM Verification v WHERE v.memberId=:memberId AND v.certificationId=c.id) "
+            + "AND c.validation = 0 "
+            + "AND c.member.id!=:memberId "
+            + "AND mh.hiddenMember IS NULL "
+            + "AND ch.challengeId IS NULL "
+            + "AND cth.certificationId IS NULL "
+            + "ORDER BY c.verificationCount limit 1")
     Optional<Long> findCertificationForVerification(@Param("memberId") Long memberId);
 
 }

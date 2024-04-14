@@ -18,7 +18,5 @@ public class CertificationRequestDto {
         private String imgUrl;
         @Size(max = 200, message = "설명은 200자 이내여야합니다.")
         private String description;
-        @NotNull(message = "인증 회차를 입력해주세요.")
-        private int round;
     }
 }

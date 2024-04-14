@@ -32,10 +32,11 @@ public class RegisterCertificationService {
         Challenge challenge = getChallengeService.findByIdWithValidation(
                 registerCertification.getChallengeId());
 
+        int round = certificationRepository.countsByMemberAndChallenge(member, challenge) + 1;
         Certification certification = Certification.builder()
                 .imgUrl(registerCertification.getImgUrl())
                 .description(registerCertification.getDescription())
-                .round(registerCertification.getRound())
+                .round(round)
                 .validation(0)          // 상호 인증 성공 여부, 0=진행중
                 .verificationCount(10)  // 남은 상호 인증 횟수
                 .member(member)
