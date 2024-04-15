@@ -40,6 +40,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         else if(token != null) {
             jwtTokenProvider.validateAccessToken(token); // 유효성 검사
             authentication = jwtTokenProvider.getAccessAuthentication(token); // authentication 세팅
+            // 로그아웃 요청
+            if(((HttpServletRequest) request).getRequestURI().equals("/visitor/logout")) {
+                jwtTokenProvider.setBlackList(token);
+            }
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);

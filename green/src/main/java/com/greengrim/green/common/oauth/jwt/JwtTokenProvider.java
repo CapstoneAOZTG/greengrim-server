@@ -4,6 +4,7 @@ import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.AuthErrorCode;
 import com.greengrim.green.common.oauth.auth.PrincipalDetails;
 import com.greengrim.green.common.oauth.auth.PrincipalDetailsService;
+import com.greengrim.green.common.oauth.blacklist.BlackListRedisRepository;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -33,6 +34,8 @@ public class JwtTokenProvider {
     private String refreshSecretKey;
 
     private final PrincipalDetailsService principalDetailsService;
+
+    private final BlackListRedisRepository blackListRedisRepository;
     private static final String AUTHORIZATION_HEADER = "Authorization"; // 액세스 토큰 헤더 key name
     private static final String REFRESH_HEADER = "refreshToken";  // 리프레시 토큰 헤더 key name
     private static final long TOKEN_VALID_TIME = 1000 * 60L * 60L * 24L;  // 유효기간 24시간
@@ -143,6 +146,9 @@ public class JwtTokenProvider {
     public void validateToken(String key, String token) {
         try {
             Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            if(blackListRedisRepository.existsById(token)) {
+                throw new BaseException(AuthErrorCode.LOGOUT_JWT);
+            }
         } catch (SecurityException | MalformedJwtException e) {
             throw new BaseException(AuthErrorCode.INVALID_JWT);
         } catch (ExpiredJwtException e) {
@@ -187,5 +193,24 @@ public class JwtTokenProvider {
     public String resolveRefreshToken(HttpServletRequest request) {
         return request.getHeader(REFRESH_HEADER);
     }
+
+    /**
+     * 해당 token의 남은 시간을 유효 시간으로, 블랙리스트에 토큰 저장
+     */
+    public void setBlackList(String token) {
+        Long expiration = getExpiration(token);
+        blackListRedisRepository.save(token, expiration);
+    }
+
+    public Long getExpiration(String token) {
+        Date expiredDate = extractClaims(token, jwtSecretKey).getExpiration();
+        long now = new Date().getTime();
+        return (expiredDate.getTime() - now);
+    }
+
+    private Claims extractClaims(String token, String secretKey) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+    }
+
 
 }

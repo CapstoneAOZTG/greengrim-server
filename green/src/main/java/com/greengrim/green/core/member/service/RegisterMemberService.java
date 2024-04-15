@@ -79,4 +79,9 @@ public class RegisterMemberService {
         return new MemberResponseDto.CheckNickNameRes(
                 memberRepository.existsByNickName(checkNickNameReq.getNickName()));
     }
+
+    public void logout(Member member) {
+        member.changeRefreshToken("");
+        save(member);
+    }
 }
