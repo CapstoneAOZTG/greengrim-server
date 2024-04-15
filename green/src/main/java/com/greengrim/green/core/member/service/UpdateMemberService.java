@@ -25,6 +25,11 @@ public class UpdateMemberService  {
     public MemberResponseDto.TokenInfo refreshAccessToken(Member member) {
         MemberResponseDto.TokenInfo newTokenInfo
                 = jwtTokenProvider.generateToken(member.getId());
+
+        // DB refreshToken 변경
+        member.changeRefreshToken(newTokenInfo.getRefreshToken());
+        memberRepository.save(member);
+
         return new MemberResponseDto.TokenInfo(
                 newTokenInfo.getAccessToken(), newTokenInfo.getRefreshToken(), member.getId());
     }
