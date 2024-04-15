@@ -41,12 +41,14 @@ public class CertificationResponseDto {
         private Long certId;
         private String certImg;
         private String date;
+        private boolean successChallenge;
 
-        public registerCertificationResponse(Certification certification) {
+        public registerCertificationResponse(Certification certification, boolean successChallenge) {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.KOREAN);
             this.certId = certification.getId();
             this.certImg = certification.getImgUrl();
             this.date = LocalDateTime.now().format(dateFormatter);
+            this.successChallenge = successChallenge;
         }
     }
 

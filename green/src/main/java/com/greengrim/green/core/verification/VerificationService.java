@@ -26,7 +26,7 @@ public class VerificationService {
     private final HistoryService historyService;
 
     private final static int VERIFICATION_POINT = 10;
-    private final static String VERIFICATION_HISTORY_TITLE = "출석 체크 보상";
+    private final static String VERIFICATION_HISTORY_TITLE = "출석 체크";
 
     public void register(Member member, RegisterVerification registerVerification) {
         Certification certification = certificationRepository.findById(registerVerification.getCertificationId())
