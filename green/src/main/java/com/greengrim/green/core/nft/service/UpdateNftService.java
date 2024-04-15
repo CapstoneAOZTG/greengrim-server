@@ -23,7 +23,7 @@ public class UpdateNftService {
             .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
         checkIsMine(member.getId(), nft.getMember().getId());
 
-        nft.delete();
+        nft.setStatusFalse();
     }
 
     private void checkIsMine(Long viewerId, Long ownerId) {

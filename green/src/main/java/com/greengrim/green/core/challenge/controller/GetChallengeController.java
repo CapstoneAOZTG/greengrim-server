@@ -7,6 +7,7 @@ import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.HotChallengeOption;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
+import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChatroomTopBarInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HomeChallenges;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.MyChatroom;
 import com.greengrim.green.core.challenge.service.GetChallengeService;
@@ -115,6 +116,17 @@ public class GetChallengeController {
     @GetMapping("/visitor/challenges/chatrooms")
     public ResponseEntity<List<MyChatroom>> getMyChatrooms(@CurrentMember Member member) {
         return ResponseEntity.ok(getChallengeService.getMyChatrooms(member));
+    }
+
+    /**
+     * [GET] 채팅방 상단 챌린지 정보 조회
+     */
+    @Operation(summary = "채팅방 상단 챌린지 정보 조회")
+    @GetMapping("/visitor/challenges/{id}")
+    public ResponseEntity<ChatroomTopBarInfo> getChatroomTopBarInfo(
+            @CurrentMember Member member,
+            @PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok(getChallengeService.getChatroomTopBarInfo(member, id));
     }
 
 }

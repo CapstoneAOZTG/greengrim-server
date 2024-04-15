@@ -7,13 +7,14 @@ import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.ChallengeErrorCode;
-import com.greengrim.green.core.certification.service.GetCertificationService;
+import com.greengrim.green.core.certification.repository.CertificationRepository;
 import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.HotChallengeOption;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
+import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChatroomTopBarInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HomeChallenges;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.MyChatroom;
 import com.greengrim.green.core.challenge.repository.ChallengeRepository;
@@ -21,11 +22,11 @@ import com.greengrim.green.core.chatparticipant.Chatparticipant;
 import com.greengrim.green.core.chatparticipant.ChatparticipantService;
 import com.greengrim.green.core.member.Member;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +39,7 @@ public class GetChallengeService {
 
     private final ChallengeRepository challengeRepository;
     private final ChatparticipantService chatparticipantService;
+    private final CertificationRepository certificationRepository;
 
     /**
      * 챌린지 상세 조회
@@ -177,5 +179,18 @@ public class GetChallengeService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Challenge> challenges = challengeRepository.searchChallenges(member.getId(), keyword, category, pageable);
         return makeChallengesSimpleInfoList(challenges);
+    }
+
+    /**
+     * 채팅방 상단 챌린지 정보 조회하기
+     */
+    public ChatroomTopBarInfo getChatroomTopBarInfo(Member member, Long id) {
+        Challenge challenge = findByIdWithValidation(id);
+        // 현재 내 인증 횟수
+        int certificationCount = certificationRepository.countsByMemberAndChallenge(member, challenge);
+        // 오늘 인증 여부
+        String date = String.valueOf(LocalDate.now());
+        boolean todayCertification = certificationRepository.findByDateAndMemberAndChallenge(date, member, challenge).isPresent();
+        return new ChatroomTopBarInfo(challenge, certificationCount, todayCertification);
     }
 }

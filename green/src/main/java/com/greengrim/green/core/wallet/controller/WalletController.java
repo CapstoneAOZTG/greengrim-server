@@ -3,7 +3,6 @@ package com.greengrim.green.core.wallet.controller;
 import com.greengrim.green.common.auth.CurrentMember;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.wallet.dto.WalletRequestDto.WalletRequest;
-import com.greengrim.green.core.wallet.dto.WalletResponseDto.ExistsWalletInfo;
 import com.greengrim.green.core.wallet.dto.WalletResponseDto.WalletDetailInfo;
 import com.greengrim.green.core.wallet.service.WalletService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,17 +47,8 @@ public class WalletController {
      * [GET] 지갑 정보 가져오기
      */
     @Operation(summary = "지갑 정보 가져오기")
-    @GetMapping("/member/wallets")
+    @GetMapping("/visitor/wallets")
     public ResponseEntity<WalletDetailInfo> getWalletDetail(@CurrentMember Member member){
         return new ResponseEntity<>(walletService.getWalletDetail(member), HttpStatus.OK);
-    }
-
-    /**
-     * [GET] 지갑 존재 여부 가져오기
-     */
-    @Operation(summary = "지갑 존재 여부 가져오기")
-    @GetMapping("/visitor/wallets")
-    public ResponseEntity<ExistsWalletInfo> existsWallet(@CurrentMember Member member) {
-        return new ResponseEntity<>(walletService.existsWallet(member), HttpStatus.OK);
     }
 }
