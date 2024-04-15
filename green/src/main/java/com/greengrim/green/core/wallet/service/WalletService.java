@@ -48,6 +48,7 @@ public class WalletService {
      */
     public void modifyWallet(Member member, WalletRequest walletRequest) {
         member.getWallet().changeWallet(walletRequest.getName(), walletRequest.getAddress());
+        registerMemberService.save(member);
     }
 
     /**
