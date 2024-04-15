@@ -8,6 +8,8 @@ import com.greengrim.green.core.certification.repository.CertificationRepository
 import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.service.GetChallengeService;
+import com.greengrim.green.core.history.HistoryOption;
+import com.greengrim.green.core.history.HistoryService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class RegisterCertificationService {
 
     private final GetChallengeService getChallengeService;
-
+    private final HistoryService historyService;
     private final FcmService fcmService;
     private final MemberRepository memberRepository;
     private final CertificationRepository certificationRepository;
@@ -62,9 +64,12 @@ public class RegisterCertificationService {
      * 인증 성공, 포인트와 탄소 저감량 제공
      */
     public void successCertification(Member member, Challenge challenge) {
-        member.plusPoint(challenge.getCategory().getPoint());   // 포인트 추가
+        int point = challenge.getCategory().getPoint();
+        member.plusPoint(point);   // 포인트 추가
         member.setCarbonReduction(challenge.getCategory().getCarbonReduction());   // 탄소 저감량 추가
         memberRepository.save(member);
+        historyService.save(member.getId(), challenge.getId(), challenge.getTitle(),
+                challenge.getImgUrl(), HistoryOption.CERTIFICATION, point, member.getPoint());
     }
 
 }
