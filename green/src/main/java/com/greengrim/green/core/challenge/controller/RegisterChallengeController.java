@@ -1,6 +1,6 @@
 package com.greengrim.green.core.challenge.controller;
 
-import com.greengrim.green.common.auth.CurrentMember;
+import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.dto.ChallengeRequestDto.RegisterChallenge;

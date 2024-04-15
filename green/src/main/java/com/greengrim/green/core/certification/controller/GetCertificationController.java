@@ -1,6 +1,6 @@
 package com.greengrim.green.core.certification.controller;
 
-import com.greengrim.green.common.auth.CurrentMember;
+import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.certification.dto.CertificationResponseDto.CertificationDetailInfo;
 import com.greengrim.green.core.certification.dto.CertificationResponseDto.CertificationsByChallengeDate;

@@ -1,6 +1,6 @@
 package com.greengrim.green.core.verification;
 
-import com.greengrim.green.common.auth.CurrentMember;
+import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.verification.dto.VerificationRequestDto;
 import io.swagger.v3.oas.annotations.Operation;

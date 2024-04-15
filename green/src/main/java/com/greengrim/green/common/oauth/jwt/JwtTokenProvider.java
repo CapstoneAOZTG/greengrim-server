@@ -1,23 +1,27 @@
-package com.greengrim.green.common.jwt;
+package com.greengrim.green.common.oauth.jwt;
 
-import com.greengrim.green.common.auth.PrincipalDetails;
-import com.greengrim.green.common.auth.PrincipalDetailsService;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.AuthErrorCode;
+import com.greengrim.green.common.oauth.auth.PrincipalDetails;
+import com.greengrim.green.common.oauth.auth.PrincipalDetailsService;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
-import com.greengrim.green.core.member.repository.MemberRepository;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Base64;
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.Base64;
-import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
@@ -33,7 +37,6 @@ public class JwtTokenProvider {
     private static final String REFRESH_HEADER = "refreshToken";  // 리프레시 토큰 헤더 key name
     private static final long TOKEN_VALID_TIME = 1000 * 60L * 60L * 24L;  // 유효기간 24시간
     private static final long REF_TOKEN_VALID_TIME = 1000 * 60L * 60L * 24L * 60L;  // 유효기간 2달
-    private final MemberRepository memberRepository;
 
     /**
      * 의존성 주입 후 (호출 없어도) 오직 1번만 초기화 수행
@@ -121,15 +124,15 @@ public class JwtTokenProvider {
     /**
      * AccessToken 을 검증하는 함수
      */
-    public boolean validateAccessToken(String token) {
-        return validateToken(jwtSecretKey, token);
+    public void validateAccessToken(String token) {
+        validateToken(jwtSecretKey, token);
     }
 
     /**
      * RefreshToken 을 검증하는 함수
      */
-    public boolean validateRefreshToken(String token) {
-        return validateToken(refreshSecretKey, token);
+    public void validateRefreshToken(String token) {
+        validateToken(refreshSecretKey, token);
     }
 
     /**
@@ -137,10 +140,9 @@ public class JwtTokenProvider {
      * @param key jwtSecretKey, refreshSecretKey 둘 중 하나
      * @param token accessToken, refreshToken 둘 중 하나
      */
-    public boolean validateToken(String key, String token) {
+    public void validateToken(String key, String token) {
         try {
             Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-            return true;
         } catch (SecurityException | MalformedJwtException e) {
             throw new BaseException(AuthErrorCode.INVALID_JWT);
         } catch (ExpiredJwtException e) {

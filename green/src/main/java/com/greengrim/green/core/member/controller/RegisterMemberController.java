@@ -53,4 +53,5 @@ public class RegisterMemberController {
         return new ResponseEntity<>(registerMemberService.checkNickName(checkNickNameReq),
                 HttpStatus.OK);
     }
+
 }

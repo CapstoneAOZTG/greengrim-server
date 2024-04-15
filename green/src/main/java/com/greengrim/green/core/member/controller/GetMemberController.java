@@ -1,6 +1,6 @@
 package com.greengrim.green.core.member.controller;
 
-import com.greengrim.green.common.auth.CurrentMember;
+import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.dto.MemberResponseDto.HomeInfo;
 import com.greengrim.green.core.member.dto.MemberResponseDto.MemberInfo;
