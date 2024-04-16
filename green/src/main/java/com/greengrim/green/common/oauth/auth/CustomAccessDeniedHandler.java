@@ -1,4 +1,4 @@
-package com.greengrim.green.common.auth;
+package com.greengrim.green.common.oauth.auth;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

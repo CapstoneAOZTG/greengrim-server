@@ -5,6 +5,8 @@ import com.greengrim.green.common.exception.errorCode.CertificationErrorCode;
 import com.greengrim.green.common.exception.errorCode.VerificationErrorCode;
 import com.greengrim.green.core.certification.Certification;
 import com.greengrim.green.core.certification.repository.CertificationRepository;
+import com.greengrim.green.core.history.HistoryOption;
+import com.greengrim.green.core.history.HistoryService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import com.greengrim.green.core.verification.dto.VerificationRequestDto.RegisterVerification;
@@ -21,6 +23,10 @@ public class VerificationService {
     private final CertificationRepository certificationRepository;
     private final VerificationRepository verificationRepository;
     private final MemberRepository memberRepository;
+    private final HistoryService historyService;
+
+    private final static int VERIFICATION_POINT = 10;
+    private final static String VERIFICATION_HISTORY_TITLE = "출석 체크";
 
     public void register(Member member, RegisterVerification registerVerification) {
         Certification certification = certificationRepository.findById(registerVerification.getCertificationId())
@@ -36,6 +42,12 @@ public class VerificationService {
                 .response(registerVerification.isResponse())
                 .build();
         verificationRepository.save(verification);
+
+        // 출석체크 보상 주기
+        member.plusPoint(VERIFICATION_POINT);
+        memberRepository.save(member);
+        historyService.save(member.getId(), certification.getId(), VERIFICATION_HISTORY_TITLE,
+                certification.getImgUrl(), HistoryOption.VERIFICATION, VERIFICATION_POINT, member.getPoint());
 
         // 상호 검증 처리하기
         verifyCertification(certification);

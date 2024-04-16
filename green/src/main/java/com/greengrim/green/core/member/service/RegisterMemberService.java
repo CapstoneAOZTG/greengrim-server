@@ -2,7 +2,7 @@ package com.greengrim.green.core.member.service;
 
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.MemberErrorCode;
-import com.greengrim.green.common.jwt.JwtTokenProvider;
+import com.greengrim.green.common.oauth.jwt.JwtTokenProvider;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.Role;
 import com.greengrim.green.core.member.dto.MemberRequestDto;
@@ -78,5 +78,10 @@ public class RegisterMemberService {
     public MemberResponseDto.CheckNickNameRes checkNickName(MemberRequestDto.CheckNickNameReq checkNickNameReq) {
         return new MemberResponseDto.CheckNickNameRes(
                 memberRepository.existsByNickName(checkNickNameReq.getNickName()));
+    }
+
+    public void logout(Member member) {
+        member.changeRefreshToken("");
+        save(member);
     }
 }

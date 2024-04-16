@@ -1,5 +1,7 @@
 package com.greengrim.green.core.member.controller;
 
+import com.greengrim.green.common.oauth.auth.CurrentMember;
+import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.dto.MemberRequestDto;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
 import com.greengrim.green.core.member.service.RegisterMemberService;
@@ -53,4 +55,17 @@ public class RegisterMemberController {
         return new ResponseEntity<>(registerMemberService.checkNickName(checkNickNameReq),
                 HttpStatus.OK);
     }
+
+    /**
+     * [POST] 로그아웃
+     * /visitor/logout
+     */
+    @Operation(summary = "로그아웃")
+    @PostMapping("/visitor/logout")
+    public ResponseEntity<Integer> logout(
+            @CurrentMember Member member) {
+        registerMemberService.logout(member);
+        return new ResponseEntity<>(200, HttpStatus.OK);
+    }
+
 }

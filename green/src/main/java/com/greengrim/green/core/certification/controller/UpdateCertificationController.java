@@ -1,6 +1,6 @@
 package com.greengrim.green.core.certification.controller;
 
-import com.greengrim.green.common.auth.CurrentMember;
+import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.certification.service.UpdateCertificationService;
 import com.greengrim.green.core.member.Member;
 import io.swagger.v3.oas.annotations.Operation;

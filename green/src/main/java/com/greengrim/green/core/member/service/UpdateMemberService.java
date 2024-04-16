@@ -1,7 +1,7 @@
 package com.greengrim.green.core.member.service;
 
 import com.greengrim.green.common.fcm.FcmService;
-import com.greengrim.green.common.jwt.JwtTokenProvider;
+import com.greengrim.green.common.oauth.jwt.JwtTokenProvider;
 import com.greengrim.green.common.s3.S3Service;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.dto.MemberRequestDto.ModifyProfile;
@@ -25,8 +25,13 @@ public class UpdateMemberService  {
     public MemberResponseDto.TokenInfo refreshAccessToken(Member member) {
         MemberResponseDto.TokenInfo newTokenInfo
                 = jwtTokenProvider.generateToken(member.getId());
+
+        // DB refreshToken 변경
+        member.changeRefreshToken(newTokenInfo.getRefreshToken());
+        memberRepository.save(member);
+
         return new MemberResponseDto.TokenInfo(
-                newTokenInfo.getAccessToken(), member.getRefreshToken(), member.getId());
+                newTokenInfo.getAccessToken(), newTokenInfo.getRefreshToken(), member.getId());
     }
 
     public void modifyProfile(Member member, ModifyProfile modifyProfile) {

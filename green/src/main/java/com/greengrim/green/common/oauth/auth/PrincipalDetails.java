@@ -1,4 +1,4 @@
-package com.greengrim.green.common.auth;
+package com.greengrim.green.common.oauth.auth;
 
 import com.greengrim.green.core.member.Member;
 import lombok.Getter;
