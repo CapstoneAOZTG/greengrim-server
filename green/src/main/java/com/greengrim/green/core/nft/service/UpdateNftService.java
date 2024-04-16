@@ -32,6 +32,7 @@ public class UpdateNftService implements UpdateNftUseCase {
         checkIsMine(member.getId(), nft.getMember().getId());
 
         nft.setStatusFalse();
+        nftRepository.save(nft);
     }
 
     /**
@@ -45,6 +46,8 @@ public class UpdateNftService implements UpdateNftUseCase {
         checkIsMine(member.getId(), nft.getMember().getId());
 
         nft.modify(modifyInfo);
+        nftRepository.save(nft);
+
         return new NftDetailInfo(nft, true, traits);
     }
 
