@@ -157,13 +157,13 @@ public class ChallengeResponseDto {
 
     @Getter
     @RequiredArgsConstructor
-    public static class EnterChallengeResponse {
+    public static class EnterChallengeInfo {
 
         private Long challengeId;
         private Long chatroomId;
         private String title;
 
-        public EnterChallengeResponse(Challenge challenge) {
+        public EnterChallengeInfo(Challenge challenge) {
             this.challengeId = challenge.getId();
             this.chatroomId = challenge.getChatroom().getId();
             this.title = challenge.getTitle();

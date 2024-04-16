@@ -1,7 +1,7 @@
 package com.greengrim.green.core.challenge.controller;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeResponse;
+import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeInfo;
 import com.greengrim.green.core.challenge.service.EnterChallengeService;
 import com.greengrim.green.core.member.Member;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +24,7 @@ public class EnterChallengeController {
    */
   @Operation(summary = "챌린지 참가 - 채팅방 입장")
   @PostMapping("/enter")
-  public ResponseEntity<EnterChallengeResponse> enterChallenge(@CurrentMember Member member, @RequestParam Long id) {
+  public ResponseEntity<EnterChallengeInfo> enterChallenge(@CurrentMember Member member, @RequestParam Long id) {
     return ResponseEntity.ok(enterChallengeService.enterChallenge(member, id));
   }
 
