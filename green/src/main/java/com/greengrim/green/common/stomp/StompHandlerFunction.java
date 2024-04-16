@@ -1,6 +1,6 @@
 package com.greengrim.green.common.stomp;
 
-import com.greengrim.green.common.jwt.JwtTokenProvider;
+import com.greengrim.green.common.oauth.jwt.JwtTokenProvider;
 import com.greengrim.green.core.chat.service.ChatService;
 import com.greengrim.green.core.chatroom.service.ChatroomRedisService;
 import java.util.Optional;

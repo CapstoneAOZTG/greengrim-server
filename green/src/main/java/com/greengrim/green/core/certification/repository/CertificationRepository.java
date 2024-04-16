@@ -19,8 +19,19 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
 
     Optional<Certification> findByIdAndStatusIsTrue(@Param("id") Long id);
 
-    @Query("SELECT COUNT(c) FROM Certification c WHERE c.member= :member AND c.challenge= :challenge")
+    @Query("SELECT COUNT(c) FROM Certification c WHERE c.member= :member AND c.challenge= :challenge AND c.status=true")
     int countsByMemberAndChallenge(
+            @Param("member") Member member,
+            @Param("challenge") Challenge challenge);
+
+    @Query("SELECT c "
+            + "FROM Certification c "
+            + "WHERE date_format(c.createdAt, '%Y-%m-%d') = :date "
+            + "AND c.member= :member "
+            + "AND c.challenge= :challenge "
+            + "AND c.status = true")
+    Optional<Certification> findByDateAndMemberAndChallenge(
+            @Param("date") String date,
             @Param("member") Member member,
             @Param("challenge") Challenge challenge);
 

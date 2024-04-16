@@ -1,4 +1,4 @@
-package com.greengrim.green.common.jwt;
+package com.greengrim.green.common.oauth.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greengrim.green.common.exception.BaseException;

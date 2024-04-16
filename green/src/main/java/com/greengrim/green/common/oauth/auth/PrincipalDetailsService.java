@@ -1,6 +1,5 @@
-package com.greengrim.green.common.auth;
+package com.greengrim.green.common.oauth.auth;
 
-import com.greengrim.green.common.auth.PrincipalDetails;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.MemberErrorCode;
 import com.greengrim.green.core.member.Member;

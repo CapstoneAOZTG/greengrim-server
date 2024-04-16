@@ -31,7 +31,7 @@ public class UpdateNftService implements UpdateNftUseCase {
 
         checkIsMine(member.getId(), nft.getMember().getId());
 
-        nft.delete();
+        nft.setStatusFalse();
     }
 
     /**

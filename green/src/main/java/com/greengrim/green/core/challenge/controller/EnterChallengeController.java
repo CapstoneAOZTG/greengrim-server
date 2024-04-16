@@ -1,6 +1,6 @@
 package com.greengrim.green.core.challenge.controller;
 
-import com.greengrim.green.common.auth.CurrentMember;
+import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeResponse;
 import com.greengrim.green.core.challenge.service.EnterChallengeService;
 import com.greengrim.green.core.member.Member;

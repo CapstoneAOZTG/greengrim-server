@@ -41,6 +41,8 @@ public class RegisterReportService {
     private final CertificationHidingService certificationHidingService;
     private final NftHidingService nftHidingService;
 
+    private static final int REPORT_COUNT_STANDARD = 10;
+
     public void register(Member member, ReportType type, RegisterReport registerReport) {
         Report report = Report.builder()
                 .type(type)
@@ -73,7 +75,11 @@ public class RegisterReportService {
 
         // 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
         memberHidingService.hideMember(member, reportedMember.getId());
-        // TODO: 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리 및 이메일 전송
+        // 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리
+        // TODO: 이메일 전송
+        if (reportedMember.getReportCount() >= REPORT_COUNT_STANDARD) {
+            reportedMember.setStatusFalse();
+        }
     }
 
     public void reportChallenge(Member member, RegisterReport registerReport) {
@@ -84,7 +90,10 @@ public class RegisterReportService {
 
         // 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
         challengeHidingService.hideChallenge(member, reportedChallenge.getId());
-        // TODO: 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리 및 이메일 전송
+        // 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리
+        if (reportedChallenge.getReportCount() >= REPORT_COUNT_STANDARD) {
+            reportedChallenge.setStatusFalse();
+        }
     }
 
     public void reportCertification(Member member, RegisterReport registerReport) {
@@ -96,7 +105,11 @@ public class RegisterReportService {
 
         // 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
         certificationHidingService.hideCertification(member, reportedCertification.getId());
-        // TODO: 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리 및 이메일 전송
+        // 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리
+        if (reportedCertification.getReportCount() >= REPORT_COUNT_STANDARD) {
+            reportedCertification.setStatusFalse();
+        }
+
     }
 
     public void reportNft(Member member, RegisterReport registerReport) {
@@ -107,7 +120,11 @@ public class RegisterReportService {
 
         // 신고한 멤버에게 더이상 노출되지 않도록 차단 처리
         nftHidingService.hideNft(member, reportedNft.getId());
-        // TODO: 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리 및 이메일 전송
+
+        // 누적 신고 횟수가 기준치 이상이라면 임시 삭제 처리
+        if (reportedNft.getReportCount() >= REPORT_COUNT_STANDARD) {
+            reportedNft.setStatusFalse();
+        }
     }
 
 

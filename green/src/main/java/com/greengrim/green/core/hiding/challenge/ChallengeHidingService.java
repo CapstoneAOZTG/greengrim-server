@@ -3,7 +3,10 @@ package com.greengrim.green.core.hiding.challenge;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.ChallengeErrorCode;
 import com.greengrim.green.common.exception.errorCode.HidingErrorCode;
+import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.repository.ChallengeRepository;
+import com.greengrim.green.core.chatparticipant.ChatparticipantService;
+import com.greengrim.green.core.chatroom.service.ChatroomService;
 import com.greengrim.green.core.member.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,8 @@ public class ChallengeHidingService {
 
     private final ChallengeHidingRepository challengeHidingRepository;
     private final ChallengeRepository challengeRepository;
+    private final ChatroomService chatroomService;
+    private final ChatparticipantService chatparticipantService;
 
     @Transactional
     public void register(Long memberId, Long challengeId) {
@@ -27,16 +32,20 @@ public class ChallengeHidingService {
 
     @Transactional
     public void hideChallenge(Member member, Long challengeId) {
-        checkChallengeValidation(challengeId);
+        Challenge challenge = checkChallengeValidation(challengeId);
         if (checkNonExistingHiding(member.getId(), challengeId)) {
             register(member.getId(), challengeId);
+            // 챌린지 참여 중인데 차단했다면 채팅방 나가기 처리
+            if(chatparticipantService.checkParticipantExists(member. getId(), challenge.getChatroom().getId())) {
+                chatroomService.exitChatroom(member, challenge.getChatroom().getId());
+            }
         } else {
             throw new BaseException(HidingErrorCode.ALREADY_HIDING);
         }
     }
 
-    private void checkChallengeValidation(Long challengeId) {
-        challengeRepository.findByIdAndStatusIsTrue(challengeId)
+    private Challenge checkChallengeValidation(Long challengeId) {
+        return challengeRepository.findByIdAndStatusIsTrue(challengeId)
                 .orElseThrow(() -> new BaseException(ChallengeErrorCode.EMPTY_CHALLENGE));
     }
 

@@ -54,7 +54,7 @@ public class Nft extends BaseTime {
     @JoinColumn(name = "member_id", nullable = true)
     private Member member;
 
-    public void delete() {
+    public void setStatusFalse() {
         this.status = false;
     }
 

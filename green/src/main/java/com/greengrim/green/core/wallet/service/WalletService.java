@@ -5,7 +5,6 @@ import com.greengrim.green.core.member.Role;
 import com.greengrim.green.core.member.service.RegisterMemberService;
 import com.greengrim.green.core.wallet.Wallet;
 import com.greengrim.green.core.wallet.dto.WalletRequestDto.WalletRequest;
-import com.greengrim.green.core.wallet.dto.WalletResponseDto.ExistsWalletInfo;
 import com.greengrim.green.core.wallet.dto.WalletResponseDto.WalletDetailInfo;
 import com.greengrim.green.core.wallet.repository.WalletRepository;
 import jakarta.transaction.Transactional;
@@ -49,13 +48,7 @@ public class WalletService {
      */
     public void modifyWallet(Member member, WalletRequest walletRequest) {
         member.getWallet().changeWallet(walletRequest.getName(), walletRequest.getAddress());
-    }
-
-    /**
-     * 지갑 존재 유무 조회하기
-     */
-    public ExistsWalletInfo existsWallet(Member member) {
-        return new ExistsWalletInfo(member.getWallet() != null);
+        registerMemberService.save(member);
     }
 
     /**
@@ -63,7 +56,10 @@ public class WalletService {
      */
     public WalletDetailInfo getWalletDetail(Member member) {
         Wallet wallet = member.getWallet();
-        return new WalletDetailInfo(wallet.getName(), wallet.getAddress());
+        if(wallet != null) {
+            return new WalletDetailInfo(true, wallet.getName(), wallet.getAddress());
+        }
+        return new WalletDetailInfo(false, "", "");
     }
 
 }

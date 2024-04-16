@@ -1,9 +1,9 @@
 package com.greengrim.green.common.config;
 
-import com.greengrim.green.common.auth.CustomAccessDeniedHandler;
-import com.greengrim.green.common.jwt.JwtAuthenticationFilter;
-import com.greengrim.green.common.jwt.JwtExceptionFilter;
-import com.greengrim.green.common.jwt.JwtTokenProvider;
+import com.greengrim.green.common.oauth.auth.CustomAccessDeniedHandler;
+import com.greengrim.green.common.oauth.jwt.JwtAuthenticationFilter;
+import com.greengrim.green.common.oauth.jwt.JwtExceptionFilter;
+import com.greengrim.green.common.oauth.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
