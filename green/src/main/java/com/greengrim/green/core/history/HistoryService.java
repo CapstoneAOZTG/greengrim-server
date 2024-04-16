@@ -31,7 +31,7 @@ public class HistoryService {
     }
 
     public PageResponseDto<List<HistoryInfo>> getMyHistory(Long id, int page, int size) {
-        Page<History> histories = historyRepository.findByMemberId(id, PageRequest.of(page, size, Direction.DESC));
+        Page<History> histories = historyRepository.findByMemberId(id, PageRequest.of(page, size, Direction.DESC, "createdAt"));
         return makeHistoryInfoListForm(histories);
     }
 
