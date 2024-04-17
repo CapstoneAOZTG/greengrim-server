@@ -15,6 +15,7 @@ import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nft.usecase.GetNftUseCase;
+import com.greengrim.green.core.nftlike.LikeService;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 public class GetNftService implements GetNftUseCase {
 
     private final NftRepository nftRepository;
+    private final LikeService likeService;
     private final String[][] traits;
 
     public NftDetailInfo getNftDetailInfo(Member member, Long id) {
@@ -33,10 +35,13 @@ public class GetNftService implements GetNftUseCase {
                 .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
 
         boolean isMine = false;
+        boolean isLiked = false;
         if (member != null) { // 로그인 했다면
             isMine = checkIsMine(member.getId(), nft.getMember().getId());
+            isLiked = likeService.checkIsLiked(member.getId(), nft);
         }
-        return new NftDetailInfo(nft, isMine, traits);
+
+        return new NftDetailInfo(nft, isMine, isLiked, traits);
     }
 
     /**

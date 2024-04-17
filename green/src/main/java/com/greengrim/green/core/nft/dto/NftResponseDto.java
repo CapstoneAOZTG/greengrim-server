@@ -37,13 +37,15 @@ public class NftResponseDto {
         private NftInfo nftInfo;
         private int tokenId;
         private boolean isMine;
+        private boolean isLiked;
         private TraitsInfo traitsInfo;
 
-        public NftDetailInfo(Nft nft, boolean isMine, String [][] traits) {
+        public NftDetailInfo(Nft nft, boolean isMine, boolean isLiked, String [][] traits) {
             this.memberSimpleInfo = new MemberSimpleInfo(nft.getMember());
             this.nftInfo = new NftInfo(nft);
             this.tokenId = nft.getTokenId();
             this.isMine = isMine;
+            this.isLiked = isLiked;
             this.traitsInfo = new TraitsInfo(traits, nft.getTraits());
         }
     }

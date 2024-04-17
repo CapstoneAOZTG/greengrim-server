@@ -41,4 +41,17 @@ public class LikeService {
             return new PushLikeInfo(like.changeStatus());
         }
     }
+
+    /**
+     * 좋아요를 누른 상태라면 true 를, 누르지 않은 상태라면 false 리턴
+     * 검증된 memberId, NFT만 넣어주세용
+     */
+    public boolean checkIsLiked(Long memberId, Nft nft) {
+        Like like = likeRepository.findByMemberIdAndNft(memberId, nft).orElse(null);
+        if (like == null) {
+            return false;
+        } else {
+            return like.isStatus();
+        }
+    }
 }
