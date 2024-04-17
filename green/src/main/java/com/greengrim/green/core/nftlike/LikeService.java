@@ -7,10 +7,12 @@ import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nftlike.dto.LikeRequestDto.RegisterLike;
 import com.greengrim.green.core.nftlike.dto.LikeResponseDto.PushLikeInfo;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class LikeService {
 
