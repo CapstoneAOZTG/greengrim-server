@@ -63,6 +63,14 @@ public class NftResponseDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    public static class NftStockAmountInfo {
+        private int basic;
+        private int standard;
+        private int premium;
+    }
+
+    @Getter
     @Builder
     @AllArgsConstructor
     public static class NftSimpleInfo {

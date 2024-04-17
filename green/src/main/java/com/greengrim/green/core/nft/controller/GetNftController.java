@@ -7,6 +7,7 @@ import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.NftGrade;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
+import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockAmountInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
 import com.greengrim.green.core.nft.usecase.GetNftUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,6 +40,17 @@ public class GetNftController {
     }
 
     /**
+     * [GET] NFT 잔량 조회
+     */
+    @Operation(summary = "NFT 잔량 조회")
+    @GetMapping("/visitor/nfts/stock/amount")
+    public ResponseEntity<NftStockAmountInfo> getNftStockAmountInfo() {
+        return new ResponseEntity<>(
+            getNftUseCase.getNftStockAmountInfo(),
+            HttpStatus.OK);
+    }
+
+    /**
      * [GET] 교환할 NFT 조회
      */
     @Operation(summary = "교환할 NFT 조회")
@@ -47,6 +59,19 @@ public class GetNftController {
         @RequestParam(value = "grade") NftGrade grade) {
         return new ResponseEntity<>(
             getNftUseCase.getNftStockInfo(grade),
+            HttpStatus.OK);
+    }
+
+    /**
+     * [GET] 교환할 NFT 조회 새로고침
+     */
+    @Operation(summary = "교환할 NFT 조회 새로고침")
+    @GetMapping("/visitor/nfts/stock/refresh")
+    public ResponseEntity<NftStockInfo> getNftStockInfoRefresh(
+        @RequestParam(value = "grade") NftGrade grade,
+        @RequestParam(value = "nftList") List<Long> nftList) {
+        return new ResponseEntity<>(
+            getNftUseCase.getNftStockInfoRefresh(grade, nftList),
             HttpStatus.OK);
     }
 

@@ -10,9 +10,9 @@ public class NftRequestDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class RegisterNft {
+    public static class NftModifyInfo {
         @NotBlank(message = "그림 ID는 빈 값일 수 없습니다.")
-        private Long grimId;
+        private Long id;
         @NotBlank(message = "제목은 빈 값일 수 없습니다.")
         private String title;
         @NotBlank(message = "설명은 빈 값일 수 없습니다.")

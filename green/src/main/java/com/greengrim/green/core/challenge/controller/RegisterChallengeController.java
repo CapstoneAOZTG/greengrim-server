@@ -6,7 +6,7 @@ import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.dto.ChallengeRequestDto.RegisterChallenge;
 import com.greengrim.green.core.challenge.dto.ChallengeRequestDto.SearchRequest;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
-import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeResponse;
+import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeInfo;
 import com.greengrim.green.core.challenge.service.GetChallengeService;
 import com.greengrim.green.core.challenge.service.RegisterChallengeService;
 import com.greengrim.green.core.member.Member;
@@ -32,7 +32,7 @@ public class RegisterChallengeController {
      */
     @Operation(summary = "챌린지 생성")
     @PostMapping("/visitor/challenges")
-    public ResponseEntity<EnterChallengeResponse> registerChallenge(@CurrentMember Member member,
+    public ResponseEntity<EnterChallengeInfo> registerChallenge(@CurrentMember Member member,
             @Valid @RequestBody RegisterChallenge registerChallenge) {
         return ResponseEntity.ok(registerChallengeService.register(member, registerChallenge));
     }

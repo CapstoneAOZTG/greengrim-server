@@ -7,6 +7,7 @@ import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.NftGrade;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
+import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockAmountInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,10 @@ public interface GetNftUseCase {
     NftDetailInfo getNftDetailInfo(Member member, Long id);
 
     NftStockInfo getNftStockInfo(NftGrade grade);
+
+    NftStockAmountInfo getNftStockAmountInfo();
+
+    NftStockInfo getNftStockInfoRefresh(NftGrade grade, List<Long> nftList);
 
     PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, Long memberId, int page, int size, NftSortOption sortOption);
 
