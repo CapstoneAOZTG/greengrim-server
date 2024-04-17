@@ -7,6 +7,7 @@ import com.greengrim.green.common.web3j.Abi;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import com.greengrim.green.core.nft.Nft;
+import com.greengrim.green.core.nft.NftGrade;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nft.usecase.RegisterNftUseCase;
 import jakarta.transaction.Transactional;
@@ -34,8 +35,11 @@ public class RegisterNftService implements RegisterNftUseCase {
     @Async
     @Transactional
     public void exchangeNft(Member member, Long id) {
+
         Nft nft = nftRepository.findByIdAndStatusTrue(id)
             .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
+
+        beforeExchange(member.getPoint(), nft.getGrade());
 
         if(nft.getMember() != null) {
             throw new BaseException(NftErrorCode.ALREADY_EXCHANGED_NFT);}
@@ -57,6 +61,24 @@ public class RegisterNftService implements RegisterNftUseCase {
         }
         else {
             fcmService.sendMintingFail(member);
+        }
+    }
+
+    public void beforeExchange(int memberPoint, NftGrade grade) {
+        int point = 0;
+
+        switch (grade)
+        {
+            case BASIC: point = 100;
+                break;
+            case STANDARD: point = 200;
+                break;
+            case PREMIUM: point = 300;
+                break;
+        }
+
+        if(memberPoint < point) {
+            throw new BaseException(NftErrorCode.NOT_ENOUGH_POINT);
         }
     }
 
