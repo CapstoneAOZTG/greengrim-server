@@ -21,5 +21,5 @@ public interface GetNftUseCase {
 
     PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, SortOption sortOption);
 
-    PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Page<Nft> nfts);
+    PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Long memberId, Page<Nft> nfts);
 }

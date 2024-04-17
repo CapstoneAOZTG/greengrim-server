@@ -38,7 +38,7 @@ public class GetNftService implements GetNftUseCase {
         boolean isLiked = false;
         if (member != null) { // 로그인 했다면
             isMine = checkIsMine(member.getId(), nft.getMember().getId());
-            isLiked = likeService.checkIsLiked(member.getId(), nft);
+            isLiked = checkIsLiked(member.getId(), nft);
         }
 
         return new NftDetailInfo(nft, isMine, isLiked, traits);
@@ -59,7 +59,7 @@ public class GetNftService implements GetNftUseCase {
      */
     public PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, SortOption sortOption) {
         Page<Nft> nfts = nftRepository.findExchangedNfts(member.getId(), getPageable(page, size, sortOption));
-        return makeNftsInfoList(nfts);
+        return makeNftsInfoList(member.getId(), nfts);
     }
 
     /**
@@ -70,15 +70,21 @@ public class GetNftService implements GetNftUseCase {
             targetId = member.getId();
         }
         Page<Nft> nfts = nftRepository.findMemberNfts(member.getId(), targetId, getPageable(page, size, sortOption));
-        return makeNftsInfoList(nfts);
+        return makeNftsInfoList(member.getId(), nfts);
     }
 
-    public PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Page<Nft> nfts) {
+    public PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Long memberId, Page<Nft> nfts) {
         List<NftAndMemberInfo> memberNftInfos = new ArrayList<>();
         nfts.forEach(nft ->
-            memberNftInfos.add(new NftAndMemberInfo(nft)));
+            memberNftInfos.add(
+                    new NftAndMemberInfo(
+                            nft, checkIsLiked(memberId, nft))));
 
         return new PageResponseDto<>(nfts.getNumber(), nfts.hasNext(), memberNftInfos);
+    }
+
+    public boolean checkIsLiked(Long memberId, Nft nft) {
+        return likeService.checkIsLiked(memberId, nft);
     }
 
 }

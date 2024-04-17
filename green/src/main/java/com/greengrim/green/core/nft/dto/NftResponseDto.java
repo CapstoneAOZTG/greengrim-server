@@ -83,10 +83,12 @@ public class NftResponseDto {
     public static class NftAndMemberInfo {
         private NftSimpleInfo nftSimpleInfo;
         private MemberSimpleInfo memberSimpleInfo;
+        private boolean isLike;
 
-        public NftAndMemberInfo(Nft nft) {
+        public NftAndMemberInfo(Nft nft, boolean isLike) {
             this.nftSimpleInfo = new NftSimpleInfo(nft);
             this.memberSimpleInfo = new MemberSimpleInfo(nft.getMember());
+            this.isLike = isLike;
         }
     }
 
