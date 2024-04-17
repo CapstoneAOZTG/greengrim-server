@@ -34,11 +34,15 @@ public class LikeService {
                 .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
 
         Like like = likeRepository.findByMemberIdAndNft(member.getId(), nft).orElse(null);
-        if (like == null) {
+        if (like == null) { // 좋아요를 누른 적 없음
             register(member.getId(), nft);
+            nft.plusLikeCount();
             return new PushLikeInfo(true);
-        } else {
-            return new PushLikeInfo(like.changeStatus());
+        } else { // 좋아요를 누른 적 있음
+            boolean likeStatus = like.changeStatus();   // 좋아요 누른 후 상태 반환
+            if(likeStatus) nft.plusLikeCount();         // 좋아요 상태가 true 면 +1
+            else nft.minusLikeCount();                  // 좋아요 상태가 false 면 -1
+            return new PushLikeInfo(likeStatus);
         }
     }
 

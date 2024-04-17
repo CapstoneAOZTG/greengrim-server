@@ -1,6 +1,6 @@
 package com.greengrim.green.core.nft.usecase;
 
-import com.greengrim.green.common.entity.SortOption;
+import com.greengrim.green.common.entity.NftSortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
@@ -17,9 +17,9 @@ public interface GetNftUseCase {
 
     NftStockInfo getNftStockInfo(NftGrade grade);
 
-    PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, Long memberId, int page, int size, SortOption sortOption);
+    PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, Long memberId, int page, int size, NftSortOption sortOption);
 
-    PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, SortOption sortOption);
+    PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, NftSortOption sortOption);
 
     PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Long memberId, Page<Nft> nfts);
 }

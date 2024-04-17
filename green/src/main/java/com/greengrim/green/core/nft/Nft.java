@@ -44,8 +44,9 @@ public class Nft extends BaseTime {
     @NotNull
     private int reportCount;
     @NotNull
+    private int likeCount;
+    @NotNull
     private boolean status;
-
 
     private String txHash;
 
@@ -63,5 +64,14 @@ public class Nft extends BaseTime {
 
     public void plusReportCount() {
         this.reportCount++;
+    }
+
+    public void plusLikeCount() {
+        this.likeCount++;
+    }
+    public void minusLikeCount() {
+        if(this.likeCount > 0) {
+            this.likeCount--;
+        }
     }
 }

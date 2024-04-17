@@ -1,9 +1,9 @@
 package com.greengrim.green.core.nft.service;
 
 import static com.greengrim.green.common.util.UtilService.checkIsMine;
-import static com.greengrim.green.common.util.UtilService.getPageable;
+import static com.greengrim.green.common.util.UtilService.getNftPageable;
 
-import com.greengrim.green.common.entity.SortOption;
+import com.greengrim.green.common.entity.NftSortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
@@ -55,21 +55,20 @@ public class GetNftService implements GetNftUseCase {
 
     /**
      * 교환된 NFT List 조회
-     * TODO: 좋아요 순 추가하기
      */
-    public PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, SortOption sortOption) {
-        Page<Nft> nfts = nftRepository.findExchangedNfts(member.getId(), getPageable(page, size, sortOption));
+    public PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, NftSortOption sortOption) {
+        Page<Nft> nfts = nftRepository.findExchangedNfts(member.getId(), getNftPageable(page, size, sortOption));
         return makeNftsInfoList(member.getId(), nfts);
     }
 
     /**
      * 멤버 별 NFTS 보기
      */
-    public PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, Long targetId, int page, int size, SortOption sortOption) {
+    public PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, Long targetId, int page, int size, NftSortOption sortOption) {
         if(targetId == null) {
             targetId = member.getId();
         }
-        Page<Nft> nfts = nftRepository.findMemberNfts(member.getId(), targetId, getPageable(page, size, sortOption));
+        Page<Nft> nfts = nftRepository.findMemberNfts(member.getId(), targetId, getNftPageable(page, size, sortOption));
         return makeNftsInfoList(member.getId(), nfts);
     }
 
