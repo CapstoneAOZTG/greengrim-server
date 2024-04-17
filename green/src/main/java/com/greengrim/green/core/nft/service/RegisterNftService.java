@@ -29,6 +29,10 @@ public class RegisterNftService implements RegisterNftUseCase {
     private final FcmService fcmService;
     private final Abi contract;
 
+    private static final int EXCHANGE_NFT_BASIC_POINT = 500;
+    private static final int EXCHANGE_NFT_STANDARD_POINT = 700;
+    private static final int EXCHANGE_NFT_PREMIUM_POINT = 1000;
+
     /**
      * NFT 교환하기
      */
@@ -65,17 +69,12 @@ public class RegisterNftService implements RegisterNftUseCase {
     }
 
     public void beforeExchange(int memberPoint, NftGrade grade) {
-        int point = 0;
 
-        switch (grade)
-        {
-            case BASIC: point = 100;
-                break;
-            case STANDARD: point = 200;
-                break;
-            case PREMIUM: point = 300;
-                break;
-        }
+        int point = switch (grade) {
+            case BASIC -> EXCHANGE_NFT_BASIC_POINT;
+            case STANDARD -> EXCHANGE_NFT_STANDARD_POINT;
+            case PREMIUM -> EXCHANGE_NFT_PREMIUM_POINT;
+        };
 
         if(memberPoint < point) {
             throw new BaseException(NftErrorCode.NOT_ENOUGH_POINT);
@@ -84,17 +83,12 @@ public class RegisterNftService implements RegisterNftUseCase {
 
     @Transactional
     public void afterExchange(Member member, Nft nft) {
-        int point = 0;
 
-        switch (nft.getGrade())
-        {
-            case BASIC: point = 100;
-                        break;
-            case STANDARD: point = 200;
-                        break;
-            case PREMIUM: point = 300;
-                        break;
-        }
+        int point = switch (nft.getGrade()) {
+            case BASIC -> EXCHANGE_NFT_BASIC_POINT;
+            case STANDARD -> EXCHANGE_NFT_STANDARD_POINT;
+            case PREMIUM -> EXCHANGE_NFT_PREMIUM_POINT;
+        };
 
         nft.setMember(member);
         member.minusPoint(point);
