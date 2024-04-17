@@ -96,9 +96,8 @@ public class RegisterNftService implements RegisterNftUseCase {
                         break;
         }
 
-        member.minusPoint(point);
         nft.setMember(member);
+        member.minusPoint(point);
         memberRepository.save(member);
-        nftRepository.save(nft);
     }
 }
