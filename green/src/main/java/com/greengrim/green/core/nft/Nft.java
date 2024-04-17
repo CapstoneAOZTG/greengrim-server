@@ -2,6 +2,7 @@ package com.greengrim.green.core.nft;
 
 import com.greengrim.green.common.entity.BaseTime;
 import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.nft.dto.NftRequestDto.NftModifyInfo;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -55,6 +56,11 @@ public class Nft extends BaseTime {
 
     public void setStatusFalse() {
         this.status = false;
+    }
+
+    public void modify(NftModifyInfo modifyInfo) {
+        this.title = modifyInfo.getTitle();
+        this.description = modifyInfo.getDescription();
     }
 
     public void setMember(Member member) {

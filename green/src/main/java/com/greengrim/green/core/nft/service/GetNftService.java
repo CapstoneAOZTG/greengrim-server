@@ -12,6 +12,7 @@ import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.NftGrade;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
+import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockAmountInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nft.usecase.GetNftUseCase;
@@ -39,12 +40,51 @@ public class GetNftService implements GetNftUseCase {
         return new NftDetailInfo(nft, isMine, traits);
     }
 
+    public NftStockAmountInfo getNftStockAmountInfo() {
+        List<Object[]> nftCounts = nftRepository.countNftsByGrade();
+
+        long basic = 0;
+        long standard = 0;
+        long premium = 0;
+
+        for (Object[] result : nftCounts) {
+            NftGrade grade = (NftGrade) result[0];
+            long count = (Long) result[1];
+
+            switch (grade) {
+                case BASIC:
+                    basic = count;
+                    break;
+                case STANDARD:
+                    standard = count;
+                    break;
+                case PREMIUM:
+                    premium = count;
+                    break;
+            }
+        }
+
+        return new NftStockAmountInfo((int) basic, (int) standard, (int) premium);
+    }
+
     /**
      * 교환할 NFT 조회
      */
     public NftStockInfo getNftStockInfo(NftGrade grade) {
         Nft nft = nftRepository.findRandomByGrade(grade)
             .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
+
+        return new NftStockInfo(nft, traits);
+    }
+
+    /**
+     * 교환할 NFT 조회 새로고침
+     */
+    public NftStockInfo getNftStockInfoRefresh(NftGrade grade, List<Long> nftList) {
+
+        Nft nft = nftRepository.findRandomByGradeExceptList(grade, nftList)
+            .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
+
         return new NftStockInfo(nft, traits);
     }
 

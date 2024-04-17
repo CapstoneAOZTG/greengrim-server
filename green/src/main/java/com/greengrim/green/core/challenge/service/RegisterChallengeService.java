@@ -2,7 +2,7 @@ package com.greengrim.green.core.challenge.service;
 
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.dto.ChallengeRequestDto.RegisterChallenge;
-import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeResponse;
+import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeInfo;
 import com.greengrim.green.core.challenge.repository.ChallengeRepository;
 import com.greengrim.green.core.chatroom.Chatroom;
 import com.greengrim.green.core.chatroom.service.ChatroomService;
@@ -21,7 +21,7 @@ public class RegisterChallengeService {
     private final EnterChallengeService enterChallengeService;
     private final ChatroomService chatroomService;
 
-    public EnterChallengeResponse register(Member member, RegisterChallenge registerChallenge) {
+    public EnterChallengeInfo register(Member member, RegisterChallenge registerChallenge) {
 
         Chatroom chatroom = chatroomService.registerChatroom(member, registerChallenge.getTitle()); // 채팅방 생성
 
@@ -44,6 +44,6 @@ public class RegisterChallengeService {
 
         challengeRepository.save(challenge);
         enterChallengeService.enterChallenge(member, challenge.getId());
-        return new EnterChallengeResponse(challenge);
+        return new EnterChallengeInfo(challenge);
     }
 }
