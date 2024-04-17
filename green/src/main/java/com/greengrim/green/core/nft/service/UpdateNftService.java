@@ -8,6 +8,7 @@ import com.greengrim.green.core.nft.dto.NftRequestDto.NftModifyInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nft.usecase.UpdateNftUseCase;
+import com.greengrim.green.core.nftlike.LikeService;
 import jakarta.transaction.Transactional;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class UpdateNftService implements UpdateNftUseCase {
 
     private final NftRepository nftRepository;
+    private final LikeService likeService;
     private final String[][] traits;
 
     /**
@@ -46,7 +48,7 @@ public class UpdateNftService implements UpdateNftUseCase {
 
         nft.modify(modifyInfo);
 
-        return new NftDetailInfo(nft, true, traits);
+        return new NftDetailInfo(nft, true, likeService.checkIsLiked(member.getId(), nft), traits);
     }
 
     public void checkIsMine(Long viewerId, Long ownerId) {

@@ -1,7 +1,7 @@
 package com.greengrim.green.core.nft.controller;
 
+import com.greengrim.green.common.entity.NftSortOption;
 import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.NftGrade;
@@ -84,7 +84,7 @@ public class GetNftController {
             @CurrentMember Member member,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
-            @RequestParam(value = "sort") SortOption sort) {
+            @RequestParam(value = "sort") NftSortOption sort) {
         return ResponseEntity.ok(getNftUseCase.getExchangedNfts(member, page, size, sort));
     }
 
@@ -99,7 +99,7 @@ public class GetNftController {
             @RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
-            @RequestParam(value = "sort") SortOption sort) {
+            @RequestParam(value = "sort") NftSortOption sort) {
         return ResponseEntity.ok(getNftUseCase.getMemberNfts(member, memberId, page, size, sort));
     }
 

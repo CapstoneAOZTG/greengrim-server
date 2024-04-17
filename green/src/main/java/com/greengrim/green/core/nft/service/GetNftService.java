@@ -1,9 +1,9 @@
 package com.greengrim.green.core.nft.service;
 
 import static com.greengrim.green.common.util.UtilService.checkIsMine;
-import static com.greengrim.green.common.util.UtilService.getPageable;
+import static com.greengrim.green.common.util.UtilService.getNftPageable;
 
-import com.greengrim.green.common.entity.SortOption;
+import com.greengrim.green.common.entity.NftSortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
@@ -16,6 +16,7 @@ import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockAmountInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nft.usecase.GetNftUseCase;
+import com.greengrim.green.core.nftlike.LikeService;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 public class GetNftService implements GetNftUseCase {
 
     private final NftRepository nftRepository;
+    private final LikeService likeService;
     private final String[][] traits;
 
     public NftDetailInfo getNftDetailInfo(Member member, Long id) {
@@ -34,10 +36,13 @@ public class GetNftService implements GetNftUseCase {
                 .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
 
         boolean isMine = false;
+        boolean isLiked = false;
         if (member != null) { // 로그인 했다면
             isMine = checkIsMine(member.getId(), nft.getMember().getId());
+            isLiked = checkIsLiked(member.getId(), nft);
         }
-        return new NftDetailInfo(nft, isMine, traits);
+
+        return new NftDetailInfo(nft, isMine, isLiked, traits);
     }
 
     public NftStockAmountInfo getNftStockAmountInfo() {
@@ -90,30 +95,35 @@ public class GetNftService implements GetNftUseCase {
 
     /**
      * 교환된 NFT List 조회
-     * TODO: 좋아요 순 추가하기
      */
-    public PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, SortOption sortOption) {
-        Page<Nft> nfts = nftRepository.findExchangedNfts(member.getId(), getPageable(page, size, sortOption));
-        return makeNftsInfoList(nfts);
+    public PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, NftSortOption sortOption) {
+        Page<Nft> nfts = nftRepository.findExchangedNfts(member.getId(), getNftPageable(page, size, sortOption));
+        return makeNftsInfoList(member.getId(), nfts);
     }
 
     /**
      * 멤버 별 NFTS 보기
      */
-    public PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, Long targetId, int page, int size, SortOption sortOption) {
+    public PageResponseDto<List<NftAndMemberInfo>> getMemberNfts(Member member, Long targetId, int page, int size, NftSortOption sortOption) {
         if(targetId == null) {
             targetId = member.getId();
         }
-        Page<Nft> nfts = nftRepository.findMemberNfts(member.getId(), targetId, getPageable(page, size, sortOption));
-        return makeNftsInfoList(nfts);
+        Page<Nft> nfts = nftRepository.findMemberNfts(member.getId(), targetId, getNftPageable(page, size, sortOption));
+        return makeNftsInfoList(member.getId(), nfts);
     }
 
-    public PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Page<Nft> nfts) {
+    public PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Long memberId, Page<Nft> nfts) {
         List<NftAndMemberInfo> memberNftInfos = new ArrayList<>();
         nfts.forEach(nft ->
-            memberNftInfos.add(new NftAndMemberInfo(nft)));
+            memberNftInfos.add(
+                    new NftAndMemberInfo(
+                            nft, checkIsLiked(memberId, nft))));
 
         return new PageResponseDto<>(nfts.getNumber(), nfts.hasNext(), memberNftInfos);
+    }
+
+    public boolean checkIsLiked(Long memberId, Nft nft) {
+        return likeService.checkIsLiked(memberId, nft);
     }
 
 }
