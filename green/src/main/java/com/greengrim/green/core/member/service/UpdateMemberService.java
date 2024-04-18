@@ -1,5 +1,8 @@
 package com.greengrim.green.core.member.service;
 
+import static com.greengrim.green.common.util.UtilService.checkProfileImgUrlIsBasic;
+import static com.greengrim.green.common.util.UtilService.getProfileImgUrl;
+
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.common.oauth.jwt.JwtTokenProvider;
 import com.greengrim.green.common.s3.S3Service;
@@ -8,6 +11,7 @@ import com.greengrim.green.core.member.dto.MemberRequestDto.ModifyProfile;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +39,17 @@ public class UpdateMemberService  {
     }
 
     public void modifyProfile(Member member, ModifyProfile modifyProfile) {
-        // 프로필이 존재한다면 s3에서 기존 프로필 삭제
-        if(member.existProfileImgUrl()) {
+        // 프로필이 존재하고 기본 프로필이 아니라면, s3에서 기존 프로필 삭제
+        if(member.existProfileImgUrl() && !checkBasicProfileImgUrl(member.getProfileImgUrl())) {
             s3Service.deleteFile(member.getProfileImgUrl());
         }
+        // 변경하려는 값이 blank 라면 기본 프로필, blank 가 아니라면 그대로 리턴
+        String profileImgUrl = checkProfileImgUrlIsBasic(modifyProfile.getProfileImgUrl());
+
         // Member 엔티티 업로드
         member.modifyMember(modifyProfile.getNickName(),
                 modifyProfile.getIntroduction(),
-                modifyProfile.getProfileImgUrl());
+                profileImgUrl);
         memberRepository.save(member);
     }
 
@@ -57,4 +64,9 @@ public class UpdateMemberService  {
         fcmService.sendGetPoint(member, "미니게임", 10);
         memberRepository.save(member);
     }
+
+    public boolean checkBasicProfileImgUrl(String imgUrl) {
+        return (Objects.equals(imgUrl, getProfileImgUrl()));
+    }
+
 }
