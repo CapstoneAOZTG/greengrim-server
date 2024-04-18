@@ -16,17 +16,26 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
 
     Optional<Nft> findByIdAndStatusTrue(Long id);
 
-    @Query("SELECT n.grade, COUNT(n) FROM Nft n WHERE n.member IS NULL GROUP BY n.grade")
+    @Query("SELECT n.grade, COUNT(n) FROM Nft n WHERE n.member IS NULL "
+        + "AND n.status = true "
+        + "GROUP BY n.grade ")
     List<Object[]> countNftsByGrade();
 
-    @Query(value = "SELECT n FROM Nft n WHERE n.grade = :grade AND n.member IS NULL ")
+    @Query(value = "SELECT n FROM Nft n WHERE n.grade = :grade "
+        + "AND n.status = true "
+        + "AND n.member IS NULL ")
     Page<Nft> findCollectionNfts(NftGrade grade, Pageable pageable);
 
-    @Query(value = "SELECT n FROM Nft n WHERE n.grade = :grade AND n.member IS NULL "
+    @Query(value = "SELECT n FROM Nft n WHERE n.grade = :grade "
+        + "AND n.member IS NULL "
+        + "AND n.status = true "
         + "ORDER BY RAND() LIMIT 1")
     Optional<Nft> findRandomByGrade(NftGrade grade);
 
-    @Query(value = "SELECT n FROM Nft n WHERE n.grade = :grade AND n.member IS NULL AND n.id NOT IN :nftList "
+    @Query(value = "SELECT n FROM Nft n WHERE n.grade = :grade "
+        + "AND n.member IS NULL "
+        + "AND n.status = true "
+        + "AND n.id NOT IN :nftList "
         + "ORDER BY RAND() LIMIT 1")
     Optional<Nft> findRandomByGradeExceptList(NftGrade grade, List<Long> nftList);
 
