@@ -42,7 +42,10 @@ public class UtilService {
             return PageRequest.of(page, size, Direction.ASC, "createdAt");
         } else if(sortOption == NftSortOption.FAVORITE) {
             return PageRequest.of(page, size, Direction.DESC, "likeCount");
-        } else {
+        } else if(sortOption == NftSortOption.TOKEN_ID) {
+            return PageRequest.of(page, size, Direction.ASC, "tokenId");
+        }
+        else {
             throw new BaseException(GlobalErrorCode.NOT_VALID_ARGUMENT_ERROR);
         }
     }

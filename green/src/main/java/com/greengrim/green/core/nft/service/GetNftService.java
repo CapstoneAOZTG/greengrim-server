@@ -112,7 +112,7 @@ public class GetNftService implements GetNftUseCase {
      * NFT Collection 조회
      */
     public PageResponseDto<List<NftCollectionInfo>> getCollectionNfts(NftGrade grade, int page, int size) {
-        Page<Nft> nfts = nftRepository.findCollectionNfts(grade, getNftPageable(page, size, NftSortOption.DESC));
+        Page<Nft> nfts = nftRepository.findCollectionNfts(grade, getNftPageable(page, size, NftSortOption.TOKEN_ID));
         List<NftCollectionInfo> nftCollectionInfos = new ArrayList<>();
         nfts.forEach(nft ->
             nftCollectionInfos.add(
