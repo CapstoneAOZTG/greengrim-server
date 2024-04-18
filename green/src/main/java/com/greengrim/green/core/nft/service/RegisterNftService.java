@@ -43,6 +43,13 @@ public class RegisterNftService implements RegisterNftUseCase {
         Nft nft = nftRepository.findByIdAndStatusTrue(id)
             .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
 
+        if(nft.getId() == 5) {
+            fcmService.sendMintingSuccess(member, nft.getId());
+        }
+        else {
+            fcmService.sendMintingFail(member);
+        }
+
         beforeExchange(member.getPoint(), nft.getGrade());
 
         if(nft.getMember() != null) {
@@ -66,6 +73,7 @@ public class RegisterNftService implements RegisterNftUseCase {
         else {
             fcmService.sendMintingFail(member);
         }
+
     }
 
     public void beforeExchange(int memberPoint, NftGrade grade) {
