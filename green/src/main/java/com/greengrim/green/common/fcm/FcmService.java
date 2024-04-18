@@ -66,7 +66,7 @@ public class FcmService {
         .setTopic(String.valueOf(chatMessage.getRoomId()))
         .build();
 
-    send(message);
+    ///send(message);
   }
 
   public void sendGetPoint(Member member, String title, int point) {
@@ -76,7 +76,7 @@ public class FcmService {
         .setToken(member.getFcmToken())
         .build();
 
-    send(message);
+    //send(message);
   }
 
   public void sendMintingSuccess(Member member, Long nftId) {
@@ -87,7 +87,7 @@ public class FcmService {
         .setToken(member.getFcmToken())
         .build();
 
-    send(message);
+    //send(message);
   }
 
   public void sendMintingFail(Member member) {
@@ -97,7 +97,7 @@ public class FcmService {
         .setToken(member.getFcmToken())
         .build();
 
-    send(message);
+    //send(message);
   }
 
   public void send(Message message) {
