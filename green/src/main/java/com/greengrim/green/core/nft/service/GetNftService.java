@@ -32,6 +32,9 @@ public class GetNftService implements GetNftUseCase {
     private final LikeService likeService;
     private final String[][] traits;
 
+    /**
+     * NFT 상세 조회
+     */
     public NftDetailInfo getNftDetailInfo(Member member, Long id) {
         Nft nft = nftRepository.findByIdAndStatusTrue(id)
                 .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
@@ -46,6 +49,9 @@ public class GetNftService implements GetNftUseCase {
         return new NftDetailInfo(nft, isMine, isLiked, traits);
     }
 
+    /**
+     * NFT 잔량 조회
+     */
     public NftStockAmountInfo getNftStockAmountInfo() {
         List<Object[]> nftCounts = nftRepository.countNftsByGrade();
 
