@@ -11,6 +11,7 @@ import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.NftGrade;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
+import com.greengrim.green.core.nft.dto.NftResponseDto.NftCollectionInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockAmountInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
@@ -99,6 +100,19 @@ public class GetNftService implements GetNftUseCase {
     public PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, NftSortOption sortOption) {
         Page<Nft> nfts = nftRepository.findExchangedNfts(member.getId(), getNftPageable(page, size, sortOption));
         return makeNftsInfoList(member.getId(), nfts);
+    }
+
+    /**
+     * NFT Collection 조회
+     */
+    public PageResponseDto<List<NftCollectionInfo>> getCollectionNfts(NftGrade grade, int page, int size) {
+        Page<Nft> nfts = nftRepository.findCollectionNfts(grade, getNftPageable(page, size, NftSortOption.DESC));
+        List<NftCollectionInfo> nftCollectionInfos = new ArrayList<>();
+        nfts.forEach(nft ->
+            nftCollectionInfos.add(
+                new NftCollectionInfo(nft)));
+
+        return new PageResponseDto<>(nfts.getNumber(), nfts.hasNext(), nftCollectionInfos);
     }
 
     /**

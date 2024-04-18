@@ -88,6 +88,23 @@ public class NftResponseDto {
     @Getter
     @Builder
     @AllArgsConstructor
+    public static class NftCollectionInfo {
+        private Long id;
+        private String imgUrl;
+        private String title;
+        private String tokenId;
+
+        public NftCollectionInfo(Nft nft) {
+            this.id = nft.getId();
+            this.imgUrl = nft.getImgUrl();
+            this.title = nft.getTitle();
+            this.tokenId = "#" + String.valueOf(nft.getTokenId());
+        }
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
     public static class NftAndMemberInfo {
         private NftSimpleInfo nftSimpleInfo;
         private MemberSimpleInfo memberSimpleInfo;

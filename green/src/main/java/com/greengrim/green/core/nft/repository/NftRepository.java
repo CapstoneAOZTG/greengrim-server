@@ -19,6 +19,9 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
     @Query("SELECT n.grade, COUNT(n) FROM Nft n WHERE n.member IS NULL GROUP BY n.grade")
     List<Object[]> countNftsByGrade();
 
+    @Query(value = "SELECT n FROM Nft n WHERE n.grade = :grade AND n.member IS NULL ")
+    Page<Nft> findCollectionNfts(NftGrade grade, Pageable pageable);
+
     @Query(value = "SELECT n FROM Nft n WHERE n.grade = :grade AND n.member IS NULL "
         + "ORDER BY RAND() LIMIT 1")
     Optional<Nft> findRandomByGrade(NftGrade grade);
