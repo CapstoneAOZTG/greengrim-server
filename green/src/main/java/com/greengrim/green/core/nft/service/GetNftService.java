@@ -11,6 +11,7 @@ import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.NftGrade;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
+import com.greengrim.green.core.nft.dto.NftResponseDto.NftCollectionInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockAmountInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
@@ -31,6 +32,9 @@ public class GetNftService implements GetNftUseCase {
     private final LikeService likeService;
     private final String[][] traits;
 
+    /**
+     * NFT 상세 조회
+     */
     public NftDetailInfo getNftDetailInfo(Member member, Long id) {
         Nft nft = nftRepository.findByIdAndStatusTrue(id)
                 .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
@@ -45,6 +49,9 @@ public class GetNftService implements GetNftUseCase {
         return new NftDetailInfo(nft, isMine, isLiked, traits);
     }
 
+    /**
+     * NFT 잔량 조회
+     */
     public NftStockAmountInfo getNftStockAmountInfo() {
         List<Object[]> nftCounts = nftRepository.countNftsByGrade();
 
@@ -99,6 +106,19 @@ public class GetNftService implements GetNftUseCase {
     public PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, NftSortOption sortOption) {
         Page<Nft> nfts = nftRepository.findExchangedNfts(member.getId(), getNftPageable(page, size, sortOption));
         return makeNftsInfoList(member.getId(), nfts);
+    }
+
+    /**
+     * NFT Collection 조회
+     */
+    public PageResponseDto<List<NftCollectionInfo>> getCollectionNfts(NftGrade grade, int page, int size) {
+        Page<Nft> nfts = nftRepository.findCollectionNfts(grade, getNftPageable(page, size, NftSortOption.TOKEN_ID));
+        List<NftCollectionInfo> nftCollectionInfos = new ArrayList<>();
+        nfts.forEach(nft ->
+            nftCollectionInfos.add(
+                new NftCollectionInfo(nft)));
+
+        return new PageResponseDto<>(nfts.getNumber(), nfts.hasNext(), nftCollectionInfos);
     }
 
     /**

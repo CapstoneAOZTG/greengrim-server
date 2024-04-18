@@ -6,6 +6,7 @@ import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.NftGrade;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
+import com.greengrim.green.core.nft.dto.NftResponseDto.NftCollectionInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockAmountInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
@@ -86,6 +87,20 @@ public class GetNftController {
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") NftSortOption sort) {
         return ResponseEntity.ok(getNftUseCase.getExchangedNfts(member, page, size, sort));
+    }
+
+    /**
+     * [GET] NFT Collection 조회
+     */
+    @Operation(summary = "NFT Collection 조회")
+    @GetMapping("/visitor/nfts/collection")
+    public ResponseEntity<PageResponseDto<List<NftCollectionInfo>>> getCollectionNfts(
+        @CurrentMember Member member,
+        @RequestParam(value = "grade") NftGrade grade,
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
+        ) {
+        return ResponseEntity.ok(getNftUseCase.getCollectionNfts(grade, page, size));
     }
 
     /**
