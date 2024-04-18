@@ -10,7 +10,6 @@ import com.greengrim.green.core.chat.ChatMessage;
 import com.greengrim.green.core.chatparticipant.Chatparticipant;
 import com.greengrim.green.core.chatparticipant.ChatparticipantService;
 import com.greengrim.green.core.member.Member;
-import com.greengrim.green.core.nft.Nft;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -81,23 +80,23 @@ public class FcmService {
 
   public void sendMintingSuccess(Member member, Long nftId) {
     Message message = Message.builder()
-        .putData("type", "MINTING")
+        .putData("type", "EXCHANGE_SUC")
         .putData("nftId", String.valueOf(nftId))
         .putData("message", "NFT 교환에 성공했어요.")
         .setToken(member.getFcmToken())
         .build();
 
-    //send(message);
+    send(message);
   }
 
   public void sendMintingFail(Member member) {
     Message message = Message.builder()
-        .putData("type", "MINTING")
+        .putData("type", "EXCHANGE_FAIL")
         .putData("message", "NFT 교환에 실패했어요.")
         .setToken(member.getFcmToken())
         .build();
 
-    //send(message);
+    send(message);
   }
 
   public void send(Message message) {

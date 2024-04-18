@@ -64,17 +64,12 @@ public class Nft extends BaseTime {
         this.description = modifyInfo.getDescription();
     }
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
+    public void setMember(Member member) { this.member = member; }
+    public void setTxHash(String txHash) { this.txHash = txHash; }
 
-    public void plusReportCount() {
-        this.reportCount++;
-    }
+    public void plusReportCount() {this.reportCount++;}
 
-    public void plusLikeCount() {
-        this.likeCount++;
-    }
+    public void plusLikeCount() {this.likeCount++;}
     public void minusLikeCount() {
         if(this.likeCount > 0) {
             this.likeCount--;

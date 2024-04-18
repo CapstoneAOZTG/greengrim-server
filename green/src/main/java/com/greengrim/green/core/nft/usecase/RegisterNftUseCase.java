@@ -7,6 +7,6 @@ public interface RegisterNftUseCase {
 
     void exchangeNft(Member member, Long id);
 
-    void afterExchange(Member member, Nft nft);
+    void afterExchange(Member member, Nft nft, String txHash);
 
 }

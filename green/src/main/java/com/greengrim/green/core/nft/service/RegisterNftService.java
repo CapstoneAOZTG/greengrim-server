@@ -60,7 +60,7 @@ public class RegisterNftService implements RegisterNftUseCase {
         }
 
         if (transactionReceipt != null) {
-            afterExchange(member, nft);
+            afterExchange(member, nft, transactionReceipt.getTransactionHash());
             fcmService.sendMintingSuccess(member, nft.getId());
         }
         else {
@@ -82,7 +82,7 @@ public class RegisterNftService implements RegisterNftUseCase {
     }
 
     @Transactional
-    public void afterExchange(Member member, Nft nft) {
+    public void afterExchange(Member member, Nft nft, String txHash) {
 
         int point = switch (nft.getGrade()) {
             case BASIC -> EXCHANGE_NFT_BASIC_POINT;
@@ -91,6 +91,7 @@ public class RegisterNftService implements RegisterNftUseCase {
         };
 
         nft.setMember(member);
+        nft.setTxHash(txHash);
         member.minusPoint(point);
         memberRepository.save(member);
     }
