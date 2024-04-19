@@ -12,7 +12,6 @@ import com.greengrim.green.common.exception.errorCode.GlobalErrorCode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,9 +20,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UtilService {
-
-    @Value("${profile-img-url}")
-    private static String profileImgUrl;
 
     public static Pageable getPageable(int page, int size, SortOption sort) {
         if (sort == DESC) { // 최신순
@@ -61,19 +57,5 @@ public class UtilService {
     public static String formatLocalDateTimeToString(LocalDateTime localDateTime) {
         // LocalDateTime 객체를 포맷팅하여 문자열로 변환
         return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm"));
-    }
-
-    /**
-     * imgUrl이 Blank라면 프로필 기본 이미지 반환
-     */
-    public static String checkProfileImgUrlIsBasic(String imgUrl) {
-        if(Objects.equals(imgUrl, "")) {
-            return profileImgUrl;
-        }
-        return imgUrl;
-    }
-
-    public static String getProfileImgUrl() {
-        return profileImgUrl;
     }
 }
