@@ -34,9 +34,9 @@ public class GetMemberController {
     }
 
     /**
-     * [GET] 내 탄소 저감량 조회
+     * [GET] 홈 화면 내 정보 조회
      */
-    @Operation(summary = "내 탄소 저감량 조회")
+    @Operation(summary = "홈 화면 내 정보 조회")
     @GetMapping("/visitor/home")
     public ResponseEntity<HomeInfo> getHomeInfo(
             @CurrentMember Member member) {
