@@ -73,4 +73,13 @@ public class ChatroomService{
         .build());
     log.info("DISCONNECTED {}, {}", member.getNickName(), chatroomId);
   }
+
+  public boolean isMemberEntered(Long memberId, Long chatRoomId) {
+    if (chatparticipantService.
+        checkParticipantExists(memberId, chatRoomId)) {
+      return true;
+    }
+
+    return false;
+  }
 }
