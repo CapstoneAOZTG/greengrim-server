@@ -25,8 +25,12 @@ public class EnterChallengeService {
    */
   public EnterChallengeInfo enterChallenge(Member member, Long id) {
     Challenge challenge = getChallengeService.findByIdWithValidation(id);
+
     if (challenge.getCapacity() == challenge.getHeadCount())
       throw new BaseException(ChallengeErrorCode.OVER_CAPACITY_CHALLENGE);
+
+    if(chatroomService.isMemberEntered(member.getId(), challenge.getChatroom().getId()))
+      throw new BaseException(ChallengeErrorCode.ALREADY_ENTERED_CHALLENGE);
 
     challenge.setHeadCount(challenge.getHeadCount() + 1);
     challengeRepository.save(challenge);
