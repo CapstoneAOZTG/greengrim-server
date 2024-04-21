@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -27,4 +28,8 @@ public class Event extends BaseTime {
     private String title;
     @NotNull
     private String imgUrl;
+
+    @ColumnDefault("true")
+    private boolean isWebView;  // true: 웹뷰, false: 딥링크
+    private String url;         // 해당 링크를 나타냄
 }
