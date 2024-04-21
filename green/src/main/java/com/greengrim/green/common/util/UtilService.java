@@ -60,12 +60,12 @@ public class UtilService {
         return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm"));
     }
 
-    public static String convertIntPointToString(int point) {
-        if (point >= 10000) {
-            return (point / 1000) + "K";
+    public static String formatIntToString(int number) {
+        if (number >= 10000) {
+            return (number / 1000) + "K";
         } else {
             DecimalFormat formatter = new DecimalFormat("#,###");
-            return formatter.format(point);
+            return formatter.format(number);
         }
     }
 }
