@@ -5,6 +5,7 @@ import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.NftGrade;
+import com.greengrim.green.core.nft.dto.NftResponseDto.HotNftInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftCollectionInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
@@ -30,5 +31,7 @@ public interface GetNftUseCase {
     PageResponseDto<List<NftAndMemberInfo>> getExchangedNfts(Member member, int page, int size, NftSortOption sortOption);
 
     PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Long memberId, Page<Nft> nfts);
+
+    PageResponseDto<List<HotNftInfo>> getHotNfts(Member member);
 
 }
