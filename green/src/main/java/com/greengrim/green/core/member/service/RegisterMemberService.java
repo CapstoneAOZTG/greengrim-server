@@ -1,6 +1,5 @@
 package com.greengrim.green.core.member.service;
 
-import static com.greengrim.green.common.util.UtilService.checkProfileImgUrlIsBasic;
 
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.MemberErrorCode;
@@ -22,6 +21,7 @@ public class RegisterMemberService {
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
+
     public void save(Member member) {
         memberRepository.save(member);
     }
@@ -31,7 +31,7 @@ public class RegisterMemberService {
                 .email(registerMemberReq.getEmail())
                 .nickName(registerMemberReq.getNickName())
                 .introduction(registerMemberReq.getIntroduction())
-                .profileImgUrl(checkProfileImgUrlIsBasic(registerMemberReq.getProfileImgUrl()))
+                .profileImgUrl(registerMemberReq.getProfileImgUrl())
                 .point(0)
                 .carbonReduction(0)
                 .reportCount(0)
