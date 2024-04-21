@@ -10,6 +10,7 @@ import com.greengrim.green.common.exception.errorCode.NftErrorCode;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.NftGrade;
+import com.greengrim.green.core.nft.dto.NftResponseDto.HotNftInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftCollectionInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
@@ -18,10 +19,12 @@ import com.greengrim.green.core.nft.dto.NftResponseDto.NftStockInfo;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nft.usecase.GetNftUseCase;
 import com.greengrim.green.core.nftlike.LikeService;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -132,6 +135,17 @@ public class GetNftService implements GetNftUseCase {
         return makeNftsInfoList(member.getId(), nfts);
     }
 
+    /**
+     * Hot NFT 조회
+     */
+    public PageResponseDto<List<HotNftInfo>> getHotNfts(Member member) {
+        Page<Nft> nfts = nftRepository.findHotNfts(
+                member.getId(),
+                LocalDateTime.now().minusMonths(1),
+                PageRequest.of(0, 5));
+        return makeHotNftInfoList(nfts);
+    }
+
     public PageResponseDto<List<NftAndMemberInfo>> makeNftsInfoList(Long memberId, Page<Nft> nfts) {
         List<NftAndMemberInfo> memberNftInfos = new ArrayList<>();
         nfts.forEach(nft ->
@@ -140,6 +154,14 @@ public class GetNftService implements GetNftUseCase {
                             nft, checkIsLiked(memberId, nft))));
 
         return new PageResponseDto<>(nfts.getNumber(), nfts.hasNext(), memberNftInfos);
+    }
+
+    public PageResponseDto<List<HotNftInfo>> makeHotNftInfoList(Page<Nft> nfts) {
+        List<HotNftInfo> hotNftInfos = new ArrayList<>();
+        nfts.forEach(nft ->
+                hotNftInfos.add(new HotNftInfo(nft)));
+
+        return new PageResponseDto<>(nfts.getNumber(), nfts.hasNext(), hotNftInfos);
     }
 
     public boolean checkIsLiked(Long memberId, Nft nft) {

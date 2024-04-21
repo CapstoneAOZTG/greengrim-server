@@ -1,19 +1,18 @@
 package com.greengrim.green.core.event.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 public class EventResponseDto {
 
     @Getter
-    @RequiredArgsConstructor
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class EventInfo {
         private String title;
         private String imgUrl;
-
-        public EventInfo(String title, String imgUrl) {
-            this.title = title;
-            this.imgUrl = imgUrl;
-        }
+        private boolean isWebView;
+        private String url;
     }
 }

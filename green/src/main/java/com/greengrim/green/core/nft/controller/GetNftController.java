@@ -5,6 +5,7 @@ import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.NftGrade;
+import com.greengrim.green.core.nft.dto.NftResponseDto.HotNftInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftCollectionInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
@@ -116,6 +117,17 @@ public class GetNftController {
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") NftSortOption sort) {
         return ResponseEntity.ok(getNftUseCase.getMemberNfts(member, memberId, page, size, sort));
+    }
+
+    /**
+     * [GET] 홈 화면 핫 NFT 조회
+     */
+    @Operation(summary = "홈 화면 핫 NFT 조회",
+            description = "한 달 동안 가장 좋아요를 많이 받은 NFT 순으로 5개 내려갑니다!")
+    @GetMapping("/home/hot-nfts")
+    public ResponseEntity<PageResponseDto<List<HotNftInfo>>> getHotNfts(
+            @CurrentMember Member member) {
+        return ResponseEntity.ok(getNftUseCase.getHotNfts(member));
     }
 
 }

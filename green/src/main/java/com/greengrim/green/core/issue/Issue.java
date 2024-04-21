@@ -1,4 +1,4 @@
-package com.greengrim.green.core.event;
+package com.greengrim.green.core.issue;
 
 import com.greengrim.green.common.entity.BaseTime;
 import jakarta.persistence.Entity;
@@ -11,14 +11,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Event extends BaseTime {
+public class Issue extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +27,6 @@ public class Event extends BaseTime {
     private String title;
     @NotNull
     private String imgUrl;
-
-    @ColumnDefault("true")
-    private boolean isWebView;  // true: 웹뷰, false: 딥링크
-    private String url;         // 해당 링크를 나타냄
+    @NotNull
+    private String url;         // 웹뷰 링크
 }
