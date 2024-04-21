@@ -1,5 +1,7 @@
 package com.greengrim.green.core.member.dto;
 
+import static com.greengrim.green.common.util.UtilService.convertIntPointToString;
+
 import com.greengrim.green.core.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -60,12 +62,12 @@ public class MemberResponseDto {
     public static class HomeInfo {
         private String nickName;
         private String carbonReduction;
-        private int point;
+        private String point;
 
         public HomeInfo(Member member) {
             this.nickName = member.getNickName();
             this.carbonReduction = member.getCarbonReduction() + " g";
-            this.point = member.getPoint();
+            this.point = convertIntPointToString(member.getPoint()) + " GP";
         }
     }
 
