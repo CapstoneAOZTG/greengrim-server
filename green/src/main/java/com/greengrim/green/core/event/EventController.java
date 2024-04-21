@@ -17,7 +17,7 @@ public class EventController {
      * [GET] 홈 화면 이벤트 조회
      */
     @Operation(summary = "홈 화면 이벤트 조회")
-    @GetMapping("/events")
+    @GetMapping("/home/events")
     public ResponseEntity<EventInfo> getHomeEvent() {
         return ResponseEntity.ok(eventService.getRecentEvent());
     }
