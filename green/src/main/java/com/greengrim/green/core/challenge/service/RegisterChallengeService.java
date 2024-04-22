@@ -21,6 +21,7 @@ public class RegisterChallengeService {
     private final EnterChallengeService enterChallengeService;
     private final ChatroomService chatroomService;
 
+    @Transactional
     public EnterChallengeInfo register(Member member, RegisterChallenge registerChallenge) {
 
         Chatroom chatroom = chatroomService.registerChatroom(member, registerChallenge.getTitle()); // 채팅방 생성
