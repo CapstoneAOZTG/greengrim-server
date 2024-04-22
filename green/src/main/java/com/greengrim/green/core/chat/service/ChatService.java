@@ -15,14 +15,9 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -51,7 +46,7 @@ public class ChatService {
 
     // CERT 타입이 아닐 떄
     if(!MessageType.CERT.equals(chatMessage.getType())) {
-      chatMessage.setCertId(null);
+      chatMessage.setCertId((long) -1);
       chatMessage.setCertImg("");
     }
     // ENTER, QUIT 타입일 때
