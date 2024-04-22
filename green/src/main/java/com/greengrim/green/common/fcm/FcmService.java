@@ -7,8 +7,6 @@ import com.google.gson.Gson;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.ChattingErrorCode;
 import com.greengrim.green.core.chat.ChatMessage;
-import com.greengrim.green.core.chatparticipant.Chatparticipant;
-import com.greengrim.green.core.chatparticipant.ChatparticipantService;
 import com.greengrim.green.core.member.Member;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,34 +18,29 @@ import org.springframework.stereotype.Service;
 public class FcmService {
 
   private final FirebaseMessaging firebaseMessaging;
-  private final ChatparticipantService chatparticipantService;
 
-  public void subscribe(Member member) {
-    List<Chatparticipant> chatparticipants = chatparticipantService.findByMemberId(member.getId());
+  public void subscribe(Member member, Long chatroomId) {
+
     List<String> memberFcmToken = new ArrayList<>();
     memberFcmToken.add(member.getFcmToken());
-    chatparticipants.forEach(chatparticipant -> {
-      try {
+    try {
         firebaseMessaging.getInstance()
-            .subscribeToTopic(memberFcmToken, Long.toString(chatparticipant.getChatroom().getId()));
+            .subscribeToTopic(memberFcmToken, Long.toString(chatroomId));
       } catch (FirebaseMessagingException e) {
         throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
-      }
-    });
+    }
+
   }
 
-  public void unsubscribe(Member member) {
-    List<Chatparticipant> chatparticipants = chatparticipantService.findByMemberId(member.getId());
+  public void unsubscribe(Member member, Long chatroomId) {
     List<String> memberFcmToken = new ArrayList<>();
     memberFcmToken.add(member.getFcmToken());
-    chatparticipants.forEach(chatparticipant -> {
-      try {
+    try {
         firebaseMessaging.getInstance()
-            .unsubscribeFromTopic(memberFcmToken, Long.toString(chatparticipant.getChatroom().getId()));
+            .unsubscribeFromTopic(memberFcmToken, Long.toString(chatroomId));
       } catch (FirebaseMessagingException e) {
         throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
-      }
-    });
+      };
   }
 
   public void sendChatMessage(ChatMessage chatMessage) {

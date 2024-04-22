@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,8 +21,10 @@ public class FcmController {
    */
   @Operation(summary = "FCM 구독")
   @GetMapping("/subscribe")
-  public void subscribeTopic(@CurrentMember Member member) {
-    fcmService.subscribe(member);
+  public void subscribeTopic(
+      @CurrentMember Member member,
+      @RequestParam Long chatroomId) {
+    fcmService.subscribe(member, chatroomId);
   }
 
   /**
@@ -29,8 +32,10 @@ public class FcmController {
    */
   @Operation(summary = "FCM 구독취소")
   @GetMapping("/unsubscribe")
-  public void unsubscribeTopic(@CurrentMember Member member) {
-    fcmService.unsubscribe(member);
+  public void unsubscribeTopic(
+      @CurrentMember Member member,
+      @RequestParam Long chatroomId) {
+    fcmService.unsubscribe(member, chatroomId);
   }
 
 }
