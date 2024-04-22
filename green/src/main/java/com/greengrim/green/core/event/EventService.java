@@ -12,6 +12,6 @@ public class EventService {
 
     public EventInfo getRecentEvent() {
         Event event = eventRepository.findFirstEventByOrderByCreatedAtDesc().orElse(null);
-        return new EventInfo(event.getTitle(), event.getImgUrl());
+        return new EventInfo(event.getTitle(), event.getImgUrl(), event.isWebView(), event.getUrl());
     }
 }

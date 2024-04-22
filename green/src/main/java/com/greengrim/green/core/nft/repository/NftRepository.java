@@ -2,6 +2,7 @@ package com.greengrim.green.core.nft.repository;
 
 import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.NftGrade;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -57,10 +58,30 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
             + "WHERE n.status = true "
             + "AND n.member IS NOT NULL "
             + "AND mh.hiddenMember IS NULL "
+            + "AND nh.nftId IS NULL "
             + "AND n.member.id=:targetId "
             + "AND n.status = true")
     Page<Nft> findMemberNfts(@Param("memberId") Long memberId,
                              @Param("targetId") Long targetId,
                              Pageable pageable);
+
+    /**
+     * 핫 NFT 조회 - 한달 내의 좋아요가 가장 많은
+     */
+    @Query(value = "SELECT n "
+            + "FROM Nft n "
+            + "JOIN Like l on n = l.nft "
+            + "LEFT JOIN MemberHiding mh ON n.member = mh.hiddenMember AND (:memberId IS NULL OR mh.memberId <> :memberId) "
+            + "LEFT JOIN NftHiding nh ON n.id = nh.nftId AND (:memberId IS NULL OR nh.memberId <> :memberId) "
+            + "WHERE l.createdAt >= :monthAgo AND l.status = true " // 한 달 내 좋아요
+            + "AND n.status = true "            // 삭제되지 않은 NFT이고
+            + "AND n.member IS NOT NULL "       // 주인이 있는 NFT 중
+            + "AND mh.hiddenMember IS NULL "    // 멤버 숨김 제외
+            + "AND nh.nftId IS NULL "           // NFT 숨김 제외
+            + "GROUP BY n "                     // NFT 끼리 묶었을 때
+            + "ORDER BY COUNT(l) DESC")         // 좋아요 개수 내림차순
+    Page<Nft> findHotNfts(@Param("memberId") Long memberId,
+                          @Param("monthAgo") LocalDateTime monthAgo,
+                          Pageable pageable);
 
 }
