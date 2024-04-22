@@ -15,7 +15,6 @@ import java.math.BigInteger;
 import java.util.concurrent.ExecutionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
@@ -36,7 +35,6 @@ public class RegisterNftService implements RegisterNftUseCase {
     /**
      * NFT 교환하기
      */
-    @Async
     @Transactional
     public void exchangeNft(Member member, Long id) {
 
@@ -56,6 +54,7 @@ public class RegisterNftService implements RegisterNftUseCase {
                     .get();
         }
         catch (InterruptedException | ExecutionException e) {
+
             throw new BaseException(NftErrorCode.EXCHANGE_FAIL);
         }
 
