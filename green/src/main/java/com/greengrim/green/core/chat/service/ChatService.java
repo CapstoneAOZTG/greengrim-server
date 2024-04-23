@@ -78,26 +78,4 @@ public class ChatService {
     return new PageResponseDto<>(chatMessages.getNumber(), chatMessages.hasNext(), messages);
   }
 
-//  public PageResponseDto<List<ChatMessage>> getMessages(Long roomId ,int page, int size) {
-//
-//    Pageable pageable = getPageable(page, size,SortOption.DESC);
-//
-//    Query query = new Query()
-//        .with(pageable)
-//        .skip(pageable.getPageSize() * pageable.getPageNumber()) // offset
-//        .limit(pageable.getPageSize());
-//
-//    //Add Filtered
-//    query.addCriteria(Criteria.where("roomId").is(roomId));
-//
-//    List<ChatMessage> filteredMetaData = mongoTemplate.find(query, ChatMessage.class, "chatMessage");
-//    Page<ChatMessage> metaDataPage = PageableExecutionUtils.getPage(
-//        filteredMetaData,
-//        pageable,
-//        () -> mongoTemplate.count(query.skip(-1).limit(-1),ChatMessage.class)
-//        // query.skip(-1).limit(-1)의 이유는 현재 쿼리가 페이징 하려고 하는 offset 까지만 보기에 이를 맨 처음부터 끝까지로 set 해줘 정확한 도큐먼트 개수를 구한다.
-//    );
-//
-//    return pagingChatMessage(metaDataPage);
-//  }
 }
