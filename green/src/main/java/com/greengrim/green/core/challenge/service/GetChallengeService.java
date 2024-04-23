@@ -150,12 +150,22 @@ public class GetChallengeService {
     public List<MyChallengeInfo> getMyChallenges(Member member, List<MyChallengesRequest> myChallengesRequests) {
         List<MyChallengeInfo> myChallengeInfos = new ArrayList<>();
 
-        // 채팅방 정보가 없다면
-        if(myChallengesRequests.isEmpty()) return myChallengeInfos;
-
         HashMap<Long, String> visitMap = makeHashMapFromRequest(myChallengesRequests);
         List<Challenge> myChallenges = challengeRepository.
             findListByMemberIdAndStateIsTrue(member.getId(), member.getId());
+
+        // 채팅방 정보가 없다면
+        if(myChallengesRequests.isEmpty()) {
+            for (Challenge challenge : myChallenges) {
+                Long chatroomId = challenge.getChatroom().getId();
+                log.info("chatroomId = {}", chatroomId);
+                ChatroomInfo chatroomInfo = new ChatroomInfo(chatroomId);
+                log.info("chatroomInfo = {}", chatroomInfo);
+                myChallengeInfos.add(new MyChallengeInfo(challenge, chatroomInfo));
+                log.info("myChallengeInfos = {}", myChallengeInfos);
+            }
+            return myChallengeInfos;
+        }
 
         for (Challenge challenge : myChallenges) {
 

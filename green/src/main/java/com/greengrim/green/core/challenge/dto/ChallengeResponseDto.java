@@ -172,6 +172,13 @@ public class ChallengeResponseDto {
             this.lastMessageTime = calLastMessageTime(chatMessage);
             this.newMessageCount = newMessageCount;
         }
+
+        public ChatroomInfo(Long chatroomId) {
+            this.chatroomId = chatroomId;
+            this.lastMessageContent = "";
+            this.lastMessageTime = "";
+            this.newMessageCount = 0L;
+        }
     }
 
     @Getter
