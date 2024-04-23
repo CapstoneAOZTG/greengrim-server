@@ -14,19 +14,22 @@ import com.greengrim.green.core.challenge.HotChallengeOption;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
+import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChatroomInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChatroomTopBarInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HomeChallenges;
-import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.MyChatroom;
+import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.MyChallengeInfo;
 import com.greengrim.green.core.challenge.repository.ChallengeRepository;
-import com.greengrim.green.core.chatparticipant.Chatparticipant;
+import com.greengrim.green.core.chat.ChatMessage;
+import com.greengrim.green.core.chat.repository.ChatRepository;
 import com.greengrim.green.core.chatparticipant.ChatparticipantService;
 import com.greengrim.green.core.member.Member;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +43,7 @@ public class GetChallengeService {
     private final ChallengeRepository challengeRepository;
     private final ChatparticipantService chatparticipantService;
     private final CertificationRepository certificationRepository;
+    private final ChatRepository chatRepository;
 
     /**
      * 챌린지 상세 조회
@@ -62,17 +66,6 @@ public class GetChallengeService {
 
         return makeChallengesSimpleInfoList(challenges);
     }
-
-    /**
-     * 내가 만든 챌린지 조회
-     */
-    public PageResponseDto<List<ChallengeSimpleInfo>> getMyChallenges(
-        Member member, int page, int size, SortOption sort) {
-        Page<Challenge> challenges = challengeRepository.findByMemberAndStateIsTrue(
-                member, getPageable(page, size, sort));
-            return makeChallengesSimpleInfoList(challenges);
-    }
-
 
     /**
      * 멤버 별 참여중인 챌린지 조회
@@ -152,23 +145,26 @@ public class GetChallengeService {
     /**
      * 내가 참가중인 챌린지(채팅방) 조회
      */
-    public List<MyChatroom> getMyChatrooms(Member member) {
-        List<MyChatroom> myChatrooms = new ArrayList<>();
+    public List<MyChallengeInfo> getMyChallenges(Member member, HashMap<Long, String> visitMap) {
+        List<MyChallengeInfo> myChallengeInfos = new ArrayList<>();
 
-        List<Chatparticipant> chatparticipants = chatparticipantService.findByMemberId(member.getId());
-        chatparticipants.forEach(chatparticipant -> {
-            Long chatroomId = chatparticipant.getChatroom().getId();
-            Challenge challenge = challengeRepository.findByChatroomId(chatroomId);
+        List<Challenge> myChallenges = challengeRepository.findByMember(member);
+        for (Challenge challenge : myChallenges) {
 
-            Duration duration = Duration.between(challenge.getCreatedAt(), LocalDateTime.now());
-            long days = duration.toDays();
+            Long chatroomId = challenge.getChatroom().getId();
 
-            String afterDay;
-            if (days == 0) afterDay = "오늘";
-            else afterDay = days + "일 전";
-            myChatrooms.add(new MyChatroom(challenge, afterDay));
-        });
-        return myChatrooms;
+            Optional<ChatMessage> chatMessage = chatRepository.
+                findFirstByRoomIdOrderByCreatedAtDesc(chatroomId);
+
+            int newMessageCount = chatRepository.
+                countByRoomIdAndCreatedAtAfter(challenge.getChatroom().getId(),
+                    visitMap.get(chatroomId));
+
+            ChatroomInfo chatroomInfo = new ChatroomInfo(chatroomId, chatMessage, newMessageCount);
+            myChallengeInfos.add(new MyChallengeInfo(challenge, chatroomInfo));
+        }
+
+        return myChallengeInfos;
     }
 
     /**

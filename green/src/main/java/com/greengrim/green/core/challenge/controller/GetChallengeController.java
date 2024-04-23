@@ -1,24 +1,27 @@
 package com.greengrim.green.core.challenge.controller;
 
-import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
+import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.HotChallengeOption;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChatroomTopBarInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HomeChallenges;
-import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.MyChatroom;
+import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.MyChallengeInfo;
 import com.greengrim.green.core.challenge.service.GetChallengeService;
 import com.greengrim.green.core.member.Member;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,26 +60,12 @@ public class GetChallengeController {
     }
 
     /**
-     * [GET] 내가 만든 챌린지 목록 조회
-     */
-    @Operation(summary = "내가 만든 챌린지 목록 조회")
-    @GetMapping("/visitor/challenges")
-    public ResponseEntity<PageResponseDto<List<ChallengeSimpleInfo>>> getMyChallenges(
-            @CurrentMember Member member,
-            @RequestParam(value = "page") int page,
-            @RequestParam(value = "size") int size,
-            @RequestParam(value = "sort") SortOption sort) {
-        return ResponseEntity.ok(getChallengeService.getMyChallenges(
-                member, page, size, sort));
-    }
-
-    /**
      * [GET] 멤버 별 참여중인 챌린지 목록 조회
      */
     @Operation(summary = "멤버 별 참여중인 챌린지 목록 조회",
             description = "자신이 참여중인 챌린지를 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
     @GetMapping("/visitor/challenges/members")
-    public ResponseEntity<PageResponseDto<List<ChallengeSimpleInfo>>> getMyChallenges(
+    public ResponseEntity<PageResponseDto<List<ChallengeSimpleInfo>>> getMemberChallenges(
             @CurrentMember Member member,
             @RequestParam(value = "memberId", required = false) Long id,
             @RequestParam(value = "page") int page,
@@ -113,9 +102,11 @@ public class GetChallengeController {
      * [GET] 내 채팅방(챌린지) 조회
      */
     @Operation(summary = "내 채팅방(챌린지) 조회")
-    @GetMapping("/visitor/challenges/chatrooms")
-    public ResponseEntity<List<MyChatroom>> getMyChatrooms(@CurrentMember Member member) {
-        return ResponseEntity.ok(getChallengeService.getMyChatrooms(member));
+    @PostMapping("/visitor/challenges/chatrooms")
+    public ResponseEntity<List<MyChallengeInfo>> getMyChallenges(
+        @CurrentMember Member member,
+        @RequestBody HashMap<Long, String> visitMap) {
+        return ResponseEntity.ok(getChallengeService.getMyChallenges(member, visitMap));
     }
 
     /**
