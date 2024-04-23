@@ -30,15 +30,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GetChallengeService {
@@ -159,13 +158,16 @@ public class GetChallengeService {
         for (Challenge challenge : myChallenges) {
 
             Long chatroomId = challenge.getChatroom().getId();
+            log.info("chatroomId = {}", chatroomId);
 
-            Optional<ChatMessage> chatMessage = chatRepository.
+            ChatMessage chatMessage = chatRepository.
                 findFirstByRoomIdOrderByCreatedAtDesc(chatroomId);
+            log.info("chatMessage = {}", chatMessage.getMessage());
 
             Long newMessageCount = chatRepository.
                 countByRoomIdAndCreatedAtGreaterThan(challenge.getChatroom().getId(),
                     visitMap.get(chatroomId));
+            log.info("messageCount = {}", newMessageCount);
 
             ChatroomInfo chatroomInfo = new ChatroomInfo(chatroomId, chatMessage, newMessageCount);
             myChallengeInfos.add(new MyChallengeInfo(challenge, chatroomInfo));

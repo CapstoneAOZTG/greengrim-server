@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -167,9 +166,9 @@ public class ChallengeResponseDto {
         private String lastMessageTime;
         private Long newMessageCount;
 
-        public ChatroomInfo(Long chatroomId, Optional<ChatMessage> chatMessage, Long newMessageCount) {
+        public ChatroomInfo(Long chatroomId, ChatMessage chatMessage, Long newMessageCount) {
             this.chatroomId = chatroomId;
-            this.lastMessageContent = chatMessage.get().getMessage();
+            this.lastMessageContent = chatMessage.getMessage();
             this.lastMessageTime = calLastMessageTime(chatMessage);
             this.newMessageCount = newMessageCount;
         }
@@ -208,8 +207,8 @@ public class ChallengeResponseDto {
         }
     }
 
-    private static String calLastMessageTime(Optional<ChatMessage> chatMessage) {
-        String createAtStr = chatMessage.get().getCreatedAt();
+    private static String calLastMessageTime(ChatMessage chatMessage) {
+        String createAtStr = chatMessage.getCreatedAt();
 
         LocalDateTime createAt = LocalDateTime.parse(createAtStr, DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
         LocalDate today = LocalDate.now();
@@ -217,6 +216,6 @@ public class ChallengeResponseDto {
         long daysAgo = ChronoUnit.DAYS.between(createAt.toLocalDate(), today);
 
         if (daysAgo == 0) return daysAgo + "일 전";
-        return chatMessage.get().getMessage();
+        return chatMessage.getMessage();
     }
 }
