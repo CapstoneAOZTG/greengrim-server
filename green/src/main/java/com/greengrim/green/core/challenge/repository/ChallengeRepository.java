@@ -4,6 +4,7 @@ import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.member.Member;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Repository;
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     Optional<Challenge> findByIdAndStatusIsTrue(@Param("id") Long id);
+
+    @Query("SELECT c FROM Challenge c WHERE c.member = :member")
+    List<Challenge> findByMember(@Param("member") Member member);
 
     @Query(value = "SELECT c " +
             "FROM Challenge c " +
