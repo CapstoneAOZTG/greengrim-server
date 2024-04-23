@@ -15,5 +15,5 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String> {
   Optional<ChatMessage> findFirstByRoomIdOrderByCreatedAtDesc(Long roomId);
 
   @Query("{ 'roomId' : ?0, 'createAt' : { $gt : ?1 } }")
-  int countByRoomIdAndCreatedAtAfter(Long roomId, String createdAt);
+  long countByRoomIdAndCreatedAtAfter(Long roomId, String createdAt);
 }

@@ -156,7 +156,7 @@ public class GetChallengeService {
             Optional<ChatMessage> chatMessage = chatRepository.
                 findFirstByRoomIdOrderByCreatedAtDesc(chatroomId);
 
-            int newMessageCount = chatRepository.
+            int newMessageCount = (int) chatRepository.
                 countByRoomIdAndCreatedAtAfter(challenge.getChatroom().getId(),
                     visitMap.get(chatroomId));
 
