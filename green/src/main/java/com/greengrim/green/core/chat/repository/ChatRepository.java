@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 
 
 public interface ChatRepository extends MongoRepository<ChatMessage, String> {
@@ -14,6 +13,5 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String> {
 
   Optional<ChatMessage> findFirstByRoomIdOrderByCreatedAtDesc(Long roomId);
 
-  @Query("{ 'roomId' : ?0, 'createAt' : { $gt : ?1 } }")
-  long countByRoomIdAndCreatedAtAfter(Long roomId, String createdAt);
+  Long countByRoomIdAndCreatedAtGreaterThan(Long roomId, String createdAt);
 }

@@ -165,9 +165,9 @@ public class ChallengeResponseDto {
         private Long chatroomId;
         private String lastMessageContent;
         private String lastMessageTime;
-        private int newMessageCount;
+        private Long newMessageCount;
 
-        public ChatroomInfo(Long chatroomId, Optional<ChatMessage> chatMessage, int newMessageCount) {
+        public ChatroomInfo(Long chatroomId, Optional<ChatMessage> chatMessage, Long newMessageCount) {
             this.chatroomId = chatroomId;
             this.lastMessageContent = chatMessage.get().getMessage();
             this.lastMessageTime = calLastMessageTime(chatMessage);
