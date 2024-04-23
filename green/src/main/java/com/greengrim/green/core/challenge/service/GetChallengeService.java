@@ -29,15 +29,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.web3j.crypto.Hash;
 
 @Service
 @RequiredArgsConstructor
@@ -149,10 +149,12 @@ public class GetChallengeService {
      * 내가 참가중인 챌린지(채팅방) 조회
      */
     public List<MyChallengeInfo> getMyChallenges(Member member, List<MyChallengesRequest> myChallengesRequests) {
-
         List<MyChallengeInfo> myChallengeInfos = new ArrayList<>();
-        HashMap<Long, String> visitMap = makeHashMapFromRequest(myChallengesRequests);
 
+        // 채팅방 정보가 없다면
+        if(myChallengesRequests.isEmpty()) return myChallengeInfos;
+
+        HashMap<Long, String> visitMap = makeHashMapFromRequest(myChallengesRequests);
         List<Challenge> myChallenges = challengeRepository.findByMember(member);
         for (Challenge challenge : myChallenges) {
 
