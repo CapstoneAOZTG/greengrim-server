@@ -154,7 +154,9 @@ public class GetChallengeService {
         if(myChallengesRequests.isEmpty()) return myChallengeInfos;
 
         HashMap<Long, String> visitMap = makeHashMapFromRequest(myChallengesRequests);
-        List<Challenge> myChallenges = challengeRepository.findByMember(member);
+        List<Challenge> myChallenges = challengeRepository.
+            findListByMemberIdAndStateIsTrue(member.getId(), member.getId());
+
         for (Challenge challenge : myChallenges) {
 
             Long chatroomId = challenge.getChatroom().getId();
@@ -170,7 +172,9 @@ public class GetChallengeService {
             log.info("messageCount = {}", newMessageCount);
 
             ChatroomInfo chatroomInfo = new ChatroomInfo(chatroomId, chatMessage, newMessageCount);
+            log.info("chatroomInfo = {}", chatroomInfo);
             myChallengeInfos.add(new MyChallengeInfo(challenge, chatroomInfo));
+            log.info("myChallengeInfos = {}", myChallengeInfos);
         }
 
         return myChallengeInfos;
