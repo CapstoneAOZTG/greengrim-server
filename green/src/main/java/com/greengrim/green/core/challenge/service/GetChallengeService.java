@@ -11,6 +11,7 @@ import com.greengrim.green.core.certification.repository.CertificationRepository
 import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.HotChallengeOption;
+import com.greengrim.green.core.challenge.dto.ChallengeRequestDto.MyChallengesRequest;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
@@ -28,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.web3j.crypto.Hash;
 
 @Service
 @RequiredArgsConstructor
@@ -145,8 +148,10 @@ public class GetChallengeService {
     /**
      * 내가 참가중인 챌린지(채팅방) 조회
      */
-    public List<MyChallengeInfo> getMyChallenges(Member member, HashMap<Long, String> visitMap) {
+    public List<MyChallengeInfo> getMyChallenges(Member member, List<MyChallengesRequest> myChallengesRequests) {
+
         List<MyChallengeInfo> myChallengeInfos = new ArrayList<>();
+        HashMap<Long, String> visitMap = makeHashMapFromRequest(myChallengesRequests);
 
         List<Challenge> myChallenges = challengeRepository.findByMember(member);
         for (Challenge challenge : myChallenges) {
@@ -188,5 +193,13 @@ public class GetChallengeService {
         String date = String.valueOf(LocalDate.now());
         boolean todayCertification = certificationRepository.findByDateAndMemberAndChallenge(date, member, challenge).isPresent();
         return new ChatroomTopBarInfo(challenge, certificationCount, todayCertification);
+    }
+
+    public HashMap makeHashMapFromRequest(List<MyChallengesRequest> myChallengesRequests) {
+        HashMap<Long, String> hashMap = new HashMap<>();
+        for (MyChallengesRequest obj : myChallengesRequests) {
+            hashMap.put(obj.getChatroomId(), obj.getLastVisit());
+        }
+        return hashMap;
     }
 }

@@ -5,6 +5,7 @@ import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.HotChallengeOption;
+import com.greengrim.green.core.challenge.dto.ChallengeRequestDto.MyChallengesRequest;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChatroomTopBarInfo;
@@ -13,7 +14,6 @@ import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.MyChallengeIn
 import com.greengrim.green.core.challenge.service.GetChallengeService;
 import com.greengrim.green.core.member.Member;
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -105,8 +105,8 @@ public class GetChallengeController {
     @PostMapping("/visitor/challenges/chatrooms")
     public ResponseEntity<List<MyChallengeInfo>> getMyChallenges(
         @CurrentMember Member member,
-        @RequestBody HashMap<Long, String> visitMap) {
-        return ResponseEntity.ok(getChallengeService.getMyChallenges(member, visitMap));
+        @RequestBody List<MyChallengesRequest> myChallengesRequests) {
+        return ResponseEntity.ok(getChallengeService.getMyChallenges(member, myChallengesRequests));
     }
 
     /**
