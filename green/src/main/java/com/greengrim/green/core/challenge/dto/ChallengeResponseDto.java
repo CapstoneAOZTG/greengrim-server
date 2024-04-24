@@ -222,7 +222,7 @@ public class ChallengeResponseDto {
 
         long daysAgo = ChronoUnit.DAYS.between(createAt.toLocalDate(), today);
 
-        if (daysAgo == 0) return daysAgo + "일 전";
-        return chatMessage.getMessage();
+        if (daysAgo == 0) return chatMessage.getSentTime();
+        return daysAgo + "일 전";
     }
 }
