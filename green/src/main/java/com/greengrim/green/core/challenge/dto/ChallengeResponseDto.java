@@ -4,6 +4,11 @@ import static com.greengrim.green.common.entity.Time.calculateTime;
 
 import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.Challenge;
+import com.greengrim.green.core.chat.ChatMessage;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -139,19 +144,40 @@ public class ChallengeResponseDto {
 
     @Getter
     @RequiredArgsConstructor
-    public static class MyChatroom {
-        private Long challengeId;
-        private Long chatroomId;
+    public static class MyChallengeInfo {
+        private Long id;
         private String title;
-        private String ImgUrl;
-        private String afterDay;
+        private String imgUrl;
+        private ChatroomInfo chatroomInfo;
 
-        public MyChatroom(Challenge challenge, String afterDay) {
-            this.challengeId = challenge.getId();
-            this.chatroomId = challenge.getChatroom().getId();
+        public MyChallengeInfo(Challenge challenge, ChatroomInfo chatroomInfo) {
+            this.id = challenge.getId();
             this.title = challenge.getTitle();
-            this.ImgUrl = challenge.getImgUrl();
-            this.afterDay = afterDay;
+            this.imgUrl = challenge.getImgUrl();
+            this.chatroomInfo = chatroomInfo;
+        }
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class ChatroomInfo {
+        private Long chatroomId;
+        private String lastMessageContent;
+        private String lastMessageTime;
+        private Long newMessageCount;
+
+        public ChatroomInfo(Long chatroomId, ChatMessage chatMessage, Long newMessageCount) {
+            this.chatroomId = chatroomId;
+            this.lastMessageContent = chatMessage.getMessage();
+            this.lastMessageTime = calLastMessageTime(chatMessage);
+            this.newMessageCount = newMessageCount;
+        }
+
+        public ChatroomInfo(Long chatroomId) {
+            this.chatroomId = chatroomId;
+            this.lastMessageContent = "";
+            this.lastMessageTime = "";
+            this.newMessageCount = 0L;
         }
     }
 
@@ -162,11 +188,13 @@ public class ChallengeResponseDto {
         private Long challengeId;
         private Long chatroomId;
         private String title;
+        private String imgUrl;
 
         public EnterChallengeInfo(Challenge challenge) {
             this.challengeId = challenge.getId();
             this.chatroomId = challenge.getChatroom().getId();
             this.title = challenge.getTitle();
+            this.imgUrl = challenge.getImgUrl();
         }
     }
 
@@ -186,5 +214,17 @@ public class ChallengeResponseDto {
             this.certificationCount = certificationCount;
             this.todayCertification = todayCertification;
         }
+    }
+
+    private static String calLastMessageTime(ChatMessage chatMessage) {
+        String createAtStr = chatMessage.getCreatedAt();
+
+        LocalDateTime createAt = LocalDateTime.parse(createAtStr, DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+        LocalDate today = LocalDate.now();
+
+        long daysAgo = ChronoUnit.DAYS.between(createAt.toLocalDate(), today);
+
+        if (daysAgo == 0) return chatMessage.getSentTime();
+        return daysAgo + "일 전";
     }
 }

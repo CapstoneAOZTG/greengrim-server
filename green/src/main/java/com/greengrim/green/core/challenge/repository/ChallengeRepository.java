@@ -4,6 +4,7 @@ import com.greengrim.green.core.challenge.Category;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.member.Member;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Repository;
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     Optional<Challenge> findByIdAndStatusIsTrue(@Param("id") Long id);
+
+    @Query("SELECT c FROM Challenge c WHERE c.member = :member")
+    List<Challenge> findByMember(@Param("member") Member member);
 
     @Query(value = "SELECT c " +
             "FROM Challenge c " +
@@ -48,8 +52,17 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     Page<Challenge> findByMemberIdAndStateIsTrue(@Param("memberId") Long memberId,
                                                  @Param("targetId") Long targetId,
                                                  Pageable pageable);
-
-    Challenge findByChatroomId(Long chatroomId);
+    @Query(value = "SELECT c "
+        + "FROM Challenge c "
+        + "JOIN Chatroom cr ON c.chatroom.id = cr.id "
+        + "JOIN Chatparticipant cp ON cr.id = cp.chatroom.id "
+        + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
+        + "LEFT JOIN ChallengeHiding ch ON c.id = ch.challengeId AND ch.memberId = :memberId "
+        + "WHERE cp.member.id = :targetId AND c.status = true "
+        + "AND mh.hiddenMember IS NULL "
+        + "AND ch.challengeId IS NULL ")
+    List<Challenge> findListByMemberIdAndStateIsTrue(@Param("memberId") Long memberId,
+                                                     @Param("targetId") Long targetId);
 
     /**
      * Category 입력되지 않으면 전체 챌린지 조회, 입력되면 해당 Category 의 챌린지만 조회

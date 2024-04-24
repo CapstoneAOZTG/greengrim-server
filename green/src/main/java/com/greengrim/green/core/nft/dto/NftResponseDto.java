@@ -1,6 +1,7 @@
 package com.greengrim.green.core.nft.dto;
 
 import static com.greengrim.green.common.entity.Time.calculateTime;
+import static com.greengrim.green.common.util.UtilService.formatIntToString;
 
 import com.greengrim.green.core.member.dto.MemberResponseDto.MemberSimpleInfo;
 import com.greengrim.green.core.nft.Nft;
@@ -120,6 +121,21 @@ public class NftResponseDto {
             this.nftSimpleInfo = new NftSimpleInfo(nft);
             this.memberSimpleInfo = new MemberSimpleInfo(nft.getMember());
             this.isLike = isLike;
+        }
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class HotNftInfo {
+        private NftSimpleInfo nftSimpleInfo;
+        private MemberSimpleInfo memberSimpleInfo;
+        private String likeCount;
+
+        public HotNftInfo(Nft nft) {
+            this.nftSimpleInfo = new NftSimpleInfo(nft);
+            this.memberSimpleInfo = new MemberSimpleInfo(nft.getMember());
+            this.likeCount = formatIntToString(nft.getLikeCount());
         }
     }
 

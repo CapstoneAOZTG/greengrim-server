@@ -9,4 +9,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface ChatRepository extends MongoRepository<ChatMessage, String> {
 
   Page<ChatMessage> findByRoomId(Long roomId, Pageable pageable);
+
+  ChatMessage findFirstByRoomIdOrderByCreatedAtDesc(Long roomId);
+
+  Long countByRoomIdAndCreatedAtGreaterThan(Long roomId, String createdAt);
 }

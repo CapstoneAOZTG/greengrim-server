@@ -29,7 +29,7 @@ public class ChatMessage  {
   private String sentTime;
 
   @Column(name = "created_at")
-  private Long createdAt;
+  private String createdAt;
 
   public
   ChatMessage() {
@@ -50,13 +50,12 @@ public class ChatMessage  {
 
   public void setTime() {
     LocalDateTime now = LocalDateTime.now();
-    System.out.println(now);
 
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일", Locale.KOREAN);
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("a h시 m분", Locale.KOREAN);
-    DateTimeFormatter createAtFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    DateTimeFormatter createAtFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 
-    this.createdAt = Long.valueOf(now.format(createAtFormatter));
+    this.createdAt = now.format(createAtFormatter);
     this.sentDate = now.format(dateFormatter);
     this.sentTime = now.format(timeFormatter);
   }

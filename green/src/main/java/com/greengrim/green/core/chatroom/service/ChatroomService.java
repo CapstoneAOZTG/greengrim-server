@@ -27,6 +27,7 @@ public class ChatroomService{
   /**
    * 채팅방 생성
    */
+  @Transactional
   public Chatroom registerChatroom(Member member, String title) {
     Chatroom chatroom = Chatroom.builder()
         .title(title)
@@ -40,6 +41,7 @@ public class ChatroomService{
   /**
    * 채팅방 삭제
    */
+  @Transactional
   public void removeChatroom(Chatroom chatroom) {
     chatroom.setStatus(false);
     chatroomRepository.save(chatroom);
@@ -49,6 +51,7 @@ public class ChatroomService{
   /**
    * 채팅방 입장
    */
+  @Transactional
   public void enterChatroom(Member member, Chatroom chatroom) {
     chatparticipantService.save(member, chatroom);
     chatService.sendChatMessage(ChatMessage.builder()
@@ -63,6 +66,7 @@ public class ChatroomService{
   /**
    * 채팅방 퇴장
    */
+  @Transactional
   public void exitChatroom(Member member, Long chatroomId) {
     chatparticipantService.remove(member.getId(), chatroomId);
     chatService.sendChatMessage(ChatMessage.builder()
