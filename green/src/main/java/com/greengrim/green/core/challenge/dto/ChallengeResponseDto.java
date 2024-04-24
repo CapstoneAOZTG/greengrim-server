@@ -214,7 +214,7 @@ public class ChallengeResponseDto {
             this.category = challenge.getCategory();
             this.ticketCount = challenge.getTicketCountTag();
             this.goalCount = "인증 " + certificationCount + "/" + challenge.getGoalCount() + "회";
-            this.certificationCount = certificationCount;
+            this.certificationCount = certificationCount + 1;
             this.todayCertification = todayCertification;
         }
     }
