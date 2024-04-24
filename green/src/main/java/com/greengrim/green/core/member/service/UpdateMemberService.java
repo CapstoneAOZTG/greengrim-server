@@ -5,6 +5,7 @@ import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.common.oauth.jwt.JwtTokenProvider;
 import com.greengrim.green.common.s3.S3Service;
 import com.greengrim.green.core.certification.service.UpdateCertificationService;
+import com.greengrim.green.core.chat.service.ChatService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.dto.MemberRequestDto.ModifyProfile;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
@@ -24,20 +25,21 @@ public class UpdateMemberService  {
 
     private final UpdateCertificationService updateCertificationService;
     private final UpdateNftService updateNftService;
+    private final ChatService chatService;
 
     private final FcmService fcmService;
     private final S3Service s3Service;
 
     public MemberResponseDto.TokenInfo refreshAccessToken(Member member) {
         MemberResponseDto.TokenInfo newTokenInfo
-                = jwtTokenProvider.generateToken(member.getId());
+            = jwtTokenProvider.generateToken(member.getId());
 
         // DB refreshToken 변경
         member.changeRefreshToken(newTokenInfo.getRefreshToken());
         memberRepository.save(member);
 
         return new MemberResponseDto.TokenInfo(
-                newTokenInfo.getAccessToken(), newTokenInfo.getRefreshToken(), member.getId());
+            newTokenInfo.getAccessToken(), newTokenInfo.getRefreshToken(), member.getId());
     }
 
     public void modifyProfile(Member member, ModifyProfile modifyProfile) {
@@ -48,8 +50,8 @@ public class UpdateMemberService  {
 
         // Member 엔티티 업로드
         member.modifyMember(modifyProfile.getNickName(),
-                modifyProfile.getIntroduction(),
-                modifyProfile.getProfileImgUrl());
+            modifyProfile.getIntroduction(),
+            modifyProfile.getProfileImgUrl());
         memberRepository.save(member);
     }
 
@@ -58,8 +60,8 @@ public class UpdateMemberService  {
         updateCertificationService.setCertificationStatusFalseByMember(member);
         // NFT soft delete
         updateNftService.setCertificationStatusFalseByMember(member);
-        // TODO: MongoDB 해당 memberId를 가진 채팅 메세지에 탈퇴한 회원으로 처리
-        //       프로필 이미지는 기본으로, 이름은 (알수없음) 으로 변경
+        // 채팅 메세지 delete
+        chatService.deleteMember(member);
         // 멤버 soft delete
         member.setStatusFalse();
     }

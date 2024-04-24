@@ -82,4 +82,8 @@ public class ChatService {
     return new PageResponseDto<>(chatMessages.getNumber(), chatMessages.hasNext(), messages);
   }
 
+  public void deleteMember(Member member) {
+    chatRepository.updateProfileAndNicknameBySenderId(member.getId(), member.getProfileBasicImgUrl(), "알수없음");
+  }
+
 }
