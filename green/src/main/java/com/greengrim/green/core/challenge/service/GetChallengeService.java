@@ -187,6 +187,10 @@ public class GetChallengeService {
             log.info("myChallengeInfos = {}", myChallengeInfos);
         }
 
+        myChallengeInfos.sort((info1, info2) ->
+            info1.getChatroomInfo().getCreatedAt().
+                compareTo(info2.getChatroomInfo().getCreatedAt()));
+
         return myChallengeInfos;
     }
 

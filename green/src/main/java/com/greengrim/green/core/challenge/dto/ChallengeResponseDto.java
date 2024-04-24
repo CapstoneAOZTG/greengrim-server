@@ -165,12 +165,14 @@ public class ChallengeResponseDto {
         private String lastMessageContent;
         private String lastMessageTime;
         private Long newMessageCount;
+        private String createdAt;
 
         public ChatroomInfo(Long chatroomId, ChatMessage chatMessage, Long newMessageCount) {
             this.chatroomId = chatroomId;
             this.lastMessageContent = chatMessage.getMessage();
             this.lastMessageTime = calLastMessageTime(chatMessage);
             this.newMessageCount = newMessageCount;
+            this.createdAt = chatMessage.getCreatedAt();
         }
 
         public ChatroomInfo(Long chatroomId) {
@@ -178,6 +180,7 @@ public class ChallengeResponseDto {
             this.lastMessageContent = "";
             this.lastMessageTime = "";
             this.newMessageCount = 0L;
+            this.createdAt = "0";
         }
     }
 
