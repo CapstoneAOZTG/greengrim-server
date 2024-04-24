@@ -10,6 +10,7 @@ import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nft.usecase.UpdateNftUseCase;
 import com.greengrim.green.core.nftlike.LikeService;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,16 @@ public class UpdateNftService implements UpdateNftUseCase {
         nft.modify(modifyInfo);
 
         return new NftDetailInfo(nft, true, likeService.checkIsLiked(member.getId(), nft), traits);
+    }
+
+    /**
+     * Member를 넘겨 받아 그 Member의 모든 NFT를 soft delete
+     */
+    public void setCertificationStatusFalseByMember(Member member) {
+        List<Nft> nfts = nftRepository.findByMember(member);
+        for (Nft n : nfts) {
+            n.setStatusFalse();
+        }
     }
 
     public void checkIsMine(Long viewerId, Long ownerId) {

@@ -89,10 +89,13 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
             + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
             + "LEFT JOIN ChallengeHiding ch ON c.id = ch.challengeId AND ch.memberId = :memberId "
             + "WHERE c.status = true "
+            + "AND (:exceptionId IS NULL OR c.id <> :exceptionId) "
             + "AND mh.hiddenMember IS NULL "
             + "AND ch.challengeId IS NULL "
             + "ORDER BY c.headCount DESC")
-    Page<Challenge> findHotChallengesByHeadCount(@Param("memberId") Long memberId, Pageable pageable);
+    Page<Challenge> findHotChallengesByHeadCount(@Param("memberId") Long memberId,
+                                                 @Param("exceptionId") Long exceptionId,
+                                                 Pageable pageable);
 
     /**
      * 핫 챌린지 조회 - 가장 최근에 생성된
@@ -102,10 +105,15 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
             + "LEFT JOIN MemberHiding mh ON c.member = mh.hiddenMember AND mh.memberId = :memberId "
             + "LEFT JOIN ChallengeHiding ch ON c.id = ch.challengeId AND ch.memberId = :memberId "
             + "WHERE c.status = true "
+            + "AND (:exceptionId1 IS NULL OR c.id <> :exceptionId1) "
+            + "AND (:exceptionId2 IS NULL OR c.id <> :exceptionId2) "
             + "AND mh.hiddenMember IS NULL "
             + "AND ch.challengeId IS NULL "
             + "ORDER BY c.createdAt DESC")
-    Page<Challenge> findAllAndStatusIsTrueDesc(@Param("memberId") Long memberId, Pageable pageable);
+    Page<Challenge> findAllAndStatusIsTrueDesc(@Param("memberId") Long memberId,
+                                               @Param("exceptionId1") Long exceptionId1,
+                                               @Param("exceptionId2") Long exceptionId2,
+                                               Pageable pageable);
 
     /**
      * 핫 챌린지 조회 - 일주일 내의 인증이 가장 많은

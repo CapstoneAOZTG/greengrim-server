@@ -1,5 +1,6 @@
 package com.greengrim.green.core.nft.repository;
 
+import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.NftGrade;
 import java.time.LocalDateTime;
@@ -83,5 +84,7 @@ public interface NftRepository extends JpaRepository<Nft, Long> {
     Page<Nft> findHotNfts(@Param("memberId") Long memberId,
                           @Param("monthAgo") LocalDateTime monthAgo,
                           Pageable pageable);
+
+    List<Nft> findByMember(@Param("member") Member member);
 
 }
