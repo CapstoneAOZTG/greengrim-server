@@ -4,13 +4,10 @@ package com.greengrim.green.core.member.service;
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.common.oauth.jwt.JwtTokenProvider;
 import com.greengrim.green.common.s3.S3Service;
-import com.greengrim.green.core.certification.service.UpdateCertificationService;
-import com.greengrim.green.core.chat.service.ChatService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.dto.MemberRequestDto.ModifyProfile;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
 import com.greengrim.green.core.member.repository.MemberRepository;
-import com.greengrim.green.core.nft.service.UpdateNftService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,10 +19,6 @@ public class UpdateMemberService  {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
-
-    private final UpdateCertificationService updateCertificationService;
-    private final UpdateNftService updateNftService;
-    private final ChatService chatService;
 
     private final FcmService fcmService;
     private final S3Service s3Service;
@@ -56,14 +49,9 @@ public class UpdateMemberService  {
     }
 
     public void deleteMember(Member member) {
-        // 인증 soft delete
-        updateCertificationService.setCertificationStatusFalseByMember(member);
-        // NFT soft delete
-        updateNftService.setCertificationStatusFalseByMember(member);
-        // 채팅 메세지 soft delete
-        chatService.deleteMember(member);
-        // 멤버 soft delete
-        member.setStatusFalse();
+        // member.setStatusFalse();
+        // TODO: 삭제된 member와 관련된 모든 리소스 삭제
+        memberRepository.delete(member);
     }
 
     public void plusPoint(Member member) {
