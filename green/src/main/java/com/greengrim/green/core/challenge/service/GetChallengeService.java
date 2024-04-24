@@ -177,8 +177,11 @@ public class GetChallengeService {
             log.info("chatMessage = {}", chatMessage.getMessage());
 
             Long newMessageCount = chatRepository.
-                countByRoomIdAndCreatedAtGreaterThan(challenge.getChatroom().getId(),
-                    visitMap.get(chatroomId));
+                countByRoomIdAndCreatedAtGreaterThanAndType(
+                    challenge.getChatroom().getId(),
+                    visitMap.get(chatroomId),
+                    "TALK");
+
             log.info("messageCount = {}", newMessageCount);
 
             ChatroomInfo chatroomInfo = new ChatroomInfo(chatroomId, chatMessage, newMessageCount);

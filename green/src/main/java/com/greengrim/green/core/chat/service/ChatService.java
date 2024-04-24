@@ -59,7 +59,7 @@ public class ChatService {
       if (MessageType.DATE.equals(chatMessage.getType())) {
         chatMessage.setNickName("");
         chatMessage.setProfileImg("");
-        chatMessage.setMessage(chatMessage.getCreatedAt());
+        chatMessage.setMessage(chatMessage.getSentTime());
       } else {
         Optional<Member> member = getMemberService.findMemberById(chatMessage.getSenderId());
         chatMessage.setNickName(member.get().getNickName());
