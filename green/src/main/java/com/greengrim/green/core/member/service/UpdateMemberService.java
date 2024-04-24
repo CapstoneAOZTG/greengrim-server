@@ -4,10 +4,12 @@ package com.greengrim.green.core.member.service;
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.common.oauth.jwt.JwtTokenProvider;
 import com.greengrim.green.common.s3.S3Service;
+import com.greengrim.green.core.certification.service.UpdateCertificationService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.dto.MemberRequestDto.ModifyProfile;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
 import com.greengrim.green.core.member.repository.MemberRepository;
+import com.greengrim.green.core.nft.service.UpdateNftService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class UpdateMemberService  {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
+
+    private final UpdateCertificationService updateCertificationService;
+    private final UpdateNftService updateNftService;
 
     private final FcmService fcmService;
     private final S3Service s3Service;
@@ -49,8 +54,14 @@ public class UpdateMemberService  {
     }
 
     public void deleteMember(Member member) {
+        // 인증 soft delete
+        updateCertificationService.setCertificationStatusFalseByMember(member);
+        // NFT soft delete
+        updateNftService.setCertificationStatusFalseByMember(member);
+        // TODO: MongoDB 해당 memberId를 가진 채팅 메세지에 탈퇴한 회원으로 처리
+        //       프로필 이미지는 기본으로, 이름은 (알수없음) 으로 변경
+        // 멤버 soft delete
         member.setStatusFalse();
-
     }
 
     public void plusPoint(Member member) {
