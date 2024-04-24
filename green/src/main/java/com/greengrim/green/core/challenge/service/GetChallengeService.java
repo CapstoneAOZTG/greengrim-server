@@ -100,23 +100,27 @@ public class GetChallengeService {
         Pageable pageable = PageRequest.of(0, 1);
         Page<Challenge> challenges;
         List<ChallengeInfo> challengeInfoList = new ArrayList<>();
-        // 1번 최근에 신설된
-        challenges = challengeRepository.findAllAndStatusIsTrueDesc(member.getId(), pageable);
-        challenges.forEach(challenge -> challengeInfoList.add(
-                new ChallengeInfo(challenge,
-                        calculateTime(challenge.getCreatedAt(), 3) + HotChallengeOption.MOST_RECENT.getSubTitle())));
-        // 2번 참여 인원이 가장 많은
-        challenges = challengeRepository.findHotChallengesByHeadCount(member.getId(), pageable);
-        challenges.forEach(challenge -> challengeInfoList.add(
-                new ChallengeInfo(challenge,
-                        challenge.getHeadCount() + HotChallengeOption.MOST_HEADCOUNT.getSubTitle())));
-        //3번 일주일 내 인증이 가장 많은
+        // 1번 일주일 내 인증이 가장 많은
         challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(
                 member.getId(),
                 LocalDateTime.now().minusWeeks(1),
                 pageable);
         challenges.forEach(challenge -> challengeInfoList.add(
                 new ChallengeInfo(challenge, HotChallengeOption.MOST_CERTIFICATION.getSubTitle())));
+        Long exceptionId1 = challengeInfoList.get(0).getId();
+
+        // 2번 참여 인원이 가장 많은
+        challenges = challengeRepository.findHotChallengesByHeadCount(member.getId(), exceptionId1, pageable);
+        challenges.forEach(challenge -> challengeInfoList.add(
+                new ChallengeInfo(challenge,
+                        challenge.getHeadCount() + HotChallengeOption.MOST_HEADCOUNT.getSubTitle())));
+        Long exceptionId2 = challengeInfoList.get(1).getId();
+
+        // 3번 최근에 신설된
+        challenges = challengeRepository.findAllAndStatusIsTrueDesc(member.getId(), exceptionId1, exceptionId2, pageable);
+        challenges.forEach(challenge -> challengeInfoList.add(
+                new ChallengeInfo(challenge,
+                        calculateTime(challenge.getCreatedAt(), 3) + HotChallengeOption.MOST_RECENT.getSubTitle())));
         return new HomeChallenges(challengeInfoList);
     }
 
@@ -128,10 +132,10 @@ public class GetChallengeService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Challenge> challenges = null;
         switch (option) {
-            case MOST_RECENT -> challenges = challengeRepository.findAllAndStatusIsTrueDesc(member.getId(), pageable);
             case MOST_CERTIFICATION -> challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(
                     member.getId(), LocalDateTime.now().minusWeeks(1), pageable);
-            case MOST_HEADCOUNT -> challenges = challengeRepository.findHotChallengesByHeadCount(member.getId(), pageable);
+            case MOST_HEADCOUNT -> challenges = challengeRepository.findHotChallengesByHeadCount(member.getId(), null, pageable);
+            case MOST_RECENT -> challenges = challengeRepository.findAllAndStatusIsTrueDesc(member.getId(), null, null, pageable);
         }
         return makeChallengesSimpleInfoList(challenges);
     }
