@@ -5,7 +5,6 @@ import com.greengrim.green.common.exception.errorCode.ChallengeErrorCode;
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeInfo;
-import com.greengrim.green.core.challenge.repository.ChallengeRepository;
 import com.greengrim.green.core.chatroom.service.ChatroomService;
 import com.greengrim.green.core.member.Member;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EnterChallengeService {
 
-  private final ChallengeRepository challengeRepository;
-
   private final GetChallengeService getChallengeService;
   private final ChatroomService chatroomService;
   private final FcmService fcmService;
-
 
   /**
    * 챌린지 참가 - 채팅방 입장

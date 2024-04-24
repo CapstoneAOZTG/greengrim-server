@@ -147,13 +147,13 @@ public class ChallengeResponseDto {
     public static class MyChallengeInfo {
         private Long id;
         private String title;
-        private String ImgUrl;
+        private String imgUrl;
         private ChatroomInfo chatroomInfo;
 
         public MyChallengeInfo(Challenge challenge, ChatroomInfo chatroomInfo) {
             this.id = challenge.getId();
             this.title = challenge.getTitle();
-            this.ImgUrl = challenge.getImgUrl();
+            this.imgUrl = challenge.getImgUrl();
             this.chatroomInfo = chatroomInfo;
         }
     }
@@ -188,11 +188,13 @@ public class ChallengeResponseDto {
         private Long challengeId;
         private Long chatroomId;
         private String title;
+        private String imgUrl;
 
         public EnterChallengeInfo(Challenge challenge) {
             this.challengeId = challenge.getId();
             this.chatroomId = challenge.getChatroom().getId();
             this.title = challenge.getTitle();
+            this.imgUrl = challenge.getImgUrl();
         }
     }
 
