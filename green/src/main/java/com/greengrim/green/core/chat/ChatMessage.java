@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ChatMessage  {
 
   public enum MessageType {
-    ENTER, TALK, EXIT, CERT
+    ENTER, TALK, EXIT, CERT, DATE
   }
   private MessageType type;
   private Long roomId;

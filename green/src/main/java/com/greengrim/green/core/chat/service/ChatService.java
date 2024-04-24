@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,6 @@ public class ChatService {
   private final GetMemberService getMemberService;
   private final FcmService fcmService;
   private final ChatRepository chatRepository;
-  private final MongoTemplate mongoTemplate;
 
   public String getRoomId(String destination) {
     int lastIndex = destination.lastIndexOf('/');
@@ -55,13 +53,19 @@ public class ChatService {
       chatMessage.setNickName("");
       chatMessage.setProfileImg("");
     }
-    // ENTER, QUIT 타입이 아닐 때
     else {
-      Optional<Member> member = getMemberService.findMemberById(chatMessage.getSenderId());
-      chatMessage.setNickName(member.get().getNickName());
-      chatMessage.setProfileImg(member.get().getProfileImgUrl());
-    }
 
+      // TIME 일 떄
+      if (MessageType.DATE.equals(chatMessage.getType())) {
+        chatMessage.setNickName("");
+        chatMessage.setProfileImg("");
+        chatMessage.setMessage(chatMessage.getCreatedAt());
+      } else {
+        Optional<Member> member = getMemberService.findMemberById(chatMessage.getSenderId());
+        chatMessage.setNickName(member.get().getNickName());
+        chatMessage.setProfileImg(member.get().getProfileImgUrl());
+      }
+    }
     redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
     fcmService.sendChatMessage(chatMessage);
     chatRepository.save(chatMessage);
