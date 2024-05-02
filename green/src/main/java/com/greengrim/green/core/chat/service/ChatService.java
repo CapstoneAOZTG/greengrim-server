@@ -88,7 +88,7 @@ public class ChatService {
     if (lastChatMessage != null) {
       // 보내려는 메세지와 가장 최근 메세지의 송신자와 보낸 시간(분)이 일치한다면
       if (chatMessage.getSenderId().equals(lastChatMessage.getSenderId())
-          && chatMessage.getCreatedAt().substring(0, 11).equals(lastChatMessage.getCreatedAt().substring(0, 11))) {
+          && chatMessage.getCreatedAt().substring(0, 12).equals(lastChatMessage.getCreatedAt().substring(0, 12))) {
         chatMessage.setProfileImg("");
         chatMessage.setSentTime("");
       }
