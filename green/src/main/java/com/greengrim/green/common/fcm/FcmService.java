@@ -9,8 +9,10 @@ import com.greengrim.green.common.exception.errorCode.ChattingErrorCode;
 import com.greengrim.green.core.alarm.AlarmType;
 import com.greengrim.green.core.chat.ChatMessage;
 import com.greengrim.green.core.member.Member;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,83 +20,83 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FcmService {
 
-  private final FirebaseMessaging firebaseMessaging;
+    private final FirebaseMessaging firebaseMessaging;
 
-  public void subscribe(Member member, Long chatroomId) {
+    public void subscribe(Member member, Long chatroomId) {
 
-    List<String> memberFcmToken = new ArrayList<>();
-    memberFcmToken.add(member.getFcmToken());
-    try {
-        firebaseMessaging.getInstance()
-            .subscribeToTopic(memberFcmToken, Long.toString(chatroomId));
-      } catch (FirebaseMessagingException e) {
-        throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
+        List<String> memberFcmToken = new ArrayList<>();
+        memberFcmToken.add(member.getFcmToken());
+        try {
+            firebaseMessaging.getInstance()
+                    .subscribeToTopic(memberFcmToken, Long.toString(chatroomId));
+        } catch (FirebaseMessagingException e) {
+            throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
+        }
+
     }
 
-  }
+    public void unsubscribe(Member member, Long chatroomId) {
+        List<String> memberFcmToken = new ArrayList<>();
+        memberFcmToken.add(member.getFcmToken());
+        try {
+            firebaseMessaging.getInstance()
+                    .unsubscribeFromTopic(memberFcmToken, Long.toString(chatroomId));
+        } catch (FirebaseMessagingException e) {
+            throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
+        }
+    }
 
-  public void unsubscribe(Member member, Long chatroomId) {
-    List<String> memberFcmToken = new ArrayList<>();
-    memberFcmToken.add(member.getFcmToken());
-    try {
-        firebaseMessaging.getInstance()
-            .unsubscribeFromTopic(memberFcmToken, Long.toString(chatroomId));
-      } catch (FirebaseMessagingException e) {
-        throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
-      }
-  }
-
-  public void sendChatMessage(ChatMessage chatMessage) {
-    Message message = Message.builder()
-        .putData("type", String.valueOf(chatMessage.getType()))
-        .putData("roomId", String.valueOf(chatMessage.getRoomId()))
-        .putData("senderId", String.valueOf(chatMessage.getSenderId()))
-        .putData("certId", String.valueOf(chatMessage.getCertId()))
-        .putData("message", chatMessage.getMessage())
-        .putData("nickName", chatMessage.getNickName())
-        .putData("profileImg", chatMessage.getProfileImg())
-        .putData("certImg", chatMessage.getCertImg())
-        .putData("sentDate", chatMessage.getSentDate())
-        .putData("sentTime", chatMessage.getSentTime())
-        .setTopic(String.valueOf(chatMessage.getRoomId()))
-        .build();
-
-    send(message);
-  }
-
-  public void sendGetPoint(Member member, Long resourceId,
-                           String variableContent, String fixedContent) {
-    Message message = Message.builder()
-        .putData("type", "POINT")
-        .putData("resourceId", String.valueOf(resourceId))
-        .putData("message", variableContent + " " + fixedContent)
-        .setToken(member.getFcmToken())
-        .build();
-
-    send(message);
-  }
-
-    public void sendNewIssue(Member member, Long issueId, String variableContent) {
+    public void sendChatMessage(ChatMessage chatMessage) {
         Message message = Message.builder()
-            .putData("type", "NEW_ISSUE")
-            .putData("issueId", String.valueOf(issueId))
-            .putData("message", variableContent + " " + AlarmType.NEW_ISSUE.getContent())
-            .setToken(member.getFcmToken())
-            .build();
+                .putData("type", String.valueOf(chatMessage.getType()))
+                .putData("roomId", String.valueOf(chatMessage.getRoomId()))
+                .putData("senderId", String.valueOf(chatMessage.getSenderId()))
+                .putData("certId", String.valueOf(chatMessage.getCertId()))
+                .putData("message", chatMessage.getMessage())
+                .putData("nickName", chatMessage.getNickName())
+                .putData("profileImg", chatMessage.getProfileImg())
+                .putData("certImg", chatMessage.getCertImg())
+                .putData("sentDate", chatMessage.getSentDate())
+                .putData("sentTime", chatMessage.getSentTime())
+                .setTopic(String.valueOf(chatMessage.getRoomId()))
+                .build();
 
         send(message);
     }
 
-  public void sendMintingSuccess(Member member, Long nftId, String variableContent) {
-    Message message = Message.builder()
-        .putData("type", "EXCHANGE_SUC")
-        .putData("nftId", String.valueOf(nftId))
-        .putData("message", variableContent + " " + AlarmType.NFT_EXCHANGE.getContent())
-        .setToken(member.getFcmToken())
-        .build();
+    public void sendGetPoint(Member member, Long resourceId,
+                             String variableContent, String fixedContent) {
+        Message message = Message.builder()
+                .putData("type", "POINT")
+                .putData("resourceId", String.valueOf(resourceId))
+                .putData("message", variableContent + " " + fixedContent)
+                .setToken(member.getFcmToken())
+                .build();
 
-    send(message);
-  }
+        send(message);
+    }
+
+    public void sendNewIssue(Member member, Long issueId, String variableContent) {
+        Message message = Message.builder()
+                .putData("type", "NEW_ISSUE")
+                .putData("issueId", String.valueOf(issueId))
+                .putData("message", variableContent + " " + AlarmType.NEW_ISSUE.getContent())
+                .setToken(member.getFcmToken())
+                .build();
+
+        send(message);
+    }
+
+    public void sendMintingSuccess(Member member, Long nftId, String variableContent) {
+        Message message = Message.builder()
+                .putData("type", "EXCHANGE_SUC")
+                .putData("nftId", String.valueOf(nftId))
+                .putData("message", variableContent + " " + AlarmType.NFT_EXCHANGE.getContent())
+                .setToken(member.getFcmToken())
+                .build();
+
+        send(message);
+    }
 
     public void sendNftLike(Member member, Long nftId, String variableContent, Long memberId) {
         Message message = Message.builder()
@@ -108,25 +110,25 @@ public class FcmService {
         send(message);
     }
 
-  public void sendMintingFail(Member member) {
-    Message message = Message.builder()
-        .putData("type", "EXCHANGE_FAIL")
-        .putData("message", "NFT 교환에 실패했어요.")
-        .setToken(member.getFcmToken())
-        .build();
+    public void sendMintingFail(Member member) {
+        Message message = Message.builder()
+                .putData("type", "EXCHANGE_FAIL")
+                .putData("message", "NFT 교환에 실패했어요.")
+                .setToken(member.getFcmToken())
+                .build();
 
-    send(message);
-  }
-
-  public void send(Message message) {
-    try {
-      firebaseMessaging.getInstance().send(message);
-    } catch (FirebaseMessagingException e) {
-      throw new BaseException(ChattingErrorCode.FAIL_SEND_MESSAGE);
+        send(message);
     }
 
-    Gson gson = new Gson();
-    String fcmMessageJson = gson.toJson(message);
-    System.out.println("FCM 메시지: " + fcmMessageJson);
-  }
+    public void send(Message message) {
+        try {
+            FirebaseMessaging.getInstance().send(message);
+        } catch (FirebaseMessagingException e) {
+            throw new BaseException(ChattingErrorCode.FAIL_SEND_MESSAGE);
+        }
+
+        Gson gson = new Gson();
+        String fcmMessageJson = gson.toJson(message);
+        System.out.println("FCM 메시지: " + fcmMessageJson);
+    }
 }
