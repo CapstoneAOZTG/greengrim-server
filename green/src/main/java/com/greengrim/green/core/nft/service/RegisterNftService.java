@@ -60,7 +60,7 @@ public class RegisterNftService implements RegisterNftUseCase {
 
         if (transactionReceipt != null) {
             afterExchange(member, nft, transactionReceipt.getTransactionHash());
-            fcmService.sendMintingSuccess(member, nft.getId());
+            fcmService.sendMintingSuccess(member, nft.getId(), String.valueOf(nft.getGrade()));
         }
         else {
             fcmService.sendMintingFail(member);

@@ -6,6 +6,7 @@ import com.google.firebase.messaging.Message;
 import com.google.gson.Gson;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.ChattingErrorCode;
+import com.greengrim.green.core.alarm.AlarmType;
 import com.greengrim.green.core.chat.ChatMessage;
 import com.greengrim.green.core.member.Member;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class FcmService {
             .unsubscribeFromTopic(memberFcmToken, Long.toString(chatroomId));
       } catch (FirebaseMessagingException e) {
         throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
-      };
+      }
   }
 
   public void sendChatMessage(ChatMessage chatMessage) {
@@ -61,26 +62,51 @@ public class FcmService {
     send(message);
   }
 
-  public void sendGetPoint(Member member, String title, int point) {
+  public void sendGetPoint(Member member, Long resourceId,
+                           String variableContent, String fixedContent) {
     Message message = Message.builder()
         .putData("type", "POINT")
-        .putData("roomId", title + "(으)로 " + point + " 포인트를 획득했습니다.")
+        .putData("resourceId", String.valueOf(resourceId))
+        .putData("message", variableContent + " " + fixedContent)
         .setToken(member.getFcmToken())
         .build();
 
     send(message);
   }
 
-  public void sendMintingSuccess(Member member, Long nftId) {
+    public void sendNewIssue(Member member, Long issueId, String variableContent) {
+        Message message = Message.builder()
+            .putData("type", "NEW_ISSUE")
+            .putData("issueId", String.valueOf(issueId))
+            .putData("message", variableContent + " " + AlarmType.NEW_ISSUE.getContent())
+            .setToken(member.getFcmToken())
+            .build();
+
+        send(message);
+    }
+
+  public void sendMintingSuccess(Member member, Long nftId, String variableContent) {
     Message message = Message.builder()
         .putData("type", "EXCHANGE_SUC")
         .putData("nftId", String.valueOf(nftId))
-        .putData("message", "NFT 교환에 성공했어요.")
+        .putData("message", variableContent + " " + AlarmType.NFT_EXCHANGE.getContent())
         .setToken(member.getFcmToken())
         .build();
 
     send(message);
   }
+
+    public void sendNftLike(Member member, Long nftId, String variableContent, Long memberId) {
+        Message message = Message.builder()
+                .putData("type", "NFT_LIKE")
+                .putData("nftId", String.valueOf(nftId))
+                .putData("memberId", String.valueOf(memberId))
+                .putData("message", variableContent + " " + AlarmType.NFT_LIKE.getContent())
+                .setToken(member.getFcmToken())
+                .build();
+
+        send(message);
+    }
 
   public void sendMintingFail(Member member) {
     Message message = Message.builder()

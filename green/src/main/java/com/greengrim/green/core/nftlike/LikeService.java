@@ -2,6 +2,9 @@ package com.greengrim.green.core.nftlike;
 
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
+import com.greengrim.green.common.fcm.FcmService;
+import com.greengrim.green.core.alarm.AlarmService;
+import com.greengrim.green.core.alarm.AlarmType;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.repository.NftRepository;
@@ -18,6 +21,8 @@ public class LikeService {
 
     private final LikeRepository likeRepository;
     private final NftRepository nftRepository;
+    private final FcmService fcmService;
+    private final AlarmService alarmService;
 
     public void save(Like like) {
         likeRepository.save(like);
@@ -38,12 +43,16 @@ public class LikeService {
         Like like = likeRepository.findByMemberIdAndNft(member.getId(), nft).orElse(null);
         if (like == null) { // 좋아요를 누른 적 없음
             register(member.getId(), nft);
-            nft.plusLikeCount();
+            newLike(member, nft);
             return new PushLikeInfo(true);
         } else { // 좋아요를 누른 적 있음
             boolean likeStatus = like.changeStatus();   // 좋아요 누른 후 상태 반환
-            if(likeStatus) nft.plusLikeCount();         // 좋아요 상태가 true 면 +1
-            else nft.minusLikeCount();                  // 좋아요 상태가 false 면 -1
+            if(likeStatus) { // // 좋아요 상태가 true
+                newLike(member, nft);
+            }
+            else {
+                nft.minusLikeCount();                  // 좋아요 상태가 false 면 -1
+            }
             return new PushLikeInfo(likeStatus);
         }
     }
@@ -59,5 +68,15 @@ public class LikeService {
         } else {
             return like.isStatus();
         }
+    }
+
+    /**
+     * 누군가 좋아요를 눌렀다면
+     * 좋아요 수 +1, fcm 전송, 알림 보관
+     */
+    public void newLike(Member member, Nft nft) {
+        nft.plusLikeCount();
+        fcmService.sendNftLike(nft.getMember(), nft.getId(), member.getNickName(), member.getId());
+        alarmService.register(nft.getMember(), AlarmType.NFT_LIKE, nft.getId(), nft.getImgUrl(), member.getNickName(), member.getId());
     }
 }
