@@ -74,8 +74,6 @@ public class RegisterCertificationService {
                 challenge.getImgUrl(), HistoryOption.CERTIFICATION, point, member.getPoint());
 
         String certificationTitle = round + "회차 인증";
-        // FCM 전송
-        fcmService.sendGetPoint(member, certificationId, certificationTitle, AlarmType.POINT_CERTIFICATION.getContent());
         // 알람 저장
         alarmService.register(member, AlarmType.POINT_CERTIFICATION, certificationId, challenge.getImgUrl(), certificationTitle, null);
     }
