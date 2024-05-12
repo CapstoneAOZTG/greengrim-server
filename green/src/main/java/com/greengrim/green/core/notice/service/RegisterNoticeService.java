@@ -9,8 +9,6 @@ import com.greengrim.green.core.notice.dto.NoticeRequestDto.RegisterNotice;
 import com.greengrim.green.core.notice.dto.NoticeResponseDto.NoticeDetailInfo;
 import com.greengrim.green.core.notice.repository.NoticeRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +26,8 @@ public class RegisterNoticeService {
         Notice notice = Notice.builder()
             .title(registerNotice.getTitle())
             .content(registerNotice.getContent())
-            .createdTime(getCreatedTime())
             .build();
         noticeRepository.save(notice);
         return new NoticeDetailInfo(notice);
-    }
-
-    public String getCreatedTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return LocalDateTime.now().format(formatter);
     }
 }

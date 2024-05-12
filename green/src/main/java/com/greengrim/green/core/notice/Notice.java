@@ -26,7 +26,5 @@ public class Notice extends BaseTime {
     private String title;
     @NotNull
     private String content;
-    @NotNull
-    private String createdTime;
 
 }
