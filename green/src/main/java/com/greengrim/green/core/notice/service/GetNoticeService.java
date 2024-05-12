@@ -17,11 +17,11 @@ public class GetNoticeService {
 
     private final NoticeRepository noticeRepository;
 
-    private static final int NumberOfSimpleNotices = 10;
+    private static final int NUMBER_OF_SIMPLE_NOTICES = 10;
 
     public List<NoticeSimpleInfo> getNoticeSimpleInfos() {
         Page<Notice> notices = noticeRepository.findNoticeByOrderByCreatedAtDesc(
-            PageRequest.of(0, NumberOfSimpleNotices));
+            PageRequest.of(0, NUMBER_OF_SIMPLE_NOTICES));
         List<NoticeSimpleInfo> noticeSimpleInfos = new ArrayList<>();
         notices.forEach(notice -> noticeSimpleInfos.add(
             new NoticeSimpleInfo(notice)));
