@@ -19,10 +19,7 @@ public class RegisterNoticeService {
 
     private final NoticeRepository noticeRepository;
 
-    public NoticeDetailInfo register(Member member, RegisterNotice registerNotice) {
-        if(member.getRole() != Role.ROLE_MANAGER)
-            throw new BaseException(MemberErrorCode.NO_AUTHORIZATION);
-
+    public NoticeDetailInfo register(RegisterNotice registerNotice) {
         Notice notice = Notice.builder()
             .title(registerNotice.getTitle())
             .content(registerNotice.getContent())

@@ -1,7 +1,5 @@
 package com.greengrim.green.core.notice.controller;
 
-import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.notice.dto.NoticeRequestDto.RegisterNotice;
 import com.greengrim.green.core.notice.dto.NoticeResponseDto.NoticeDetailInfo;
 import com.greengrim.green.core.notice.service.RegisterNoticeService;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/visitor/notices")
+@RequestMapping("/manager/notices")
 public class RegisterNoticeController {
 
     private final RegisterNoticeService registerNoticeService;
@@ -26,9 +24,8 @@ public class RegisterNoticeController {
     @Operation(summary = "공지사항 등록")
     @PostMapping
     public ResponseEntity<NoticeDetailInfo> registerNotice(
-        @CurrentMember Member member,
         @RequestBody RegisterNotice registerNotice) {
-        return ResponseEntity.ok(registerNoticeService.register(member, registerNotice));
+        return ResponseEntity.ok(registerNoticeService.register(registerNotice));
     }
 
 }
