@@ -10,23 +10,21 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/reports")
 public class RegisterReportController {
 
     private final RegisterReportService registerReportService;
 
     /**
      * [POST] 신고하기
-     * /visitor/report
+     * /visitor/reports
      */
     @Operation(summary = "신고하기")
-    @PostMapping("/visitor/report")
+    @PostMapping
     public ResponseEntity<Integer> registerReportMember(
             @CurrentMember Member member,
             @RequestParam(value = "type") ReportType type,
