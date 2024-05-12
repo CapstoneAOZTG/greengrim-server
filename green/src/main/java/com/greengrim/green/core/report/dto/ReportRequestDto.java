@@ -17,7 +17,7 @@ public class ReportRequestDto {
         private Long resourceId;
         @NotNull(message = "신고 사유를 선택해야합니다.")
         private ReportReason reason;
-        @NotBlank(message = "신고 사유를 입력해야합니다.")
+        @NotNull(message = "신고 사유를 입력해야합니다.")
         private String content;
     }
 }
