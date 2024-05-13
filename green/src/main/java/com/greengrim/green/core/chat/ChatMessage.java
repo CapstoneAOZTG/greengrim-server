@@ -1,9 +1,8 @@
 package com.greengrim.green.core.chat;
 
+import com.greengrim.green.common.entity.Time;
 import jakarta.persistence.Column;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,12 +50,8 @@ public class ChatMessage  {
   public void setTime() {
     LocalDateTime now = LocalDateTime.now();
 
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일", Locale.KOREAN);
-    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("a h시 m분", Locale.KOREAN);
-    DateTimeFormatter createAtFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
-
-    this.createdAt = now.format(createAtFormatter);
-    this.sentDate = now.format(dateFormatter);
-    this.sentTime = now.format(timeFormatter);
+    this.sentDate = now.format(Time.CHAT_DATE_FORMATTER);
+    this.sentTime = now.format(Time.CHAT_TIME_FORMATTER);
+    this.createdAt = now.format(Time.CHAT_CREATED_AT_FORMATTER);
   }
 }
