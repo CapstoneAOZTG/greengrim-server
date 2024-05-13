@@ -9,10 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/nft-likes")
 public class LikeController {
 
     private final LikeService likeService;
@@ -21,7 +23,7 @@ public class LikeController {
      * [POST] 좋아요 누르기
      */
     @Operation(summary = "좋아요 누르기")
-    @PostMapping("/visitor/nfts/like")
+    @PostMapping
     public ResponseEntity<PushLikeInfo> pushLike(
             @CurrentMember Member member,
             @RequestBody RegisterLike registerLike) {

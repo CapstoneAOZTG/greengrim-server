@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/member/hiding")
 public class NftHidingController {
 
     private final NftHidingService nftHidingService;
@@ -20,7 +22,7 @@ public class NftHidingController {
      * [POST] Nft 숨기기
      */
     @Operation(summary = "Nft 숨기기")
-    @PostMapping("/visitor/hiding/nft")
+    @PostMapping("/nft")
     public ResponseEntity<Integer> hideNft(
             @CurrentMember Member member,
             @RequestParam("id") Long id) {

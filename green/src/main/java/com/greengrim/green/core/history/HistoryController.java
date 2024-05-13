@@ -9,11 +9,13 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/points")
 public class HistoryController {
 
     private final HistoryService historyService;
@@ -22,7 +24,7 @@ public class HistoryController {
      * [GET] 내 포인트 조회
      */
     @Operation(summary = "내 포인트 조회")
-    @PostMapping("/visitor/points")
+    @PostMapping
     public ResponseEntity<PageResponseDto<List<HistoryInfo>>> getMyHistory(
             @CurrentMember Member member,
             @RequestParam(value = "page") int page,

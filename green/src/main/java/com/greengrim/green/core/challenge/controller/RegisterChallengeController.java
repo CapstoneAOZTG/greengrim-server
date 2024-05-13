@@ -17,11 +17,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/challenges")
 public class RegisterChallengeController {
 
     private final RegisterChallengeService registerChallengeService;
@@ -31,7 +33,7 @@ public class RegisterChallengeController {
      * [POST] 챌린지 생성
      */
     @Operation(summary = "챌린지 생성")
-    @PostMapping("/visitor/challenges")
+    @PostMapping
     public ResponseEntity<EnterChallengeInfo> registerChallenge(@CurrentMember Member member,
             @Valid @RequestBody RegisterChallenge registerChallenge) {
         return ResponseEntity.ok(registerChallengeService.register(member, registerChallenge));
@@ -41,7 +43,7 @@ public class RegisterChallengeController {
      * [POST] 챌린지 검색
      */
     @Operation(summary = "챌린지 검색")
-    @PostMapping("/visitor/challenges/searches")
+    @PostMapping("/searches")
     public ResponseEntity<PageResponseDto<List<ChallengeSimpleInfo>>> searchChallenges(
             @CurrentMember Member member,
             @RequestParam(value = "category", required = false) Category category,

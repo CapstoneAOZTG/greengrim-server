@@ -7,10 +7,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/member/nfts")
 public class RegisterNftController {
 
     private final RegisterNftUseCase registerNftUseCase;
@@ -19,7 +21,7 @@ public class RegisterNftController {
      * [POST] NFT 교환하기
      */
     @Operation(summary = "NFT 교환하기")
-    @PostMapping("/visitor/nfts/{id}")
+    @PostMapping("/{id}")
     public void exchangeNft(@CurrentMember Member member, @PathVariable("id") Long id) {
         registerNftUseCase.exchangeNft(member, id);
     }

@@ -19,11 +19,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/nfts")
 public class GetNftController {
 
     private final GetNftUseCase getNftUseCase;
@@ -32,7 +34,7 @@ public class GetNftController {
      * [GET] NFT 상세 조회
      */
     @Operation(summary = "NFT 상세 조회")
-    @GetMapping("/nfts/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<NftDetailInfo> getNftInfo(
             @CurrentMember Member member,
             @PathVariable("id") Long id) {
@@ -45,7 +47,7 @@ public class GetNftController {
      * [GET] NFT 잔량 조회
      */
     @Operation(summary = "NFT 잔량 조회")
-    @GetMapping("/visitor/nfts/stock/amount")
+    @GetMapping("/stock/amount")
     public ResponseEntity<NftStockAmountInfo> getNftStockAmountInfo() {
         return new ResponseEntity<>(
             getNftUseCase.getNftStockAmountInfo(),
@@ -56,7 +58,7 @@ public class GetNftController {
      * [GET] 교환할 NFT 조회
      */
     @Operation(summary = "교환할 NFT 조회")
-    @GetMapping("/visitor/nfts/stock")
+    @GetMapping("/stock")
     public ResponseEntity<NftStockInfo> getNftStockInfo(
         @RequestParam(value = "grade") NftGrade grade) {
         return new ResponseEntity<>(
@@ -68,7 +70,7 @@ public class GetNftController {
      * [GET] 교환할 NFT 조회 새로고침
      */
     @Operation(summary = "교환할 NFT 조회 새로고침")
-    @GetMapping("/visitor/nfts/stock/refresh")
+    @GetMapping("/stock/refresh")
     public ResponseEntity<NftStockInfo> getNftStockInfoRefresh(
         @RequestParam(value = "grade") NftGrade grade,
         @RequestParam(value = "nftList") List<Long> nftList) {
@@ -81,7 +83,7 @@ public class GetNftController {
      * [GET] 교환된 NFT List 보기
      */
     @Operation(summary = "교환된 NFT List 보기")
-    @GetMapping("/visitor/nfts")
+    @GetMapping
     public ResponseEntity<PageResponseDto<List<NftAndMemberInfo>>> getExchangedNfts(
             @CurrentMember Member member,
             @RequestParam(value = "page") int page,
@@ -94,7 +96,7 @@ public class GetNftController {
      * [GET] NFT Collection 조회
      */
     @Operation(summary = "NFT Collection 조회")
-    @GetMapping("/visitor/nfts/collection")
+    @GetMapping("/collection")
     public ResponseEntity<PageResponseDto<List<NftCollectionInfo>>> getCollectionNfts(
         @CurrentMember Member member,
         @RequestParam(value = "grade") NftGrade grade,
@@ -109,7 +111,7 @@ public class GetNftController {
      */
     @Operation(summary = "멤버 별 NFT 조회",
         description = "자신의 것을 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
-    @GetMapping("/visitor/nfts/profile")
+    @GetMapping("/profile")
     public ResponseEntity<PageResponseDto<List<NftAndMemberInfo>>> getProfileNfts(
             @CurrentMember Member member,
             @RequestParam(value = "memberId", required = false) Long memberId,
