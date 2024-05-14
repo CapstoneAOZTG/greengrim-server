@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/challenges")
 public class GetChallengeController {
 
     private final GetChallengeService getChallengeService;
@@ -35,7 +37,7 @@ public class GetChallengeController {
      * [GET] 챌린지 상세 조회
      */
     @Operation(summary = "챌린지 상세 조회")
-    @GetMapping("/challenges/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ChallengeDetailInfo> getChallengeInfo(
             @CurrentMember Member member,
             @PathVariable("id") Long id) {
@@ -48,7 +50,7 @@ public class GetChallengeController {
      * [GET] 카테고리 별 챌린지 목록 조회
      */
     @Operation(summary = "카테고리 별 챌린지 목록 조회")
-    @GetMapping("/challenges")
+    @GetMapping
     public ResponseEntity<PageResponseDto<List<ChallengeSimpleInfo>>> getChallengesByCategory(
             @CurrentMember Member member,
             @RequestParam(value = "category") Category category,
@@ -64,7 +66,7 @@ public class GetChallengeController {
      */
     @Operation(summary = "멤버 별 참여중인 챌린지 목록 조회",
             description = "자신이 참여중인 챌린지를 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
-    @GetMapping("/visitor/challenges/members")
+    @GetMapping("/members")
     public ResponseEntity<PageResponseDto<List<ChallengeSimpleInfo>>> getMemberChallenges(
             @CurrentMember Member member,
             @RequestParam(value = "memberId", required = false) Long id,
@@ -79,7 +81,7 @@ public class GetChallengeController {
      * [GET] 홈 화면 핫 챌린지 5개 조회
      */
     @Operation(summary = "홈 화면 핫 챌린지 조회")
-    @GetMapping("/home/challenges")
+    @GetMapping("/home")
     public ResponseEntity<HomeChallenges> getHotChallenges(
             @CurrentMember Member member) {
         return ResponseEntity.ok(getChallengeService.getHotChallenges(member));
@@ -102,7 +104,7 @@ public class GetChallengeController {
      * [GET] 내 채팅방(챌린지) 조회
      */
     @Operation(summary = "내 채팅방(챌린지) 조회")
-    @PostMapping("/visitor/challenges/chatrooms")
+    @PostMapping("/chatrooms")
     public ResponseEntity<List<MyChallengeInfo>> getMyChallenges(
         @CurrentMember Member member,
         @RequestBody List<MyChallengesRequest> myChallengesRequests) {
@@ -113,7 +115,7 @@ public class GetChallengeController {
      * [GET] 채팅방 상단 챌린지 정보 조회
      */
     @Operation(summary = "채팅방 상단 챌린지 정보 조회")
-    @GetMapping("/visitor/challenges/{id}")
+    @GetMapping("/chatroom-topbar/{id}")
     public ResponseEntity<ChatroomTopBarInfo> getChatroomTopBarInfo(
             @CurrentMember Member member,
             @PathVariable(value = "id") Long id) {
