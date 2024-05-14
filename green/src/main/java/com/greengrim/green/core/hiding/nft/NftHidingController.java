@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member/hiding")
+@RequestMapping("/visitor/hiding")
 public class NftHidingController {
 
     private final NftHidingService nftHidingService;

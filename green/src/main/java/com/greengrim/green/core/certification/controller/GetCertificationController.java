@@ -43,7 +43,7 @@ public class GetCertificationController {
      * [GET] 챌린지 별 인증 목록 조회 - MONTH
      */
     @Operation(summary = "챌린지 별 인증 내역 조회 - MONTH")
-    @GetMapping("/challenge/month")
+    @GetMapping("/challenges/month")
     public ResponseEntity<CertificationsByMonth> getCertificationsByChallengeMonth(
             @RequestParam(value = "challengeId") Long challengeId) {
         return ResponseEntity.ok(getCertificationService.getCertificationsByChallengeMonth(
@@ -54,7 +54,7 @@ public class GetCertificationController {
      * [GET] 챌린지 별 인증 목록 조회 - DATE
      */
     @Operation(summary = "챌린지 별 인증 내역 조회 - DATE")
-    @GetMapping("/challenge/date")
+    @GetMapping("/challenges/date")
     public ResponseEntity<PageResponseDto<List<CertificationsByChallengeDate>>> getCertificationsByChallengeDate(
             @CurrentMember Member member,
             @RequestParam(value = "challengeId") Long challengeId,
