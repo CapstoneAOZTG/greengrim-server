@@ -74,6 +74,33 @@ public class S3Service {
         return new S3Result(s3Client.getUrl(bucket, fileName).toString());
     }
 
+    /**
+     * MultipartFile 을 S3에 업로드하고 S3Result 로 반환
+     */
+    public List<S3Result> uploadFiles(List<MultipartFile> multipartFiles) {
+        List<S3Result> fileList = new ArrayList<>();
+
+        // forEach 구문을 통해 multipartFile로 넘어온 파일들 하나씩 fileList에 추가
+        multipartFiles.forEach(file -> {
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentLength(file.getSize());
+            objectMetadata.setContentType(file.getContentType());
+
+            try (InputStream inputStream = file.getInputStream()) {
+                s3Client.putObject(
+                        new PutObjectRequest(bucket, file.getOriginalFilename(), inputStream, objectMetadata)
+                                .withCannedAcl(CannedAccessControlList.PublicRead));
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                        "파일 업로드에 실패했습니다.");
+            }
+            fileList.add(
+                    new S3Result(
+                            s3Client.getUrl(bucket, file.getOriginalFilename()).toString()));
+        });
+        return fileList;
+    }
+
     public void deleteFile(String imgUrl) {
         String fileName = parseFileName(imgUrl);
         s3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
