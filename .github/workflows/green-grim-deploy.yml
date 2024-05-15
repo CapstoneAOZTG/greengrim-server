@@ -41,15 +41,15 @@ jobs:
         if: contains(github.ref, 'main')
         run: |
           sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-          sudo docker build -f Dockerfile-prod -t greengrim0919/aoztg857-prod:latest .
-          sudo docker push greengrim0919/aoztg857-prod:latest
+          sudo docker build -f Dockerfile-prod -t greengrim0511/green-grim-prod:latest .
+          sudo docker push greengrim0511/green-grim-prod:latest
 
       - name: Docker - Build and push for dev
         if: contains(github.ref, 'develop')
         run: |
           sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-          sudo docker build -f Dockerfile-dev -t greengrim0919/aoztg857-dev:latest .
-          sudo docker push greengrim0919/aoztg857-dev:latest
+          sudo docker build -f Dockerfile-dev -t greengrim0511/green-grim-dev:latest .
+          sudo docker push greengrim0511/green-grim-dev:latest
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -64,9 +64,9 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: | 
             sudo docker system prune -f
-            sudo docker pull greengrim0919/aoztg857-prod:latest
+            sudo docker pull greengrim0511/green-grim-prod:latest
             sudo docker stop green-grim-server && sudo docker rm green-grim-server
-            sudo docker run -d --name green-grim-server -p 8080:8080 -e TZ=Asia/Seoul greengrim0919/aoztg857-prod:latest
+            sudo docker run -d --name green-grim-server -p 8080:8080 -e TZ=Asia/Seoul greengrim0511/green-grim-prod:latest
             sleep 60
             sudo docker inspect -f {{.State.Pid}} green-grim-server | grep -v '^0'
 
@@ -79,8 +79,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: | 
             sudo docker system prune -f
-            sudo docker pull greengrim0919/aoztg857-dev:latest
+            sudo docker pull greengrim0511/green-grim-dev:latest
             sudo docker stop green-grim-server-dev && sudo docker rm green-grim-server-dev
-            sudo docker run -d --name green-grim-server-dev -p 8081:8081 -e TZ=Asia/Seoul greengrim0919/aoztg857-dev:latest
+            sudo docker run -d --name green-grim-server-dev -p 8081:8081 -e TZ=Asia/Seoul greengrim0511/green-grim-dev:latest
             sleep 60
             sudo docker inspect -f {{.State.Pid}} green-grim-server-dev | grep -v '^0'
