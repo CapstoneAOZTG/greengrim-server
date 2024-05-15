@@ -14,8 +14,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ChatMessage  {
 
   public enum MessageType {
-    ENTER, TALK, EXIT, CERT
+    ENTER, TALK, EXIT, CERT, DATE
   }
+
   private MessageType type;
   private Long roomId;
   private Long senderId;
@@ -53,5 +54,19 @@ public class ChatMessage  {
     this.sentDate = now.format(Time.CHAT_DATE_FORMATTER);
     this.sentTime = now.format(Time.CHAT_TIME_FORMATTER);
     this.createdAt = now.format(Time.CHAT_CREATED_AT_FORMATTER);
+  }
+
+  public void setDateMessage(Long roomId) {
+    LocalDateTime now = LocalDateTime.now();
+    this.type = MessageType.DATE;
+    this.roomId = roomId;
+    this.senderId = null;
+    this.certId = null;
+    this.message = now.format(Time.CHAT_DATE_FORMATTER);
+    this.nickName = "";
+    this.profileImg = "";
+    this.certImg = "";
+    this.sentDate = "";
+    this.sentTime = "";
   }
 }
