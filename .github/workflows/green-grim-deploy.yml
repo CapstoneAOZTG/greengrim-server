@@ -79,7 +79,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: | 
             sudo docker system prune -f
-            sudo docker pull greengrim0511/green-grim-dev:latest
+            sudo docker pull greemgrim0511/green-grim-dev:latest
             sudo docker stop green-grim-server-dev && sudo docker rm green-grim-server-dev
             sudo docker run -d --name green-grim-server-dev -p 8081:8081 -e TZ=Asia/Seoul greemgrim0511/green-grim-dev:latest
             sleep 60
