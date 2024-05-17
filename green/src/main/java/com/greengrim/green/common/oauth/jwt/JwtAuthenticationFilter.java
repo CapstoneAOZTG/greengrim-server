@@ -47,7 +47,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 jwtTokenProvider.setBlackList(token);
             }
         }
-        log.info("Request MemberId: {}", jwtTokenProvider.getMemberIdByAccessToken(token));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
 
