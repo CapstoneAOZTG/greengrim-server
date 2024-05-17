@@ -1,9 +1,10 @@
 package com.greengrim.green.common.exception;
 
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 
+@Log4j2
 @Getter
 public class BaseException extends RuntimeException {
     private final String errorCode;
@@ -14,5 +15,6 @@ public class BaseException extends RuntimeException {
         errorCode = code.getErrorCode();
         message = code.getMessage();
         status = code.getStatus();
+        log.error("BaseException: ErrorCode: {}, ErrorMessage: {}, Status: {}\n", errorCode, message, status);
     }
 }
