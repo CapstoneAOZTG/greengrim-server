@@ -43,7 +43,7 @@ public class GetCertificationService {
 
     private VerificationFlag checkVerificationFlag(Member member, Certification certification) {
         // 상호 인증에 참여했는가 플래그 값 세팅
-        if(member == null || certification.getValidation() != 0) {
+        if(member == null || certification.getValidation() != 0 || checkIsMine(member.getId(), certification.getMember().getId())) {
             return VerificationFlag.DEACTIVATION;
         }
         else if(verificationService.checkVerification(member.getId(), certification.getId())) {
