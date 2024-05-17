@@ -15,6 +15,9 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	configureEach {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
 }
 
 repositories {
@@ -75,6 +78,11 @@ dependencies {
 
 	// web3
 	implementation 'org.web3j:core:4.8.7'
+
+	// log4j2
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+	implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 tasks.named('test') {

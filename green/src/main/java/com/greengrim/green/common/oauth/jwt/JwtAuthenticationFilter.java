@@ -6,12 +6,14 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 
+@Log4j2
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
@@ -45,6 +47,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 jwtTokenProvider.setBlackList(token);
             }
         }
+        log.info("Request MemberId: {}", jwtTokenProvider.getMemberIdByAccessToken(token));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
 
