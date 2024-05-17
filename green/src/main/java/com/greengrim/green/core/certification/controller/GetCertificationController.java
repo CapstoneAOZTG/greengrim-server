@@ -15,11 +15,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/certifications")
 public class GetCertificationController {
 
     private final GetCertificationService getCertificationService;
@@ -28,7 +30,7 @@ public class GetCertificationController {
      * [GET] 인증 상세 조회
      */
     @Operation(summary = "인증 상세 조회")
-    @GetMapping("/certifications/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CertificationDetailInfo> getCertificationInfo(
             @CurrentMember Member member,
             @PathVariable("id") Long id) {
@@ -41,7 +43,7 @@ public class GetCertificationController {
      * [GET] 챌린지 별 인증 목록 조회 - MONTH
      */
     @Operation(summary = "챌린지 별 인증 내역 조회 - MONTH")
-    @GetMapping("/certifications/month")
+    @GetMapping("/challenges/month")
     public ResponseEntity<CertificationsByMonth> getCertificationsByChallengeMonth(
             @RequestParam(value = "challengeId") Long challengeId) {
         return ResponseEntity.ok(getCertificationService.getCertificationsByChallengeMonth(
@@ -52,7 +54,7 @@ public class GetCertificationController {
      * [GET] 챌린지 별 인증 목록 조회 - DATE
      */
     @Operation(summary = "챌린지 별 인증 내역 조회 - DATE")
-    @GetMapping("/certifications/date")
+    @GetMapping("/challenges/date")
     public ResponseEntity<PageResponseDto<List<CertificationsByChallengeDate>>> getCertificationsByChallengeDate(
             @CurrentMember Member member,
             @RequestParam(value = "challengeId") Long challengeId,
@@ -68,7 +70,7 @@ public class GetCertificationController {
      */
     @Operation(summary = "멤버 별 챌린지 인증 내역 조회 - MONTH",
             description = "자신의 것을 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
-    @GetMapping("/visitor/certifications/month")
+    @GetMapping("/month")
     public ResponseEntity<CertificationsByMonth> getCertificationsByMemberMonth(
             @CurrentMember Member member,
             @RequestParam(value = "memberId", required = false) Long id) {
@@ -80,7 +82,7 @@ public class GetCertificationController {
      */
     @Operation(summary = "멤버 별 챌린지 인증 내역 조회 - DATE",
             description = "자신의 것을 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
-    @GetMapping("/visitor/certifications/date")
+    @GetMapping("/date")
     public ResponseEntity<PageResponseDto<List<CertificationsByMemberDate>>> getCertificationsByMemberDate(
             @CurrentMember Member member,
             @RequestParam(value = "memberId", required = false) Long id,
@@ -95,7 +97,7 @@ public class GetCertificationController {
      * [GET] 상호 검증할 인증 상세 조회 - 출석체크
      */
     @Operation(summary = "상호 검증할 인증 상세 조회 - 출석체크")
-    @GetMapping("/visitor/verifications")
+    @GetMapping("/verifications")
     public ResponseEntity<CertificationDetailInfo> registerVerification(
             @CurrentMember Member member) {
         return new ResponseEntity<>(

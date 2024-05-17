@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String token = removeBearer(
                 jwtTokenProvider.resolveAccessToken((HttpServletRequest) request));
         // 헤더에 refreshToken을 보냈을 경우
-        if (refreshToken != null && ((HttpServletRequest) request).getRequestURI().equals("/visitor/refresh")) {
+        if (refreshToken != null && ((HttpServletRequest) request).getRequestURI().equals("/visitor/members/refresh")) {
             jwtTokenProvider.validateRefreshToken(refreshToken); // 유효성 검사
             authentication = jwtTokenProvider.getRefreshAuthentication(refreshToken); // authentication 세팅
         }

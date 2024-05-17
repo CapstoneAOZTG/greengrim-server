@@ -7,9 +7,13 @@ import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.chat.ChatMessage;
 import com.greengrim.green.core.chat.ChatMessage.MessageType;
+import com.greengrim.green.core.chat.LastChatStorage;
 import com.greengrim.green.core.chat.repository.ChatRepository;
+import com.greengrim.green.core.chatroom.Chatroom;
+import com.greengrim.green.core.chatroom.repository.ChatroomRepository;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.service.GetMemberService;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +35,9 @@ public class ChatService {
   private final FcmService fcmService;
   private final ChatRepository chatRepository;
 
+  private final LastChatStorage lastChatStorage;
+  private final ChatroomRepository chatroomRepository;
+
   public String getRoomId(String destination) {
     int lastIndex = destination.lastIndexOf('/');
     if (lastIndex != -1)
@@ -38,8 +46,8 @@ public class ChatService {
       return "";
   }
 
+  @Transactional
   public void sendChatMessage(ChatMessage chatMessage) {
-
     chatMessage.setTime();
 
     // CERT 타입이 아닐 떄
@@ -53,19 +61,14 @@ public class ChatService {
       chatMessage.setNickName("");
       chatMessage.setProfileImg("");
     }
+    // ENTER, QUIT 타입이 아닐 때
     else {
-
-      // TIME 일 떄
-      if (MessageType.DATE.equals(chatMessage.getType())) {
-        chatMessage.setNickName("");
-        chatMessage.setProfileImg("");
-        chatMessage.setMessage(chatMessage.getSentTime());
-      } else {
-        Optional<Member> member = getMemberService.findMemberById(chatMessage.getSenderId());
-        chatMessage.setNickName(member.get().getNickName());
-        chatMessage.setProfileImg(member.get().getProfileImgUrl());
-      }
+      Optional<Member> member = getMemberService.findMemberById(chatMessage.getSenderId());
+      chatMessage.setNickName(member.get().getNickName());
+      chatMessage.setProfileImg(member.get().getProfileImgUrl());
     }
+
+    checkLastMessage(chatMessage);
     redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
     fcmService.sendChatMessage(chatMessage);
     chatRepository.save(chatMessage);
@@ -82,4 +85,41 @@ public class ChatService {
     return new PageResponseDto<>(chatMessages.getNumber(), chatMessages.hasNext(), messages);
   }
 
+  public void checkLastMessage(ChatMessage chatMessage) {
+    ChatMessage lastChatMessage = lastChatStorage.getMessage(chatMessage.getRoomId());
+
+    // 채팅방에 메세지가 존재한다면
+    if (lastChatMessage != null) {
+      // 만약 최근 메세지와 확인하려는 메세지가 DATE 타입이라면
+      // 바로 최근 메세지로 설정
+      if (lastChatMessage.getType() != MessageType.DATE ||
+          chatMessage.getType() != MessageType.DATE) {
+
+        // 보내려는 메세지와 가장 최근 메세지의 송신자와 보낸
+        // 시간(분)이 일치한다면 프로필 이미지, 날짜 삭제
+        if (chatMessage.getSenderId().equals(lastChatMessage.getSenderId())
+            && chatMessage.getCreatedAt().substring(0, 12)
+            .equals(lastChatMessage.getCreatedAt().substring(0, 12))) {
+          chatMessage.setProfileImg("");
+          chatMessage.setSentTime("");
+        }
+      }
+    }
+    lastChatStorage.setMessage(chatMessage.getRoomId(), chatMessage);
+  }
+
+  @Scheduled(cron = "0 0 0 * * ?")
+  public void sendDateMessage() {
+    ChatMessage chatMessage = new ChatMessage();
+
+    List<Chatroom> chatrooms = chatroomRepository.findAll();
+    for(Chatroom chatroom : chatrooms) {
+      chatMessage.setDateMessage(chatroom.getId());
+      redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
+    }
+  }
+
+  public void deleteMember(Member member) {
+    chatRepository.updateProfileAndNicknameBySenderId(member.getId(), member.getProfileBasicImgUrl(), "알수없음");
+  }
 }
