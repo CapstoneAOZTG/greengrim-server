@@ -12,12 +12,13 @@ public class TraitsConfig {
     @Bean
     public static String[][] traits() {
         String[][] traits = {
-            {"black", "white", "red", "blue"}, // background
-            {"short weed", "long weed", "flower", "tree"}, // hair
-            {"smile", "sad", "angry", "surprise"}, // face
-            {"peace sign", "thumbs up", "ok", "salute"}, // gesture
-            {"black", "white", "red", "blue"}, // accessory
-            {"black", "white", "red", "blue"}  // shoes
+            {"Purple", "Lime green", "Orange", "Blue", "Gray"}, // background
+            {"Seedling", "Dandelion", "Flower", "Weed"}, // hair
+            {"Basic", "Runny nose", "Blush"}, // face
+            {"Basic", "Thumbs up", "Peace", "V"}, // gesture
+            {"Basic", "Black", "Yellow", "White", "Blue", "Red"},  // shoes
+            {"Basic", "Ear Phone", "Black Watch", "Gold Watch", "Red Glasses", "Purple Glasses"}, // accessory
+            {"BASIC", "STANDARD", "PREMIUM"} // rarity
         };
         return traits;
     }

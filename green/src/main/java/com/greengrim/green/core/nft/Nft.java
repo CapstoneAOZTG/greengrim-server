@@ -28,7 +28,6 @@ public class Nft extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
     private int tokenId;
     @NotNull

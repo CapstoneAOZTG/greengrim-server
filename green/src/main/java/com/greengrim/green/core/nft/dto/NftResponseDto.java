@@ -148,6 +148,7 @@ public class NftResponseDto {
         public String gesture;
         public String accessory;
         public String shoes;
+        public String rarity;
 
         TraitsInfo(String [][] traits, String traitsString) {
             this.background = traits[0][traitsString.charAt(0) - '0'];
@@ -156,7 +157,7 @@ public class NftResponseDto {
             this.gesture = traits[3][traitsString.charAt(3) - '0'];
             this.accessory = traits[4][traitsString.charAt(4) - '0'];
             this.shoes = traits[5][traitsString.charAt(5) - '0'];
+            this.rarity = traits[6][traitsString.charAt(6) - '0'];
         }
     }
-
 }
