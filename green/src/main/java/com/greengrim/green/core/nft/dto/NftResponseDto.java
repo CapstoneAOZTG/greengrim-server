@@ -151,13 +151,13 @@ public class NftResponseDto {
         public String rarity;
 
         TraitsInfo(String [][] traits, String traitsString) {
-            this.background = traits[0][traitsString.charAt(0) - '0'];
-            this.hair = traits[1][traitsString.charAt(1) - '0'];
-            this.face = traits[2][traitsString.charAt(2) - '0'];
-            this.gesture = traits[3][traitsString.charAt(3) - '0'];
-            this.accessory = traits[4][traitsString.charAt(4) - '0'];
-            this.shoes = traits[5][traitsString.charAt(5) - '0'];
-            this.rarity = traits[6][traitsString.charAt(6) - '0'];
+            this.background = traits[0][traitsString.charAt(0) - '0' - 1];
+            this.hair = traits[1][traitsString.charAt(1) - '0' - 1];
+            this.face = traits[2][traitsString.charAt(2) - '0'- 1];
+            this.gesture = traits[3][traitsString.charAt(3) - '0' - 1];
+            this.accessory = traits[4][traitsString.charAt(4) - '0' - 1];
+            this.shoes = traits[5][traitsString.charAt(5) - '0' - 1];
+            this.rarity = traits[6][traitsString.charAt(6) - '0' - 1];
         }
     }
 }

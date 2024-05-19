@@ -16,8 +16,8 @@ public class TraitsConfig {
             {"Seedling", "Dandelion", "Flower", "Weed"}, // hair
             {"Basic", "Runny nose", "Blush"}, // face
             {"Basic", "Thumbs up", "Peace", "V"}, // gesture
-            {"Basic", "Black", "Yellow", "White", "Blue", "Red"},  // shoes
             {"Basic", "Ear Phone", "Black Watch", "Gold Watch", "Red Glasses", "Purple Glasses"}, // accessory
+            {"Basic", "Black", "Yellow", "White", "Blue", "Red"},  // shoes
             {"BASIC", "STANDARD", "PREMIUM"} // rarity
         };
         return traits;
