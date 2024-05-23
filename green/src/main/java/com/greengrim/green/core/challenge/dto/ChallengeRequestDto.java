@@ -1,8 +1,6 @@
 package com.greengrim.green.core.challenge.dto;
 
 import com.greengrim.green.core.challenge.Category;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -26,14 +24,6 @@ public class ChallengeRequestDto {
         private String imgUrl;          // 대표 사진
         @NotNull
         private int goalCount;          // 목표 인증 횟수
-        @NotNull
-        private int ticketTotalCount;   // 총 티켓 개수
-        @NotNull
-        @Min(2) @Max(6)
-        private int weekMinCount;       // 주 최소 인증 횟수
-        @NotNull
-        @Max(100)
-        private int capacity;           // 수용 가능 인원
     }
 
     @Getter

@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/hiding")
 public class CertificationHidingController {
 
     private final CertificationHidingService certificationHidingService;
@@ -20,7 +22,7 @@ public class CertificationHidingController {
      * [POST] 인증 숨기기
      */
     @Operation(summary = "인증 숨기기")
-    @PostMapping("/visitor/hiding/certification")
+    @PostMapping("/certification")
     public ResponseEntity<Integer> hideCertification(
             @CurrentMember Member member,
             @RequestParam("id") Long id) {

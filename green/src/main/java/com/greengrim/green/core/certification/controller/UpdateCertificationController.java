@@ -10,11 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional
 @RequiredArgsConstructor
+@RequestMapping("/visitor/certifications")
 public class UpdateCertificationController {
 
     private final UpdateCertificationService updateCertificationService;
@@ -23,7 +25,7 @@ public class UpdateCertificationController {
      * [DELETE] 인증 삭제하기
      */
     @Operation(summary = "인증 삭제하기")
-    @DeleteMapping("/visitor/certifications/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteCertification(
             @CurrentMember Member member,
             @PathVariable("id") Long id) {

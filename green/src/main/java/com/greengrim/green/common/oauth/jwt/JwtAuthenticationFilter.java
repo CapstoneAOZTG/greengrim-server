@@ -6,12 +6,14 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 
+@Log4j2
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
@@ -32,7 +34,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String token = removeBearer(
                 jwtTokenProvider.resolveAccessToken((HttpServletRequest) request));
         // 헤더에 refreshToken을 보냈을 경우
-        if (refreshToken != null && ((HttpServletRequest) request).getRequestURI().equals("/visitor/refresh")) {
+        if (refreshToken != null && ((HttpServletRequest) request).getRequestURI().equals("/visitor/members/refresh")) {
             jwtTokenProvider.validateRefreshToken(refreshToken); // 유효성 검사
             authentication = jwtTokenProvider.getRefreshAuthentication(refreshToken); // authentication 세팅
         }

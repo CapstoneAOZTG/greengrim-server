@@ -42,19 +42,15 @@ public class RegisterNftService implements RegisterNftUseCase {
             .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
 
         beforeExchange(member.getPoint(), nft.getGrade());
-
         if(nft.getMember() != null) {
             throw new BaseException(NftErrorCode.ALREADY_EXCHANGED_NFT);}
-
         TransactionReceipt transactionReceipt = null;
+
         try {
             transactionReceipt =
-                contract.safeMint(member.getWallet().getAddress(), BigInteger.valueOf(nft.getTokenId()))
-                    .sendAsync()
-                    .get();
+                contract.safeMint(member.getWallet().getAddress(), BigInteger.valueOf(nft.getTokenId())).sendAsync().get();
         }
         catch (InterruptedException | ExecutionException e) {
-
             throw new BaseException(NftErrorCode.EXCHANGE_FAIL);
         }
 
@@ -65,7 +61,6 @@ public class RegisterNftService implements RegisterNftUseCase {
         else {
             fcmService.sendMintingFail(member);
         }
-
     }
 
     public void beforeExchange(int memberPoint, NftGrade grade) {

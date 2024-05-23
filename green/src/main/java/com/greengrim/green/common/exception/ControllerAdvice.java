@@ -1,6 +1,7 @@
 package com.greengrim.green.common.exception;
 
 import com.greengrim.green.common.exception.errorCode.GlobalErrorCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class ControllerAdvice {
     /**
@@ -29,7 +31,7 @@ public class ControllerAdvice {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ExceptionResponse> handleNoHandlerFoundException(
             NoHandlerFoundException e) {
-        System.out.println(e);
+        log.error("Error name: {}", String.valueOf(e));
         return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR, HttpStatus.NOT_FOUND);
     }
 
@@ -39,7 +41,7 @@ public class ControllerAdvice {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ExceptionResponse> handleMethodNotSupportedException(
             HttpRequestMethodNotSupportedException e) {
-        System.out.println(e);
+        log.error("Error name: {}", String.valueOf(e));
         return convert(GlobalErrorCode.NOT_SUPPORTED_METHOD_ERROR, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
@@ -49,7 +51,7 @@ public class ControllerAdvice {
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ExceptionResponse> handleMediaTypeNotSupportedException(
             HttpMediaTypeNotSupportedException e) {
-        System.out.println(e);
+        log.error("Error name: {}", String.valueOf(e));
         return convert(GlobalErrorCode.NOT_SUPPORTED_MEDIA_TYPE_ERROR,
                 HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
@@ -59,7 +61,7 @@ public class ControllerAdvice {
      */
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e) {
-        System.out.println(e);
+        log.error("Error name: {}", String.valueOf(e));
         return convert(GlobalErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -68,7 +70,7 @@ public class ControllerAdvice {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleException(MethodArgumentNotValidException e) {
-        System.out.println(e);
+        log.error("Error name: {}", String.valueOf(e));
         String detailMessage = extractMessage(e.getBindingResult().getFieldErrors());
         return convert(GlobalErrorCode.NOT_VALID_ARGUMENT_ERROR, detailMessage);
     }

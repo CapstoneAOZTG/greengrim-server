@@ -12,11 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional
 @RequiredArgsConstructor
+@RequestMapping("/visitor/certifications")
 public class RegisterCertificationController {
 
     private final RegisterCertificationService registerCertificationService;
@@ -25,7 +27,7 @@ public class RegisterCertificationController {
      * [POST] 인증하기
      */
     @Operation(summary = "인증하기")
-    @PostMapping("/visitor/certifications")
+    @PostMapping
     public ResponseEntity<registerCertificationResponse> registerCertification(
             @CurrentMember Member member,
             @Valid @RequestBody RegisterCertification registerCertification) {

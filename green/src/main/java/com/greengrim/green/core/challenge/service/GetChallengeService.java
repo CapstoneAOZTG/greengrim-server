@@ -100,6 +100,7 @@ public class GetChallengeService {
         Pageable pageable = PageRequest.of(0, 1);
         Page<Challenge> challenges;
         List<ChallengeInfo> challengeInfoList = new ArrayList<>();
+        Long exceptionId1 = null; Long exceptionId2 = null;
         // 1번 일주일 내 인증이 가장 많은
         challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(
                 member.getId(),
@@ -107,14 +108,18 @@ public class GetChallengeService {
                 pageable);
         challenges.forEach(challenge -> challengeInfoList.add(
                 new ChallengeInfo(challenge, HotChallengeOption.MOST_CERTIFICATION.getSubTitle())));
-        Long exceptionId1 = challengeInfoList.get(0).getId();
+        if(challengeInfoList.size() > 0) {
+            exceptionId1 = challengeInfoList.get(0).getId();
+        }
 
         // 2번 참여 인원이 가장 많은
         challenges = challengeRepository.findHotChallengesByHeadCount(member.getId(), exceptionId1, pageable);
         challenges.forEach(challenge -> challengeInfoList.add(
                 new ChallengeInfo(challenge,
                         challenge.getHeadCount() + HotChallengeOption.MOST_HEADCOUNT.getSubTitle())));
-        Long exceptionId2 = challengeInfoList.get(1).getId();
+        if(challengeInfoList.size() > 1) {
+            exceptionId2 = challengeInfoList.get(1).getId();
+        }
 
         // 3번 최근에 신설된
         challenges = challengeRepository.findAllAndStatusIsTrueDesc(member.getId(), exceptionId1, exceptionId2, pageable);

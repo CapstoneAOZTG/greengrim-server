@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/hiding")
 public class ChallengeHidingController {
 
     private final ChallengeHidingService challengeHidingService;
@@ -20,7 +22,7 @@ public class ChallengeHidingController {
      * [POST] 챌린지 숨기기
      */
     @Operation(summary = "챌린지 숨기기")
-    @PostMapping("/visitor/hiding/challenge")
+    @PostMapping("/challenge")
     public ResponseEntity<Integer> hideChallenge(
             @CurrentMember Member member,
             @RequestParam("id") Long id) {

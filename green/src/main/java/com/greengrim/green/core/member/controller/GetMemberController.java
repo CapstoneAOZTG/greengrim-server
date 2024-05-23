@@ -11,11 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/members")
 public class GetMemberController {
 
     private final GetMemberService getMemberService;
@@ -25,7 +27,7 @@ public class GetMemberController {
      */
     @Operation(summary = "프로필 조회",
             description = "자신의 것을 조회하고 싶다면 memberId는 안 보내셔도 됩니다!")
-    @GetMapping("/visitor/profile")
+    @GetMapping("/profile")
     public ResponseEntity<MemberInfo> getCurrentMemberInfo(
             @CurrentMember Member member,
             @RequestParam(value = "memberId", required = false) Long memberId) {
@@ -37,7 +39,7 @@ public class GetMemberController {
      * [GET] 홈 화면 내 정보 조회
      */
     @Operation(summary = "홈 화면 내 정보 조회")
-    @GetMapping("/visitor/home")
+    @GetMapping("/home")
     public ResponseEntity<HomeInfo> getHomeInfo(
             @CurrentMember Member member) {
         return new ResponseEntity<>(getMemberService.getHomeInfo(member),
@@ -48,7 +50,7 @@ public class GetMemberController {
      * [GET] 더보기 조회
      */
     @Operation(summary = "더보기 조회")
-    @GetMapping("/visitor/my")
+    @GetMapping("/my")
     public ResponseEntity<MyInfo> getMyDetailInfo(
             @CurrentMember Member member) {
         return new ResponseEntity<>(getMemberService.getMyDetailInfo(member),
