@@ -43,31 +43,13 @@ public class ChallengeResponseDto {
     @RequiredArgsConstructor
     public static class ChallengeTags {
         private Category category;
-        private String ticketCount;
         private String goalCount;
-        private String weekMinCount;
         private String participantCount;
 
         public ChallengeTags(Challenge challenge) {
             this.category = challenge.getCategory();
             this.goalCount = challenge.getGoalCountTag();
-            this.ticketCount = challenge.getTicketCountTag();
-            this.weekMinCount = challenge.getWeekMinCountTag();
             this.participantCount = challenge.getParticipantCountTag();
-        }
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class ChallengeSimpleTags {
-        private Category category;
-        private String ticketCount;
-        private String goalCount;
-
-        public ChallengeSimpleTags(Challenge challenge) {
-            this.category = challenge.getCategory();
-            this.goalCount = challenge.getGoalCountTag();
-            this.ticketCount = challenge.getTicketCountTag();
         }
     }
 
@@ -93,11 +75,11 @@ public class ChallengeResponseDto {
     @RequiredArgsConstructor
     public static class ChallengeSimpleInfo {
         private ChallengeInfo challengeInfo;
-        private ChallengeSimpleTags challengeSimpleTags;
+        private ChallengeTags challengeTags;
 
         public ChallengeSimpleInfo(Challenge challenge) {
             this.challengeInfo = new ChallengeInfo(challenge);
-            this.challengeSimpleTags = new ChallengeSimpleTags(challenge);
+            this.challengeTags = new ChallengeTags(challenge);
         }
     }
 
@@ -115,14 +97,12 @@ public class ChallengeResponseDto {
         private String title;
         private String description;
         private Category category;
-        private String ticketCount;
 
         public ChallengeInfoForCertification(Challenge challenge) {
             this.id = challenge.getId();
             this.title = challenge.getTitle();
             this.description = challenge.getDescription();
             this.category = challenge.getCategory();
-            this.ticketCount = challenge.getTicketCountTag();
         }
     }
 
@@ -205,14 +185,14 @@ public class ChallengeResponseDto {
     @RequiredArgsConstructor
     public static class ChatroomTopBarInfo {
         private Category category;
-        private String ticketCount;
+        private String participantCount;
         private String goalCount;
         private int certificationCount;
         private boolean todayCertification; // 오늘 인증했는지 여부
 
         public ChatroomTopBarInfo(Challenge challenge, int certificationCount, boolean todayCertification) {
             this.category = challenge.getCategory();
-            this.ticketCount = challenge.getTicketCountTag();
+            this.participantCount = challenge.getParticipantCountTag();
             this.goalCount = "인증 " + certificationCount + "/" + challenge.getGoalCount() + "회";
             this.certificationCount = certificationCount + 1;
             this.todayCertification = todayCertification;
