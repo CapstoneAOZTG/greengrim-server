@@ -30,7 +30,7 @@ public class AlarmService {
                 .resourceId(resourceId)
                 .imgUrl(imgUrl)
                 .variableContent(variableContent)
-                .memberId(memberId)
+                .interactedMemberId(memberId)
                 .build();
         alarmRepository.save(alarm);
         return alarm;

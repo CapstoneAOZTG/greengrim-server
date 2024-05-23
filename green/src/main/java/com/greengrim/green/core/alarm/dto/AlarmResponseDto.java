@@ -33,7 +33,7 @@ public class AlarmResponseDto {
             this.variableContent = alarm.getVariableContent();
             this.fixedContent = alarm.getType().getContent();
             this.isChecked = alarm.isChecked();
-            this.memberId = alarm.getMemberId();
+            this.memberId = alarm.getInteractedMemberId();
         }
     }
 }

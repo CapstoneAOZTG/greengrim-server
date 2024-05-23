@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/visitor/alarms")
 public class AlarmController {
 
     private final AlarmService alarmService;
@@ -23,7 +25,7 @@ public class AlarmController {
      * [GET] 알림 조회
      */
     @Operation(summary = "알림 조회")
-    @GetMapping("/visitor/alarms")
+    @GetMapping("")
     public ResponseEntity<PageResponseDto<List<AlarmInfo>>> getAlarms(
             @CurrentMember Member member,
             @RequestParam(value = "page") int page,

@@ -32,12 +32,6 @@ public class RegisterMemberService {
                 .nickName(registerMemberReq.getNickName())
                 .introduction(registerMemberReq.getIntroduction())
                 .profileImgUrl(registerMemberReq.getProfileImgUrl())
-                .point(0)
-                .carbonReduction(0)
-                .reportCount(0)
-                .status(true)
-                .refreshToken("")
-                .deviceToken("")
                 .fcmToken(registerMemberReq.getFcmToken())
                 .role(Role.ROLE_VISITOR)
                 .build();

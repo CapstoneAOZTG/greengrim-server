@@ -32,7 +32,7 @@ public class Alarm extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;                // 알림 주인
 
-    private Long memberId;                // 상호작용한 memberId
+    private Long interactedMemberId;                // 상호작용한 memberId
     private String variableContent;       // 바뀔 수 있는 부분
 
     public void setChecked() {
