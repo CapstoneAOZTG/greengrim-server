@@ -27,7 +27,6 @@ public class UpdateMemberService  {
     private final UpdateNftService updateNftService;
     private final ChatService chatService;
 
-    private final FcmService fcmService;
     private final S3Service s3Service;
 
     public MemberResponseDto.TokenInfo refreshAccessToken(Member member) {
@@ -66,9 +65,4 @@ public class UpdateMemberService  {
         member.setStatusFalse();
     }
 
-    public void plusPoint(Member member) {
-        member.plusPoint(10);
-        fcmService.sendGetPoint(member, "미니게임", 10);
-        memberRepository.save(member);
-    }
 }

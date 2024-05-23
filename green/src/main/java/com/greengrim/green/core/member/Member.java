@@ -5,8 +5,9 @@ import com.greengrim.green.core.wallet.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import java.util.Objects;
 import lombok.*;
+
+import static com.greengrim.green.common.constants.ServerConstants.BASIC_PROFILE_IMG_URL;
 
 @Getter
 @Builder
@@ -27,26 +28,28 @@ public class Member extends BaseTime {
     private String nickName;
 
     @NotNull
-    private int point;
+    @Builder.Default
+    private int point = 0;
 
     @NotNull
-    private double carbonReduction;
+    @Builder.Default
+    private double carbonReduction = 0.0;
 
     private String introduction;
 
     private String profileImgUrl;
 
     @NotNull
-    private boolean status;
+    @Builder.Default
+    private boolean status = true;
 
     @NotNull
-    private Integer reportCount;
+    @Builder.Default
+    private Integer reportCount = 0;
 
     @NotNull
-    private String refreshToken;
-
-    @NotNull
-    private String deviceToken;
+    @Builder.Default
+    private String refreshToken = "";
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -57,10 +60,6 @@ public class Member extends BaseTime {
 
     @NotNull
     private String fcmToken;
-
-    @Transient
-    @Builder.Default
-    private String profileBasicImgUrl = "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/12994ece-3c61-4081-8b15-abb0348f632b.png";
 
     public void changeRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
@@ -84,8 +83,8 @@ public class Member extends BaseTime {
     }
 
     public String getProfileImgUrl() {
-        if(Objects.equals(this.profileImgUrl, "") || this.profileImgUrl == null) {
-            return profileBasicImgUrl;
+        if(!existProfileImgUrl()) {
+            return BASIC_PROFILE_IMG_URL;
         }
         return this.profileImgUrl;
     }

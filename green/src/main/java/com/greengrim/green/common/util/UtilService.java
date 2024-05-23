@@ -10,8 +10,6 @@ import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.GlobalErrorCode;
 import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -53,11 +51,6 @@ public class UtilService {
 
     public static boolean checkIsMine(Long memberId, Long ownerId) {
         return Objects.equals(memberId, ownerId);
-    }
-
-    public static String formatLocalDateTimeToString(LocalDateTime localDateTime) {
-        // LocalDateTime 객체를 포맷팅하여 문자열로 변환
-        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm"));
     }
 
     public static String formatIntToString(int number) {

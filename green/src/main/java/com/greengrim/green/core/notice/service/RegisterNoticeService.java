@@ -1,9 +1,6 @@
 package com.greengrim.green.core.notice.service;
 
-import com.greengrim.green.common.exception.BaseException;
-import com.greengrim.green.common.exception.errorCode.MemberErrorCode;
-import com.greengrim.green.core.member.Member;
-import com.greengrim.green.core.member.Role;
+import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.notice.Notice;
 import com.greengrim.green.core.notice.dto.NoticeRequestDto.RegisterNotice;
 import com.greengrim.green.core.notice.dto.NoticeResponseDto.NoticeDetailInfo;
@@ -18,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class RegisterNoticeService {
 
     private final NoticeRepository noticeRepository;
+    private final FcmService fcmService;
 
     public NoticeDetailInfo register(RegisterNotice registerNotice) {
         Notice notice = Notice.builder()
@@ -25,6 +23,8 @@ public class RegisterNoticeService {
             .content(registerNotice.getContent())
             .build();
         noticeRepository.save(notice);
+        // FCM 전송
+        fcmService.sendNewNotice(notice.getId(), notice.getTitle());
         return new NoticeDetailInfo(notice);
     }
 }

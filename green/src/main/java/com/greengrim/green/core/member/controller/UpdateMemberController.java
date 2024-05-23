@@ -57,13 +57,4 @@ public class UpdateMemberController {
         return new ResponseEntity<>(200, HttpStatus.OK);
     }
 
-    /**
-     * [POST] 포인트 획득
-     */
-    @Operation(summary = "포인트 획득")
-    @PostMapping("/point")
-    public void plusPoint(
-        @CurrentMember Member member) {
-        updateMemberService.plusPoint(member);
-    }
 }

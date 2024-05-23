@@ -22,6 +22,7 @@ public class Time {
         LocalDateTime currentTime = LocalDateTime.now();
         long minutes = ChronoUnit.MINUTES.between(dateTime, currentTime);
         long hours = ChronoUnit.HOURS.between(dateTime, currentTime);
+        long days = ChronoUnit.DAYS.between(dateTime, currentTime);
 
         if (displayTimeWay == 1) { //날짜만 표시
             return dateTime.format(DATE_FORMATTER);
@@ -36,6 +37,16 @@ public class Time {
                 return hours + "시간 전";
             } else {
                 return dateTime.format(DATE_TIME_FORMATTER);
+            }
+        } else if (displayTimeWay == 4) { //실시간 반영 시간 및 날짜 표시
+            if (minutes == 0) {
+                return "방금";
+            } else if (minutes < 60) {
+                return minutes + "분 전";
+            } else if (hours < 24) {
+                return hours + "시간 전";
+            } else {
+                return days + "일 전";
             }
         } else { // 알림 시간 표시
             if (hours < 24) { // 오늘이면

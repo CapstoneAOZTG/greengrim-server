@@ -1,7 +1,7 @@
 package com.greengrim.green.core.history;
 
 
-import static com.greengrim.green.common.util.UtilService.formatLocalDateTimeToString;
+import static com.greengrim.green.common.entity.Time.calculateTime;
 
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.history.dto.HistoryResponseDto.HistoryInfo;
@@ -21,7 +21,7 @@ public class HistoryService {
     private final HistoryRepository historyRepository;
 
     @Transactional
-    public void save(Long memberId, Long targetId, String title, String imgUrl,
+    public void register(Long memberId, Long targetId, String title, String imgUrl,
                      HistoryOption historyOption, int point, int totalPoint) {
         History history = History.builder()
                 .memberId(memberId).targetId(targetId).title(title).imgUrl(imgUrl)
@@ -41,7 +41,7 @@ public class HistoryService {
                 historyInfoList.add(
                         new HistoryInfo(
                                 history,
-                                formatLocalDateTimeToString(history.getCreatedAt()))));
+                                calculateTime(history.getCreatedAt(), 2))));
         return new PageResponseDto<>(histories.getNumber(), histories.hasNext(), historyInfoList);
     }
 }

@@ -34,7 +34,7 @@ public class EnterChallengeService {
 
     challenge.setHeadCount(challenge.getHeadCount() + 1);
     chatroomService.enterChatroom(member, challenge.getChatroom());
-    fcmService.subscribe(member, challenge.getChatroom().getId());
+    fcmService.subscribeChatroom(member, challenge.getChatroom().getId());
 
     return new EnterChallengeInfo(challenge);
   }
@@ -48,7 +48,7 @@ public class EnterChallengeService {
     challenge.setHeadCount(challenge.getHeadCount() - 1);
 
     chatroomService.exitChatroom(member, challenge.getChatroom().getId());
-    fcmService.unsubscribe(member, challenge.getChatroom().getId());
+    fcmService.unsubscribeChatroom(member, challenge.getChatroom().getId());
 
     if(challenge.getHeadCount() == 0)
       chatroomService.removeChatroom(challenge.getChatroom());

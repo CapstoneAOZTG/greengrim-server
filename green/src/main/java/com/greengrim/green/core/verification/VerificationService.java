@@ -3,6 +3,9 @@ package com.greengrim.green.core.verification;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.CertificationErrorCode;
 import com.greengrim.green.common.exception.errorCode.VerificationErrorCode;
+import com.greengrim.green.common.fcm.FcmService;
+import com.greengrim.green.core.alarm.AlarmService;
+import com.greengrim.green.core.alarm.AlarmType;
 import com.greengrim.green.core.certification.Certification;
 import com.greengrim.green.core.certification.repository.CertificationRepository;
 import com.greengrim.green.core.history.HistoryOption;
@@ -24,6 +27,8 @@ public class VerificationService {
     private final VerificationRepository verificationRepository;
     private final MemberRepository memberRepository;
     private final HistoryService historyService;
+    private final AlarmService alarmService;
+    private final FcmService fcmService;
 
     private final static int VERIFICATION_POINT = 10;
     private final static String VERIFICATION_HISTORY_TITLE = "출석 체크";
@@ -46,9 +51,13 @@ public class VerificationService {
         // 출석체크 보상 주기
         member.plusPoint(VERIFICATION_POINT);
         memberRepository.save(member);
-        historyService.save(member.getId(), certification.getId(), VERIFICATION_HISTORY_TITLE,
+        historyService.register(member.getId(), certification.getId(), VERIFICATION_HISTORY_TITLE,
                 certification.getImgUrl(), HistoryOption.VERIFICATION, VERIFICATION_POINT, member.getPoint());
 
+        // FCM 전송
+        fcmService.sendGetVerificationPoint(member);
+        // 알림 저장
+        alarmService.register(member, AlarmType.POINT_VERIFICATION, certification.getId(), certification.getImgUrl(), null, null);
         // 상호 검증 처리하기
         verifyCertification(certification);
     }

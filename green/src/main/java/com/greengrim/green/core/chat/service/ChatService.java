@@ -1,5 +1,6 @@
 package com.greengrim.green.core.chat.service;
 
+import static com.greengrim.green.common.constants.ServerConstants.BASIC_PROFILE_IMG_URL;
 import static com.greengrim.green.common.util.UtilService.getPageable;
 
 import com.greengrim.green.common.entity.SortOption;
@@ -120,6 +121,6 @@ public class ChatService {
   }
 
   public void deleteMember(Member member) {
-    chatRepository.updateProfileAndNicknameBySenderId(member.getId(), member.getProfileBasicImgUrl(), "알수없음");
+    chatRepository.updateProfileAndNicknameBySenderId(member.getId(), BASIC_PROFILE_IMG_URL, "알수없음");
   }
 }
