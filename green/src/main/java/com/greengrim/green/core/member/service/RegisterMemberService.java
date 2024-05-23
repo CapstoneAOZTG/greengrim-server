@@ -3,6 +3,7 @@ package com.greengrim.green.core.member.service;
 
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.MemberErrorCode;
+import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.common.oauth.jwt.JwtTokenProvider;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.Role;
@@ -20,6 +21,7 @@ public class RegisterMemberService {
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final FcmService fcmService;
 
 
     public void save(Member member) {

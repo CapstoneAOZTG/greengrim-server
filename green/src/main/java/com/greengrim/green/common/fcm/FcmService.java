@@ -22,8 +22,7 @@ public class FcmService {
 
     private final FirebaseMessaging firebaseMessaging;
 
-    public void subscribe(Member member, Long chatroomId) {
-
+    public void subscribeChatroom(Member member, Long chatroomId) {
         List<String> memberFcmToken = new ArrayList<>();
         memberFcmToken.add(member.getFcmToken());
         try {
@@ -35,12 +34,34 @@ public class FcmService {
 
     }
 
-    public void unsubscribe(Member member, Long chatroomId) {
+    public void subscribeTopic(Member member, FcmTopicType fcmTopicType) {
+        List<String> memberFcmToken = new ArrayList<>();
+        memberFcmToken.add(member.getFcmToken());
+        try {
+            firebaseMessaging.getInstance()
+                    .subscribeToTopic(memberFcmToken, fcmTopicType.getTitle());
+        } catch (FirebaseMessagingException e) {
+            throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
+        }
+    }
+
+    public void unsubscribeChatroom(Member member, Long chatroomId) {
         List<String> memberFcmToken = new ArrayList<>();
         memberFcmToken.add(member.getFcmToken());
         try {
             firebaseMessaging.getInstance()
                     .unsubscribeFromTopic(memberFcmToken, Long.toString(chatroomId));
+        } catch (FirebaseMessagingException e) {
+            throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
+        }
+    }
+
+    public void unsubscribeTopic(Member member, FcmTopicType fcmTopicType) {
+        List<String> memberFcmToken = new ArrayList<>();
+        memberFcmToken.add(member.getFcmToken());
+        try {
+            firebaseMessaging.getInstance()
+                    .unsubscribeFromTopic(memberFcmToken, fcmTopicType.getTitle());
         } catch (FirebaseMessagingException e) {
             throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
         }
@@ -64,45 +85,55 @@ public class FcmService {
         send(message);
     }
 
-    public void sendGetPoint(Member member, Long resourceId,
-                             String variableContent, String fixedContent) {
+    public void sendGetCertificationPoint(Member member, Long resourceId,
+                             String variableContent) {
         Message message = Message.builder()
-                .putData("type", "POINT")
+                .putData("type", "POINT_CERTIFICATION")
                 .putData("resourceId", String.valueOf(resourceId))
-                .putData("message", variableContent + " " + fixedContent)
+                .putData("message", variableContent + " " + AlarmType.POINT_CERTIFICATION.getContent())
                 .setToken(member.getFcmToken())
                 .build();
 
         send(message);
     }
 
-    public void sendNewIssue(Member member, Long issueId, String variableContent) {
+    public void sendGetVerificationPoint(Member member) {
         Message message = Message.builder()
-                .putData("type", "NEW_ISSUE")
-                .putData("issueId", String.valueOf(issueId))
-                .putData("message", variableContent + " " + AlarmType.NEW_ISSUE.getContent())
+                .putData("type", "POINT_VERIFICATION")
+                .putData("message", AlarmType.POINT_VERIFICATION.getContent())
                 .setToken(member.getFcmToken())
                 .build();
 
         send(message);
     }
 
-    public void sendMintingSuccess(Member member, Long nftId, String variableContent) {
+    public void sendSuccessChallenge(Member member, Long resourceId, String variableContent) {
+        Message message = Message.builder()
+                .putData("type", "CHALLENGE")
+                .putData("resourceId", String.valueOf(resourceId))
+                .putData("message", variableContent + " " + AlarmType.CHALLENGE_SUCCESS.getContent())
+                .setToken(member.getFcmToken())
+                .build();
+
+        send(message);
+    }
+
+    public void sendMintingSuccess(Member member, Long resourceId, String variableContent) {
         Message message = Message.builder()
                 .putData("type", "EXCHANGE_SUC")
-                .putData("nftId", String.valueOf(nftId))
+                .putData("resourceId", String.valueOf(resourceId))
                 .putData("message", variableContent + " " + AlarmType.NFT_EXCHANGE.getContent())
+                .putData("memberId", "")
                 .setToken(member.getFcmToken())
                 .build();
 
         send(message);
     }
 
-    public void sendNftLike(Member member, Long nftId, String variableContent, Long memberId) {
+    public void sendNftLike(Member member, Long resourceId, String variableContent) {
         Message message = Message.builder()
                 .putData("type", "NFT_LIKE")
-                .putData("nftId", String.valueOf(nftId))
-                .putData("memberId", String.valueOf(memberId))
+                .putData("resourceId", String.valueOf(resourceId))
                 .putData("message", variableContent + " " + AlarmType.NFT_LIKE.getContent())
                 .setToken(member.getFcmToken())
                 .build();
@@ -115,6 +146,28 @@ public class FcmService {
                 .putData("type", "EXCHANGE_FAIL")
                 .putData("message", "NFT 교환에 실패했어요.")
                 .setToken(member.getFcmToken())
+                .build();
+
+        send(message);
+    }
+
+    public void sendNewIssue(Long resourceId, String variableContent) {
+        Message message = Message.builder()
+                .putData("type", "NEW_ISSUE")
+                .putData("resourceId", String.valueOf(resourceId))
+                .putData("message", variableContent + " " + AlarmType.NEW_ISSUE.getContent())
+                .setTopic(FcmTopicType.TOPIC_ISSUE.getTitle())
+                .build();
+
+        send(message);
+    }
+
+    public void sendNewNotice(Long resourceId, String variableContent) {
+        Message message = Message.builder()
+                .putData("type", "NEW_NOTICE")
+                .putData("resourceId", String.valueOf(resourceId))
+                .putData("message", variableContent)
+                .setTopic(FcmTopicType.TOPIC_NOTICE.getTitle())
                 .build();
 
         send(message);

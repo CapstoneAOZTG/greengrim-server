@@ -76,7 +76,7 @@ public class LikeService {
      */
     public void newLike(Member member, Nft nft) {
         nft.plusLikeCount();
-        fcmService.sendNftLike(nft.getMember(), nft.getId(), member.getNickName(), member.getId());
+        fcmService.sendNftLike(nft.getMember(), nft.getId(), member.getNickName());
         alarmService.register(nft.getMember(), AlarmType.NFT_LIKE, nft.getId(), nft.getImgUrl(), member.getNickName(), member.getId());
     }
 }

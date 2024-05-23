@@ -1,7 +1,9 @@
 package com.greengrim.green.core.issue;
 
 
+import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.alarm.AlarmService;
+import com.greengrim.green.core.alarm.AlarmType;
 import com.greengrim.green.core.issue.dto.IssueRequestDto.IssueRequest;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.HomeIssues;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueInfo;
@@ -19,20 +21,25 @@ import org.springframework.stereotype.Service;
 public class IssueService {
 
     private final IssueRepository issueRepository;
+    private final FcmService fcmService;
     private final AlarmService alarmService;
 
     private static final int NUMBER_OF_HOME_ISSUES = 5;
 
     @Transactional
     public void register(IssueRequest issueRequest) {
-        issueRepository.save(
-                Issue.builder()
+        Issue issue = Issue.builder()
                         .title(issueRequest.getTitle())
                         .imgUrl(issueRequest.getImgUrl())
                         .url(issueRequest.getUrl())
-                        .build()
-        );
-        //TODO: 알람 기능 추가 alarmService.register();
+                        .build();
+        issueRepository.save(issue);
+
+        //TODO: 이슈 썸네일 가져오는 로직 추가
+        String thumbnail = "";
+
+        fcmService.sendNewIssue(issue.getId(), issue.getTitle());
+        alarmService.register(null, AlarmType.NEW_ISSUE, issue.getId(), thumbnail, issue.getTitle(), null);
     }
 
     public HomeIssues getHomeIssues() {

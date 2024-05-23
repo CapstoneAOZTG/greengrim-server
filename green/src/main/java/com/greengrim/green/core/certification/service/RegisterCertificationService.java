@@ -70,10 +70,12 @@ public class RegisterCertificationService {
         member.setCarbonReduction(challenge.getCategory().getCarbonReduction());
         memberRepository.save(member);
         // history 저장
-        historyService.save(member.getId(), challenge.getId(), challenge.getTitle(),
+        historyService.register(member.getId(), challenge.getId(), challenge.getTitle(),
                 challenge.getImgUrl(), HistoryOption.CERTIFICATION, point, member.getPoint());
 
         String certificationTitle = round + "회차 인증";
+        // FCM 전송
+        fcmService.sendGetCertificationPoint(member, certificationId, certificationTitle);
         // 알람 저장
         alarmService.register(member, AlarmType.POINT_CERTIFICATION, certificationId, challenge.getImgUrl(), certificationTitle, null);
     }
@@ -89,10 +91,10 @@ public class RegisterCertificationService {
         memberRepository.save(member);
         // history 저장
         String title = challenge.getTitle() + " 챌린지 성공";
-        historyService.save(member.getId(), challenge.getId(), title,
+        historyService.register(member.getId(), challenge.getId(), title,
                 challenge.getImgUrl(), HistoryOption.CHALLENGE_SUCCESS, successPoint, member.getPoint());
         // FCM 전송
-        fcmService.sendGetPoint(member, challenge.getId(), challenge.getTitle(), AlarmType.CHALLENGE_SUCCESS.getContent());
+        fcmService.sendSuccessChallenge(member, challenge.getId(), challenge.getTitle());
         // 알람 저장
         alarmService.register(member, AlarmType.CHALLENGE_SUCCESS, challenge.getId(), challenge.getImgUrl(), challenge.getTitle(), null);
     }

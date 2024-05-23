@@ -21,7 +21,7 @@ public class HistoryService {
     private final HistoryRepository historyRepository;
 
     @Transactional
-    public void save(Long memberId, Long targetId, String title, String imgUrl,
+    public void register(Long memberId, Long targetId, String title, String imgUrl,
                      HistoryOption historyOption, int point, int totalPoint) {
         History history = History.builder()
                 .memberId(memberId).targetId(targetId).title(title).imgUrl(imgUrl)
