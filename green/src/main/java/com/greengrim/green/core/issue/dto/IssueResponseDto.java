@@ -11,9 +11,9 @@ public class IssueResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class IssueInfo {
+        private Long id;
         private String title;
-        private String imgUrl;
-        private String url;
+        private String iconImgUrl;
     }
 
     @Getter
@@ -21,5 +21,15 @@ public class IssueResponseDto {
     @NoArgsConstructor
     public static class HomeIssues {
         private List<IssueInfo> issueInfos;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IssueDetailInfo {
+        private String title;
+        private String content;
+        private String createdAt;
+        private List<String> imgUrl;
     }
 }

@@ -25,8 +25,7 @@ public class Issue extends BaseTime {
 
     @NotNull
     private String title;
+    private String content;
     @NotNull
-    private String imgUrl;
-    @NotNull
-    private String url;         // 웹뷰 링크
+    private String iconImgUrl;
 }

@@ -30,10 +30,12 @@ public class IssueService {
     public void register(IssueRequest issueRequest) {
         Issue issue = Issue.builder()
                         .title(issueRequest.getTitle())
-                        .imgUrl(issueRequest.getImgUrl())
-                        .url(issueRequest.getUrl())
+                        .content(issueRequest.getContent())
+                        .iconImgUrl(issueRequest.getIconImgUrl())
                         .build();
         issueRepository.save(issue);
+
+        //TODO: 이슈 사진 리스트 저장 테이블, 로직 추가
 
         //TODO: 이슈 썸네일 가져오는 로직 추가
         String thumbnail = "";
@@ -47,7 +49,7 @@ public class IssueService {
                 PageRequest.of(0, NUMBER_OF_HOME_ISSUES));
         List<IssueInfo> issueInfos = new ArrayList<>();
         issues.forEach(issue -> issueInfos.add(
-                new IssueInfo(issue.getTitle(), issue.getImgUrl(), issue.getUrl())));
+                new IssueInfo(issue.getId(), issue.getTitle(), issue.getIconImgUrl())));
         return new HomeIssues(issueInfos);
     }
 
