@@ -117,7 +117,9 @@ public class GetChallengeService {
         challenges.forEach(challenge -> challengeInfoList.add(
                 new ChallengeInfo(challenge,
                         challenge.getHeadCount() + HotChallengeOption.MOST_HEADCOUNT.getSubTitle())));
-        if(challengeInfoList.size() > 1) {
+        if(challengeInfoList.size() == 1) {
+            exceptionId2 = challengeInfoList.get(0).getId();
+        } else if(challengeInfoList.size() == 2) {
             exceptionId2 = challengeInfoList.get(1).getId();
         }
 
