@@ -11,4 +11,9 @@ public class WebviewController {
         return "privacy-policy-page";
     }
 
+    @GetMapping("/terms-of-service")
+    public String getTermsOfService() {
+        return "terms-of-service";
+    }
+
 }
