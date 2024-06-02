@@ -32,4 +32,5 @@ public class Event extends BaseTime {
     @ColumnDefault("true")
     private boolean isWebView;  // true: 웹뷰, false: 딥링크
     private String url;         // 해당 링크를 나타냄
+    private Long resourceId;    // 링크 이동에 필요한 리소스
 }
