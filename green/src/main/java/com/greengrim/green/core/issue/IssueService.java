@@ -12,6 +12,7 @@ import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.greengrim.green.core.issue.photo.IssuePhoto;
 import com.greengrim.green.core.issue.photo.IssuePhotoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,14 @@ public class IssueService {
                         .build();
         issueRepository.save(issue);
 
-        //TODO: 이슈 사진 리스트 저장 테이블, 로직 추가
+        issueRequest.getImgUrls().forEach(imgUrl ->
+                issuePhotoRepository.save(
+                        IssuePhoto.builder()
+                                .issueId(issue.getId())
+                                .imgUrl(imgUrl)
+                                .build()
+                )
+        );
 
         String thumbnail = issuePhotoRepository.findByThumbnailByIssueId(issue.getId());
 
