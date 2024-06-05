@@ -61,6 +61,18 @@ public class Member extends BaseTime {
     @NotNull
     private String fcmToken;
 
+    @NotNull
+    private boolean isPushAlarmOn;
+
+    @NotNull
+    private boolean isChatAlarmOn;
+
+    @NotNull
+    private boolean isIssueAlarmOn;
+
+    @NotNull
+    private boolean isNoticeAlarmOn;
+
     public void changeRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
@@ -115,5 +127,10 @@ public class Member extends BaseTime {
     public void plusReportCount() {
         this.reportCount++;
     }
+
+    public void setIsPushAlarmOn(boolean isPushAlarmOn) { this.isPushAlarmOn = isPushAlarmOn; }
+    public void setIsChatAlarmOn(boolean isChatAlarmOn) { this.isChatAlarmOn = isChatAlarmOn; }
+    public void setIsIssueAlarmOn(boolean isIssueAlarmOn) { this.isIssueAlarmOn = isIssueAlarmOn; }
+    public void setIsNoticeAlarmOn(boolean isNoticeAlarmOn) { this.isNoticeAlarmOn = isNoticeAlarmOn; }
 
 }
