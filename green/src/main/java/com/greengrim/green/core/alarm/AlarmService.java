@@ -24,6 +24,9 @@ public class AlarmService {
     @Transactional
     public Alarm register(Member member, AlarmType alarmType, Long resourceId,
                           String imgUrl, String variableContent, Long interactedMemberId) {
+        if(interactedMemberId == null) {
+            interactedMemberId = -1L;
+        }
         Alarm alarm = Alarm.builder()
                 .member(member)
                 .type(alarmType)
