@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class FcmMessageBuilder {
 
+    /**
+     * 토픽 기반 메세지
+     */
     public Message chatMessage(ChatMessage chatMessage){
         return Message.builder()
             .putData("type", String.valueOf(chatMessage.getType()))
@@ -25,6 +28,27 @@ public class FcmMessageBuilder {
             .build();
     }
 
+    public Message newIssue(Long resourceId, String variableContent) {
+        return Message.builder()
+            .putData("type", "NEW_ISSUE")
+            .putData("resourceId", String.valueOf(resourceId))
+            .putData("message", variableContent + " " + AlarmType.NEW_ISSUE.getContent())
+            .setTopic(FcmTopicType.TOPIC_ISSUE.getTitle())
+            .build();
+    }
+
+    public Message newNotice(Long resourceId, String variableContent) {
+        return Message.builder()
+            .putData("type", "NEW_NOTICE")
+            .putData("resourceId", String.valueOf(resourceId))
+            .putData("message", variableContent)
+            .setTopic(FcmTopicType.TOPIC_NOTICE.getTitle())
+            .build();
+    }
+
+    /**
+     * 토큰 기반 메세지
+     */
     public Message getCertificationPoint(Member member, Long resourceId,
         String variableContent) {
         return Message.builder()
@@ -67,24 +91,6 @@ public class FcmMessageBuilder {
             .putData("type", "EXCHANGE_FAIL")
             .putData("message", "NFT 교환에 실패했어요.")
             .setToken(member.getFcmToken())
-            .build();
-    }
-
-    public Message newIssue(Long resourceId, String variableContent) {
-        return Message.builder()
-            .putData("type", "NEW_ISSUE")
-            .putData("resourceId", String.valueOf(resourceId))
-            .putData("message", variableContent + " " + AlarmType.NEW_ISSUE.getContent())
-            .setTopic(FcmTopicType.TOPIC_ISSUE.getTitle())
-            .build();
-    }
-
-    public Message newNotice(Long resourceId, String variableContent) {
-        return Message.builder()
-            .putData("type", "NEW_NOTICE")
-            .putData("resourceId", String.valueOf(resourceId))
-            .putData("message", variableContent)
-            .setTopic(FcmTopicType.TOPIC_NOTICE.getTitle())
             .build();
     }
 }
