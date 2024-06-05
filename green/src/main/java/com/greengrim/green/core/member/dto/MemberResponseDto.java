@@ -84,4 +84,22 @@ public class MemberResponseDto {
             this.point = member.getPoint();
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class LoginInfo {
+        private TokenInfo tokenInfo;
+        private boolean isPushAlarmOn;
+        private boolean isChatAlarmOn;
+        private boolean isIssueAlarmOn;
+        private boolean isNoticeAlarmOn;
+
+        public LoginInfo(TokenInfo tokenInfo, Member member) {
+            this.tokenInfo = tokenInfo;
+            this.isPushAlarmOn = member.isPushAlarmOn();
+            this.isChatAlarmOn = member.isChatAlarmOn();
+            this.isIssueAlarmOn = member.isIssueAlarmOn();
+            this.isNoticeAlarmOn = member.isNoticeAlarmOn();
+        }
+    }
 }
