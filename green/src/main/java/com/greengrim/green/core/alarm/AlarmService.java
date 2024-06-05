@@ -39,6 +39,7 @@ public class AlarmService {
         return alarm;
     }
 
+    @Transactional
     public PageResponseDto<List<AlarmInfo>> getAlarms(Member member, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
         Page<Alarm> alarms = alarmRepository.findByMemberWithinAMonth(member, LocalDateTime.now().minusMonths(1), pageable);
