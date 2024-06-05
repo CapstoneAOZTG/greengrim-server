@@ -24,6 +24,9 @@ public class AlarmService {
     @Transactional
     public Alarm register(Member member, AlarmType alarmType, Long resourceId,
                           String imgUrl, String variableContent, Long interactedMemberId) {
+        if(interactedMemberId == null) {
+            interactedMemberId = -1L;
+        }
         Alarm alarm = Alarm.builder()
                 .member(member)
                 .type(alarmType)
@@ -36,16 +39,17 @@ public class AlarmService {
         return alarm;
     }
 
+    @Transactional
     public PageResponseDto<List<AlarmInfo>> getAlarms(Member member, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
         Page<Alarm> alarms = alarmRepository.findByMemberWithinAMonth(member, LocalDateTime.now().minusMonths(1), pageable);
 
         List<AlarmInfo> alarmInfoList = new ArrayList<>();
-        alarms.forEach(alarm ->
-                alarmInfoList.add(new AlarmInfo(alarm)));
-
-        // 안 읽은 알람 모두 읽음 처리
-        alarms.forEach(Alarm::setChecked);
+        alarms.forEach(alarm -> {
+            alarmInfoList.add(new AlarmInfo(alarm));
+            alarm.setChecked();     // 모든 알림에 대해 읽음 처리
+                }
+        );
 
         return new PageResponseDto<>(alarms.getNumber(), alarms.hasNext(), alarmInfoList);
     }
