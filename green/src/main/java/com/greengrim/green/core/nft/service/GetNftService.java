@@ -83,14 +83,25 @@ public class GetNftService implements GetNftUseCase {
     }
 
     /**
-     * 교환할 NFT 조회
+     * NFT Collection 상세 조회
      */
-    public NftStockInfo getNftStockInfo(NftGrade grade) {
-        Nft nft = nftRepository.findRandomByGrade(grade)
+    public NftStockInfo getNftStockDetailInfo(Long id) {
+        Nft nft = nftRepository.findByIdAndStatusTrue(id)
             .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
 
         return new NftStockInfo(nft, traits);
     }
+
+    /**
+     * 교환할 NFT 조회
+     */
+    public NftStockInfo getNftStockInfo(NftGrade grade) {
+        Nft nft = nftRepository.findRandomByGrade(grade)
+                .orElseThrow(() -> new BaseException(NftErrorCode.EMPTY_NFT));
+
+        return new NftStockInfo(nft, traits);
+    }
+
 
     /**
      * 교환할 NFT 조회 새로고침
