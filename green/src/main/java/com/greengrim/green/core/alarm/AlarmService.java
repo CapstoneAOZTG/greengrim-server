@@ -41,11 +41,11 @@ public class AlarmService {
         Page<Alarm> alarms = alarmRepository.findByMemberWithinAMonth(member, LocalDateTime.now().minusMonths(1), pageable);
 
         List<AlarmInfo> alarmInfoList = new ArrayList<>();
-        alarms.forEach(alarm ->
-                alarmInfoList.add(new AlarmInfo(alarm)));
-
-        // 안 읽은 알람 모두 읽음 처리
-        alarms.forEach(Alarm::setChecked);
+        alarms.forEach(alarm -> {
+            alarmInfoList.add(new AlarmInfo(alarm));
+            alarm.setChecked();     // 모든 알림에 대해 읽음 처리
+                }
+        );
 
         return new PageResponseDto<>(alarms.getNumber(), alarms.hasNext(), alarmInfoList);
     }
