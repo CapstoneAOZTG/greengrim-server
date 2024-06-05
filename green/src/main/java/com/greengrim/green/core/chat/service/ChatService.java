@@ -102,7 +102,8 @@ public class ChatService {
             && chatMessage.getCreatedAt().substring(0, 12)
             .equals(lastChatMessage.getCreatedAt().substring(0, 12))) {
           chatMessage.setProfileImg("");
-          chatMessage.setSentTime("");
+          chatRepository.updateSendTimeBySenderIdAndCreatedAt(
+              lastChatMessage.getSenderId(), "", lastChatMessage.getCreatedAt());
         }
       }
     }
