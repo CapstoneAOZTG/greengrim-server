@@ -32,4 +32,13 @@ public class IssueResponseDto {
         private String createdAt;
         private List<String> imgUrl;
     }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IssueListInfo {
+        private Long id;
+        private String title;
+        private String imgUrl;
+    }
 }
