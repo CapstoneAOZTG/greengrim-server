@@ -55,6 +55,18 @@ public class GetNftController {
     }
 
     /**
+     * [GET] NFT Collection 상세 조회
+     */
+    @Operation(summary = "NFT Collection 상세 조회")
+    @GetMapping("/stock/{id}")
+    public ResponseEntity<NftStockInfo> getNftStockDetailInfo(
+            @PathVariable("id") Long id) {
+        return new ResponseEntity<>(
+                getNftUseCase.getNftStockDetailInfo(id),
+                HttpStatus.OK);
+    }
+
+    /**
      * [GET] 교환할 NFT 조회
      */
     @Operation(summary = "교환할 NFT 조회")

@@ -78,7 +78,7 @@ public class GetChallengeController {
     }
 
     /**
-     * [GET] 홈 화면 핫 챌린지 5개 조회
+     * [GET] 홈 화면 핫 챌린지 조회
      */
     @Operation(summary = "홈 화면 핫 챌린지 조회")
     @GetMapping("/home")

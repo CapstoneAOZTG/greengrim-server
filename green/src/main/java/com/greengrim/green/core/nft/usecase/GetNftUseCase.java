@@ -20,6 +20,8 @@ public interface GetNftUseCase {
 
     NftStockInfo getNftStockInfo(NftGrade grade);
 
+    NftStockInfo getNftStockDetailInfo(Long id);
+
     NftStockAmountInfo getNftStockAmountInfo();
 
     NftStockInfo getNftStockInfoRefresh(NftGrade grade, List<Long> nftList);

@@ -146,8 +146,8 @@ public class NftResponseDto {
         public String hair;
         public String face;
         public String gesture;
-        public String accessory;
         public String shoes;
+        public String accessory;
         public String rarity;
 
         TraitsInfo(String [][] traits, String traitsString) {
@@ -155,8 +155,8 @@ public class NftResponseDto {
             this.hair = traits[1][traitsString.charAt(1) - '0' - 1];
             this.face = traits[2][traitsString.charAt(2) - '0'- 1];
             this.gesture = traits[3][traitsString.charAt(3) - '0' - 1];
-            this.accessory = traits[4][traitsString.charAt(4) - '0' - 1];
-            this.shoes = traits[5][traitsString.charAt(5) - '0' - 1];
+            this.shoes = traits[4][traitsString.charAt(4) - '0' - 1];
+            this.accessory = traits[5][traitsString.charAt(5) - '0' - 1];
             this.rarity = traits[6][traitsString.charAt(6) - '0' - 1];
         }
     }
