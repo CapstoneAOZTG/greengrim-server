@@ -2,6 +2,7 @@ package com.greengrim.green.core.member.controller;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.MemberAlarm;
 import com.greengrim.green.core.member.dto.MemberRequestDto.ModifyProfile;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
 import com.greengrim.green.core.member.service.UpdateMemberService;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +55,17 @@ public class UpdateMemberController {
             @CurrentMember Member member) {
         updateMemberService.deleteMember(member);
         return new ResponseEntity<>(200, HttpStatus.OK);
+    }
+
+    /**
+     * [PATCH] 알람 설정 변경
+     */
+    @Operation(summary = "알람 설정 변경")
+    @PatchMapping("/alarm")
+    public void updateAlarmStatus(
+        @CurrentMember Member member,
+        @RequestBody MemberAlarm memberAlarm) {
+        updateMemberService.updateAlarmStatus(member, memberAlarm);
     }
 
 }

@@ -1,12 +1,13 @@
 package com.greengrim.green.core.member.service;
 
-
 import com.greengrim.green.common.fcm.FcmService;
+import com.greengrim.green.common.fcm.FcmTopicType;
 import com.greengrim.green.common.oauth.jwt.JwtTokenProvider;
 import com.greengrim.green.common.s3.S3Service;
 import com.greengrim.green.core.certification.service.UpdateCertificationService;
 import com.greengrim.green.core.chat.service.ChatService;
 import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.MemberAlarm;
 import com.greengrim.green.core.member.dto.MemberRequestDto.ModifyProfile;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
 import com.greengrim.green.core.member.repository.MemberRepository;
@@ -26,6 +27,7 @@ public class UpdateMemberService  {
     private final UpdateCertificationService updateCertificationService;
     private final UpdateNftService updateNftService;
     private final ChatService chatService;
+    private final FcmService fcmService;
 
     private final S3Service s3Service;
 
@@ -65,4 +67,42 @@ public class UpdateMemberService  {
         member.setStatusFalse();
     }
 
+    public void updateAlarmStatus(Member member, MemberAlarm memberAlarm) {
+        if(memberAlarm.equals(MemberAlarm.PUSH)) updateIsPushAlarmOn(member);
+        else if(memberAlarm.equals(MemberAlarm.CHAT)) updateIsChatAlarmOn(member);
+        else if(memberAlarm.equals(MemberAlarm.ISSUE)) updateIsIssueAlarmOn(member);
+        else if(memberAlarm.equals(MemberAlarm.NOTICE)) updateIsNoticeAlarmOn(member);
+    }
+
+    public void updateIsPushAlarmOn(Member member) {
+        if(member.isPushAlarmOn()) member.setIsPushAlarmOn(false);
+        else member.setIsPushAlarmOn(true);
+    }
+
+    public void updateIsChatAlarmOn(Member member) {
+        if(member.isChatAlarmOn()) member.setIsChatAlarmOn(false);
+        else member.setIsChatAlarmOn(true);
+    }
+
+    public void updateIsIssueAlarmOn(Member member) {
+        if(member.isIssueAlarmOn()) {
+            member.setIsIssueAlarmOn(false);
+            fcmService.unsubscribeTopic(member, FcmTopicType.TOPIC_ISSUE);
+        }
+        else {
+            member.setIsPushAlarmOn(true);
+            fcmService.subscribeTopic(member, FcmTopicType.TOPIC_ISSUE);
+        }
+    }
+
+    public void updateIsNoticeAlarmOn(Member member) {
+        if(member.isNoticeAlarmOn()) {
+            member.setIsNoticeAlarmOn(false);
+            fcmService.unsubscribeTopic(member, FcmTopicType.TOPIC_NOTICE);
+        }
+        else{
+            member.setIsNoticeAlarmOn(true);
+            fcmService.subscribeTopic(member, FcmTopicType.TOPIC_NOTICE);
+        }
+    }
 }
