@@ -3,7 +3,8 @@ package com.greengrim.green.core.member.controller;
 import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.dto.MemberRequestDto;
-import com.greengrim.green.core.member.dto.MemberResponseDto;
+import com.greengrim.green.core.member.dto.MemberResponseDto.CheckNickNameRes;
+import com.greengrim.green.core.member.dto.MemberResponseDto.LoginInfo;
 import com.greengrim.green.core.member.service.RegisterMemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -26,7 +27,7 @@ public class RegisterMemberController {
      */
     @Operation(summary = "소셜 회원가입")
     @PostMapping("/sign-up")
-    public ResponseEntity<MemberResponseDto.TokenInfo> register(
+    public ResponseEntity<LoginInfo> register(
             @Valid @RequestBody MemberRequestDto.RegisterMemberReq registerMemberReq) {
         return new ResponseEntity<>(registerMemberService.registerMember(registerMemberReq),
                 HttpStatus.OK);
@@ -38,7 +39,7 @@ public class RegisterMemberController {
      */
     @Operation(summary = "로그인")
     @PostMapping("/login")
-    public ResponseEntity<MemberResponseDto.TokenInfo> login(
+    public ResponseEntity<LoginInfo> login(
             @Valid @RequestBody MemberRequestDto.LoginMemberReq loginMemberReq) {
         return new ResponseEntity<>(registerMemberService.login(loginMemberReq),
                 HttpStatus.OK);
@@ -50,7 +51,7 @@ public class RegisterMemberController {
      */
     @Operation(summary = "닉네임 중복 확인")
     @PostMapping("/nick-name")
-    public ResponseEntity<MemberResponseDto.CheckNickNameRes> checkNickName(
+    public ResponseEntity<CheckNickNameRes> checkNickName(
             @Valid @RequestBody MemberRequestDto.CheckNickNameReq checkNickNameReq) {
         return new ResponseEntity<>(registerMemberService.checkNickName(checkNickNameReq),
                 HttpStatus.OK);

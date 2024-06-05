@@ -22,4 +22,11 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String> {
   void updateProfileAndNicknameBySenderId(@Param("senderId") Long senderId,
                                           @Param("basicUrl") String basicUrl,
                                           @Param("basicNickName") String basicNickName);
+
+  @Modifying
+  @Query("update ChatMessage c set c.sendTime = :sentTime, c.nickName = :basicNickName where c.senderId = :senderId and c.createAt = :createdAt")
+  void updateSendTimeBySenderIdAndCreatedAt(@Param("senderId") Long senderId,
+                                          @Param("sentTime") String sentTime,
+                                          @Param("createAt") String createdAt);
+
 }
