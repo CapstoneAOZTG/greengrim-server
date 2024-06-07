@@ -18,15 +18,15 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String> {
   Long countByRoomIdAndCreatedAtGreaterThanAndType(Long roomId, String createdAt, String type);
 
   @Modifying
-  @Query("update ChatMessage c set c.profileImg = :basicUrl, c.nickName = :basicNickName where c.senderId = :senderId")
+  @Query("update chatMessage c set c.profileImg = :basicUrl, c.nickName = :basicNickName where c.senderId = :senderId")
   void updateProfileAndNicknameBySenderId(@Param("senderId") Long senderId,
                                           @Param("basicUrl") String basicUrl,
                                           @Param("basicNickName") String basicNickName);
 
   @Modifying
-  @Query("update ChatMessage c set c.sendTime = :sentTime, c.nickName = :basicNickName where c.senderId = :senderId and c.createAt = :createdAt")
+  @Query("update chatMessage c set c.sendTime = :sentTime where c.senderId = :senderId and c.createdAt = :createdAt")
   void updateSendTimeBySenderIdAndCreatedAt(@Param("senderId") Long senderId,
                                           @Param("sentTime") String sentTime,
-                                          @Param("createAt") String createdAt);
+                                          @Param("createdAt") String createdAt);
 
 }
