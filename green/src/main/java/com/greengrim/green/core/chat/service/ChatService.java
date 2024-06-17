@@ -105,6 +105,7 @@ public class ChatService {
           ChatMessage updateMessage = chatRepository.findChatMessageBySenderIdAndCreatedAt(
               lastChatMessage.getSenderId(), lastChatMessage.getCreatedAt());
           updateMessage.setSentTime("");
+          chatRepository.deleteBySenderIdAndCreatedAt(lastChatMessage.getSenderId(), lastChatMessage.getCreatedAt());
           chatRepository.save(updateMessage);
         }
       }

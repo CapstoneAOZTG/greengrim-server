@@ -19,6 +19,8 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String> {
 
   Long countByRoomIdAndCreatedAtGreaterThanAndType(Long roomId, String createdAt, String type);
 
+  void deleteBySenderIdAndCreatedAt(Long senderId, String createdAt);
+
   @Modifying
   @Query("update chatMessage c set c.profileImg = :basicUrl, c.nickName = :basicNickName where c.senderId = :senderId")
   void updateProfileAndNicknameBySenderId(@Param("senderId") Long senderId,
