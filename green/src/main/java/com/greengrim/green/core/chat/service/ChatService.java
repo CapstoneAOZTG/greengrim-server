@@ -70,6 +70,7 @@ public class ChatService {
     }
 
     checkLastMessage(chatMessage);
+
   }
 
   public PageResponseDto<List<ChatMessage>> getMessages(Long roomId, int page, int size) {
@@ -84,40 +85,37 @@ public class ChatService {
   }
 
   public void checkLastMessage(ChatMessage chatMessage) {
+    boolean isDuplicated = false;
     ChatMessage lastChatMessage = lastChatStorage.getMessage(chatMessage.getRoomId());
 
-    // 채팅방에 메세지가 존재한다면
-    if (lastChatMessage != null) {
-      // 만약 최근 메세지와 확인하려는 메세지가 DATE 타입이라면
-      // 바로 최근 메세지로 설정
-      if (lastChatMessage.getType() != MessageType.DATE ||
-          chatMessage.getType() != MessageType.DATE) {
+    // 채팅방에 메세지가 없거나
+    // 보내려는 메세지 또는 최근 메세지가 DATE 타입이 아니라면 검사
+    if (lastChatMessage != null || lastChatMessage.getType() != MessageType.DATE ||
+        chatMessage.getType() != MessageType.DATE ) {
 
-        // 보내려는 메세지와 가장 최근 메세지의 송신자와 보낸
-        // 시간(분)이 일치한다면 프로필 이미지, 날짜 삭제
-        if (chatMessage.getSenderId().equals(lastChatMessage.getSenderId())
-            && chatMessage.getCreatedAt().substring(0, 12)
-            .equals(lastChatMessage.getCreatedAt().substring(0, 12))) {
-          chatMessage.setProfileImg("");
-
-          redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
-          fcmService.sendChatMessage(chatMessage);
-
-          ChatMessage updateMessage = chatRepository.findChatMessageBySenderIdAndCreatedAt(
-              lastChatMessage.getSenderId(), lastChatMessage.getCreatedAt());
-          updateMessage.setSentTime("");
-          chatRepository.deleteBySenderIdAndCreatedAt(lastChatMessage.getSenderId(), lastChatMessage.getCreatedAt());
-          chatRepository.save(updateMessage);
-          chatRepository.save(chatMessage);
-        }
+      // 최근 메세지와 보내려는 메세지의 송신자가 같다면
+      if (chatMessage.getSenderId().equals(lastChatMessage.getSenderId())
+          && chatMessage.getCreatedAt().substring(0, 12).equals(lastChatMessage.getCreatedAt().substring(0, 12))) {
+        isDuplicated = true;
+        chatMessage.setProfileImg("");
       }
     }
-    else {
-      redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
-      fcmService.sendChatMessage(chatMessage);
-    }
+
+    // 메시지 전송
+    redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
+    fcmService.sendChatMessage(chatMessage);
     lastChatStorage.setMessage(chatMessage.getRoomId(), chatMessage);
+
+    if(isDuplicated) {
+      ChatMessage updateMessage = chatRepository.findChatMessageBySenderIdAndCreatedAt(
+          lastChatMessage.getSenderId(), lastChatMessage.getCreatedAt());
+      updateMessage.setSentTime("");
+      chatRepository.deleteBySenderIdAndCreatedAt(lastChatMessage.getSenderId(),
+          lastChatMessage.getCreatedAt());
+      chatRepository.save(updateMessage);
+    }
   }
+
 
   @Scheduled(cron = "0 0 0 * * ?")
   public void sendDateMessage() {
