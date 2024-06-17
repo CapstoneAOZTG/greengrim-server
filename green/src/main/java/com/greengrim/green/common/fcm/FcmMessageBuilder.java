@@ -69,7 +69,7 @@ public class FcmMessageBuilder {
 
     public Message successChallenge(Member member, Long resourceId, String variableContent) {
         return Message.builder()
-            .putData("type", "CHALLENGE")
+            .putData("type", "CHALLENGE_SUCCESS")
             .putData("resourceId", String.valueOf(resourceId))
             .putData("message", variableContent + " " + AlarmType.CHALLENGE_SUCCESS.getContent())
             .setToken(member.getFcmToken())
