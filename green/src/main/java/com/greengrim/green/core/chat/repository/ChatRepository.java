@@ -15,6 +15,8 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String> {
 
   ChatMessage findFirstByRoomIdOrderByCreatedAtDesc(Long roomId);
 
+  ChatMessage findChatMessageBySenderIdAndCreatedAt(Long senderId, String createdAt);
+
   Long countByRoomIdAndCreatedAtGreaterThanAndType(Long roomId, String createdAt, String type);
 
   @Modifying
@@ -22,11 +24,5 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String> {
   void updateProfileAndNicknameBySenderId(@Param("senderId") Long senderId,
                                           @Param("basicUrl") String basicUrl,
                                           @Param("basicNickName") String basicNickName);
-
-  @Modifying
-  @Query("update chatMessage c set c.sendTime = :sentTime where c.senderId = :senderId and c.createdAt = :createdAt")
-  void updateSendTimeBySenderIdAndCreatedAt(@Param("senderId") Long senderId,
-                                          @Param("sentTime") String sentTime,
-                                          @Param("createdAt") String createdAt);
 
 }
