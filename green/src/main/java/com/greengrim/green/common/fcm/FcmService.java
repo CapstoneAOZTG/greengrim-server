@@ -6,13 +6,10 @@ import com.google.firebase.messaging.Message;
 import com.google.gson.Gson;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.ChattingErrorCode;
-import com.greengrim.green.core.alarm.AlarmType;
 import com.greengrim.green.core.chat.ChatMessage;
 import com.greengrim.green.core.member.Member;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +18,11 @@ import org.springframework.stereotype.Service;
 public class FcmService {
 
     private final FirebaseMessaging firebaseMessaging;
+    private final FcmMessageBuilder fcmMessageBuilder;
 
+    /**
+     * 채팅방 구독하기
+     */
     public void subscribeChatroom(Member member, Long chatroomId) {
         List<String> memberFcmToken = new ArrayList<>();
         memberFcmToken.add(member.getFcmToken());
@@ -31,9 +32,11 @@ public class FcmService {
         } catch (FirebaseMessagingException e) {
             throw new BaseException(ChattingErrorCode.FAIL_FCM_SUBSCRIBE);
         }
-
     }
 
+    /**
+     * 알람 구독 설정하기
+     */
     public void subscribeTopic(Member member, FcmTopicType fcmTopicType) {
         List<String> memberFcmToken = new ArrayList<>();
         memberFcmToken.add(member.getFcmToken());
@@ -45,6 +48,9 @@ public class FcmService {
         }
     }
 
+    /**
+     * 채팅방 구독 해제하기
+     */
     public void unsubscribeChatroom(Member member, Long chatroomId) {
         List<String> memberFcmToken = new ArrayList<>();
         memberFcmToken.add(member.getFcmToken());
@@ -56,6 +62,9 @@ public class FcmService {
         }
     }
 
+    /**
+     * 알람 구독 해제하기
+     */
     public void unsubscribeTopic(Member member, FcmTopicType fcmTopicType) {
         List<String> memberFcmToken = new ArrayList<>();
         memberFcmToken.add(member.getFcmToken());
@@ -67,112 +76,9 @@ public class FcmService {
         }
     }
 
-    public void sendChatMessage(ChatMessage chatMessage) {
-        Message message = Message.builder()
-                .putData("type", String.valueOf(chatMessage.getType()))
-                .putData("roomId", String.valueOf(chatMessage.getRoomId()))
-                .putData("senderId", String.valueOf(chatMessage.getSenderId()))
-                .putData("certId", String.valueOf(chatMessage.getCertId()))
-                .putData("message", chatMessage.getMessage())
-                .putData("nickName", chatMessage.getNickName())
-                .putData("profileImg", chatMessage.getProfileImg())
-                .putData("certImg", chatMessage.getCertImg())
-                .putData("sentDate", chatMessage.getSentDate())
-                .putData("sentTime", chatMessage.getSentTime())
-                .setTopic(String.valueOf(chatMessage.getRoomId()))
-                .build();
-
-        send(message);
-    }
-
-    public void sendGetCertificationPoint(Member member, Long resourceId,
-                             String variableContent) {
-        Message message = Message.builder()
-                .putData("type", "POINT_CERTIFICATION")
-                .putData("resourceId", String.valueOf(resourceId))
-                .putData("message", variableContent + " " + AlarmType.POINT_CERTIFICATION.getContent())
-                .setToken(member.getFcmToken())
-                .build();
-
-        send(message);
-    }
-
-    public void sendGetVerificationPoint(Member member) {
-        Message message = Message.builder()
-                .putData("type", "POINT_VERIFICATION")
-                .putData("message", AlarmType.POINT_VERIFICATION.getContent())
-                .setToken(member.getFcmToken())
-                .build();
-
-        send(message);
-    }
-
-    public void sendSuccessChallenge(Member member, Long resourceId, String variableContent) {
-        Message message = Message.builder()
-                .putData("type", "CHALLENGE_SUCCESS")
-                .putData("resourceId", String.valueOf(resourceId))
-                .putData("message", variableContent + " " + AlarmType.CHALLENGE_SUCCESS.getContent())
-                .setToken(member.getFcmToken())
-                .build();
-
-        send(message);
-    }
-
-    public void sendMintingSuccess(Member member, Long resourceId, String variableContent) {
-        Message message = Message.builder()
-                .putData("type", "EXCHANGE_SUC")
-                .putData("resourceId", String.valueOf(resourceId))
-                .putData("message", variableContent + " " + AlarmType.NFT_EXCHANGE.getContent())
-                .putData("memberId", "")
-                .setToken(member.getFcmToken())
-                .build();
-
-        send(message);
-    }
-
-    public void sendNftLike(Member member, Long resourceId, String variableContent) {
-        Message message = Message.builder()
-                .putData("type", "NFT_LIKE")
-                .putData("resourceId", String.valueOf(resourceId))
-                .putData("message", variableContent + " " + AlarmType.NFT_LIKE.getContent())
-                .setToken(member.getFcmToken())
-                .build();
-
-        send(message);
-    }
-
-    public void sendMintingFail(Member member) {
-        Message message = Message.builder()
-                .putData("type", "EXCHANGE_FAIL")
-                .putData("message", "NFT 교환에 실패했어요.")
-                .setToken(member.getFcmToken())
-                .build();
-
-        send(message);
-    }
-
-    public void sendNewIssue(Long resourceId, String variableContent) {
-        Message message = Message.builder()
-                .putData("type", "NEW_ISSUE")
-                .putData("resourceId", String.valueOf(resourceId))
-                .putData("message", variableContent + " " + AlarmType.NEW_ISSUE.getContent())
-                .setTopic(FcmTopicType.TOPIC_ISSUE.getTitle())
-                .build();
-
-        send(message);
-    }
-
-    public void sendNewNotice(Long resourceId, String variableContent) {
-        Message message = Message.builder()
-                .putData("type", "NEW_NOTICE")
-                .putData("resourceId", String.valueOf(resourceId))
-                .putData("message", variableContent)
-                .setTopic(FcmTopicType.TOPIC_NOTICE.getTitle())
-                .build();
-
-        send(message);
-    }
-
+    /**
+     * FCM 메세지 전송
+     */
     public void send(Message message) {
         try {
             FirebaseMessaging.getInstance().send(message);
@@ -183,5 +89,53 @@ public class FcmService {
         Gson gson = new Gson();
         String fcmMessageJson = gson.toJson(message);
         System.out.println("FCM 메시지: " + fcmMessageJson);
+    }
+
+
+    // [메세지 전송 시나리오 목록]
+
+    /** 채팅방 메세지 */
+    public void sendChatMessage(ChatMessage chatMessage) {
+        send(fcmMessageBuilder.chatMessage(chatMessage));
+    }
+
+    /** 내 인증 완료 시 포인트 지급 */
+    public void sendGetCertificationPoint(Member member, Long resourceId, String variableContent) {
+        send(fcmMessageBuilder.getCertificationPoint(member, resourceId, variableContent));
+    }
+
+    /** 타 인증 검증 완료 시 포인트 지급 */
+    public void sendGetVerificationPoint(Member member) {
+        send(fcmMessageBuilder.getVerificationPoint(member));
+    }
+
+    /** 챌린지 성공 시 포인트 지급 */
+    public void sendSuccessChallenge(Member member, Long resourceId, String variableContent) {
+        send(fcmMessageBuilder.successChallenge(member, resourceId, variableContent));
+    }
+
+    /** NFT 좋아요 */
+    public void sendNftLike(Member member, Long resourceId, String variableContent) {
+        send(fcmMessageBuilder.mintingSuccess(member, resourceId, variableContent));
+    }
+
+    /** NFT 교환하기 성공 */
+    public void sendMintingSuccess(Member member, Long resourceId, String variableContent) {
+        send(fcmMessageBuilder.mintingSuccess(member, resourceId, variableContent));
+    }
+
+    /** NFT 교환하기 실패 */
+    public void sendMintingFail(Member member) {
+        send(fcmMessageBuilder.mintingFail(member));
+    }
+
+    /** 새로운 이슈 */
+    public void sendNewIssue(Long resourceId, String variableContent) {
+        send(fcmMessageBuilder.newIssue(resourceId, variableContent));
+    }
+
+    /** 새로운 공지사항 */
+    public void sendNewNotice(Long resourceId, String variableContent) {
+        send(fcmMessageBuilder.newNotice(resourceId, variableContent));
     }
 }
