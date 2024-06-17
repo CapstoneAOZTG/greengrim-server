@@ -70,9 +70,6 @@ public class ChatService {
     }
 
     checkLastMessage(chatMessage);
-    redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
-    fcmService.sendChatMessage(chatMessage);
-    chatRepository.save(chatMessage);
   }
 
   public PageResponseDto<List<ChatMessage>> getMessages(Long roomId, int page, int size) {
@@ -102,11 +99,16 @@ public class ChatService {
             && chatMessage.getCreatedAt().substring(0, 12)
             .equals(lastChatMessage.getCreatedAt().substring(0, 12))) {
           chatMessage.setProfileImg("");
+
+          redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
+          fcmService.sendChatMessage(chatMessage);
+
           ChatMessage updateMessage = chatRepository.findChatMessageBySenderIdAndCreatedAt(
               lastChatMessage.getSenderId(), lastChatMessage.getCreatedAt());
           updateMessage.setSentTime("");
           chatRepository.deleteBySenderIdAndCreatedAt(lastChatMessage.getSenderId(), lastChatMessage.getCreatedAt());
           chatRepository.save(updateMessage);
+          chatRepository.save(chatMessage);
         }
       }
     }
