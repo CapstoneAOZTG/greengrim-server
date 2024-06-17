@@ -90,14 +90,14 @@ public class ChatService {
 
     // 채팅방에 메세지가 없거나
     // 보내려는 메세지 또는 최근 메세지가 DATE 타입이 아니라면 검사
-    if (lastChatMessage != null || lastChatMessage.getType() != MessageType.DATE ||
-        chatMessage.getType() != MessageType.DATE ) {
-
-      // 최근 메세지와 보내려는 메세지의 송신자가 같다면
-      if (chatMessage.getSenderId().equals(lastChatMessage.getSenderId())
-          && chatMessage.getCreatedAt().substring(0, 12).equals(lastChatMessage.getCreatedAt().substring(0, 12))) {
-        isDuplicated = true;
-        chatMessage.setProfileImg("");
+    if (lastChatMessage != null) {
+      if(lastChatMessage.getType() != MessageType.DATE || chatMessage.getType() != MessageType.DATE) {
+        if (chatMessage.getSenderId().equals(lastChatMessage.getSenderId())
+            && chatMessage.getCreatedAt().substring(0, 12)
+            .equals(lastChatMessage.getCreatedAt().substring(0, 12))) {
+          isDuplicated = true;
+          chatMessage.setProfileImg("");
+        }
       }
     }
 
