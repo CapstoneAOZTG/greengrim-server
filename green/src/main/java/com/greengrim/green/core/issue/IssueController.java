@@ -2,6 +2,7 @@ package com.greengrim.green.core.issue;
 
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.issue.dto.IssueRequestDto.IssueRequest;
+import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueDetailInfo;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueListInfo;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.HomeIssues;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,6 +48,17 @@ public class IssueController {
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size) {
         return ResponseEntity.ok(issueService.getIssues(page, size));
+    }
+
+    /**
+     * [GET] 이슈 상세 조회
+     */
+    @Operation(summary = "이슈 상세 조회")
+    @GetMapping("/issues/{id}")
+    public ResponseEntity<IssueDetailInfo> getDetailIssue(
+            @PathVariable("id") Long id
+    ) {
+        return ResponseEntity.ok(issueService.getDetailIssue(id));
     }
 
 }
