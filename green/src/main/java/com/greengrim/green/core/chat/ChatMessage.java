@@ -3,13 +3,18 @@ package com.greengrim.green.core.chat;
 import com.greengrim.green.common.entity.Time;
 import jakarta.persistence.Column;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Document
 public class ChatMessage  {
 
@@ -27,26 +32,10 @@ public class ChatMessage  {
   private String certImg;
   private String sentDate;
   private String sentTime;
+  private boolean isChild;
 
   @Column(name = "created_at")
   private String createdAt;
-
-  public
-  ChatMessage() {
-  }
-
-  @Builder
-  public ChatMessage(MessageType type, Long roomId, Long senderId,
-      Long certId, String message, String nickName, String profileImg, String certImg) {
-    this.type = type;
-    this.roomId = roomId;
-    this.senderId = senderId;
-    this.certId = certId;
-    this.message = message;
-    this.nickName = nickName;
-    this.profileImg = profileImg;
-    this.certImg = certImg;
-  }
 
   public void setTime() {
     LocalDateTime now = LocalDateTime.now();
@@ -68,5 +57,6 @@ public class ChatMessage  {
     this.certImg = "";
     this.sentDate = "";
     this.sentTime = "";
+    this.isChild = false;
   }
 }

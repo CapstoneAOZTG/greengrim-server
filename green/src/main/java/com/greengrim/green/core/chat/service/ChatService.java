@@ -1,25 +1,19 @@
 package com.greengrim.green.core.chat.service;
 
 import static com.greengrim.green.common.constants.ServerConstants.BASIC_PROFILE_IMG_URL;
-import static com.greengrim.green.common.util.UtilService.getPageable;
 
-import com.greengrim.green.common.entity.SortOption;
-import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.chat.ChatMessage;
 import com.greengrim.green.core.chat.ChatMessage.MessageType;
-import com.greengrim.green.core.chat.LastChatStorage;
 import com.greengrim.green.core.chat.repository.ChatRepository;
 import com.greengrim.green.core.chatroom.Chatroom;
 import com.greengrim.green.core.chatroom.repository.ChatroomRepository;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.service.GetMemberService;
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -34,9 +28,8 @@ public class ChatService {
 
   private final GetMemberService getMemberService;
   private final FcmService fcmService;
-  private final ChatRepository chatRepository;
 
-  private final LastChatStorage lastChatStorage;
+  private final ChatRepository chatRepository;
   private final ChatroomRepository chatroomRepository;
 
   public String getRoomId(String destination) {
@@ -69,53 +62,24 @@ public class ChatService {
       chatMessage.setProfileImg(member.get().getProfileImgUrl());
     }
 
-    checkLastMessage(chatMessage);
+    redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
+    fcmService.sendChatMessage(chatMessage);
     chatRepository.save(chatMessage);
   }
 
-  public PageResponseDto<List<ChatMessage>> getMessages(Long roomId, int page, int size) {
-    Page<ChatMessage> messages = chatRepository.findByRoomId(roomId, getPageable(page, size,SortOption.DESC));
-    return pagingChatMessage(messages);
-  }
+  public List<ChatMessage> getMessages(Long roomId, String createdAt) {
+    List<ChatMessage> messages;
+    if(createdAt.equals("0"))
+      messages = chatRepository.findTop100ByRoomIdOrderByCreatedAtDesc(roomId);
+    else
+      messages = chatRepository.findTop100ByRoomIdAndCreatedAtLessThanEqualOrderByCreatedAtDesc(roomId, createdAt);
 
-  private PageResponseDto<List<ChatMessage>> pagingChatMessage(Page<ChatMessage> chatMessages) {
-    List<ChatMessage> messages = new ArrayList<>();
-    chatMessages.forEach(message -> messages.add(message));
-    return new PageResponseDto<>(chatMessages.getNumber(), chatMessages.hasNext(), messages);
-  }
-
-  public void checkLastMessage(ChatMessage chatMessage) {
-    boolean isDuplicated = false;
-    ChatMessage lastChatMessage = lastChatStorage.getMessage(chatMessage.getRoomId());
-
-    // 채팅방에 메세지가 없거나
-    // 보내려는 메세지 또는 최근 메세지가 DATE 타입이 아니라면 검사
-    if (lastChatMessage != null) {
-      if(lastChatMessage.getType() != MessageType.DATE || chatMessage.getType() != MessageType.DATE) {
-        if (chatMessage.getSenderId().equals(lastChatMessage.getSenderId())
-            && chatMessage.getCreatedAt().substring(0, 12)
-            .equals(lastChatMessage.getCreatedAt().substring(0, 12))) {
-          isDuplicated = true;
-          chatMessage.setProfileImg("");
-        }
-      }
+    for (ChatMessage message : messages) {
+      if (!message.isChild())
+        return messages.subList(messages.indexOf(message), messages.size());
     }
-
-    // 메시지 전송
-    redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
-    fcmService.sendChatMessage(chatMessage);
-    lastChatStorage.setMessage(chatMessage.getRoomId(), chatMessage);
-
-    if(isDuplicated) {
-      ChatMessage updateMessage = chatRepository.findChatMessageBySenderIdAndCreatedAt(
-          lastChatMessage.getSenderId(), lastChatMessage.getCreatedAt());
-      updateMessage.setSentTime("");
-      chatRepository.deleteBySenderIdAndCreatedAt(lastChatMessage.getSenderId(),
-          lastChatMessage.getCreatedAt());
-      chatRepository.save(updateMessage);
-    }
+    return messages;
   }
-
 
   @Scheduled(cron = "0 0 0 * * ?")
   public void sendDateMessage() {
