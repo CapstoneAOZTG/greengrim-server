@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 public class IssueRequestDto {
 
     @Getter
@@ -13,9 +15,18 @@ public class IssueRequestDto {
     public static class IssueRequest {
         @NotBlank(message = "title을 입력해주세요")
         private String title;
-        @NotBlank(message = "imgUrl을 입력해주세요")
+        @NotBlank(message = "iconImgUrl을 입력해주세요")
+        private String iconImgUrl;
+        @NotBlank(message = "content를 입력해주세요")
+        private String content;
+
+        private List<IssueImgUrl> imgUrls;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IssueImgUrl {
         private String imgUrl;
-        @NotBlank(message = "url을 입력해주세요")
-        private String url;
     }
 }
