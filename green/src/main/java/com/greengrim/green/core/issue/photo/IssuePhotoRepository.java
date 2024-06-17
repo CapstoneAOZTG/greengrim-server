@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IssuePhotoRepository extends JpaRepository<IssuePhoto, Long> {
 
-    @Query("SELECT p.imgUrl FROM IssuePhoto p WHERE p.issueId = :issueId LIMIT 1")
+    @Query(value = "SELECT p.imgUrl FROM IssuePhoto p WHERE p.issueId = :issueId ORDER BY p.id ASC LIMIT 1")
     String findByThumbnailByIssueId(@Param("issueId") Long issueId);
     List<IssuePhoto> findByIssueId(@Param("issueId") Long issueId);
 }

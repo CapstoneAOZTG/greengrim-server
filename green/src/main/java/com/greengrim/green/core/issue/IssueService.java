@@ -20,10 +20,12 @@ import com.greengrim.green.core.issue.photo.IssuePhoto;
 import com.greengrim.green.core.issue.photo.IssuePhotoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class IssueService {
@@ -43,15 +45,18 @@ public class IssueService {
                         .iconImgUrl(issueRequest.getIconImgUrl())
                         .build();
         issueRepository.save(issue);
-
-        issueRequest.getImgUrls().forEach(imgUrl ->
-                issuePhotoRepository.save(
-                        IssuePhoto.builder()
-                                .issueId(issue.getId())
-                                .imgUrl(imgUrl)
-                                .build()
-                )
+        log.info("Issue 저장 성공!");
+        issueRequest.getImgUrls().forEach(imgUrl -> {
+            log.info("imgUrl : {}", imgUrl.getImgUrl());
+                    issuePhotoRepository.save(
+                            IssuePhoto.builder()
+                                    .issueId(issue.getId())
+                                    .imgUrl(imgUrl.getImgUrl())
+                                    .build()
+                    );
+                }
         );
+        log.info("Issue 사진 저장 성공!");
 
         String thumbnail = getThumbnail(issue.getId());
 

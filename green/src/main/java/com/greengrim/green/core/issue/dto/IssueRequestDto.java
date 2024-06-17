@@ -20,6 +20,13 @@ public class IssueRequestDto {
         @NotBlank(message = "content를 입력해주세요")
         private String content;
 
-        private List<String> imgUrls;
+        private List<IssueImgUrl> imgUrls;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IssueImgUrl {
+        private String imgUrl;
     }
 }
