@@ -70,7 +70,7 @@ public class ChatService {
     }
 
     checkLastMessage(chatMessage);
-
+    chatRepository.save(chatMessage);
   }
 
   public PageResponseDto<List<ChatMessage>> getMessages(Long roomId, int page, int size) {
