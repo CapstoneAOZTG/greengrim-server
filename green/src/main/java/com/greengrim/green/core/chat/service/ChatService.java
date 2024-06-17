@@ -112,6 +112,10 @@ public class ChatService {
         }
       }
     }
+    else {
+      redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
+      fcmService.sendChatMessage(chatMessage);
+    }
     lastChatStorage.setMessage(chatMessage.getRoomId(), chatMessage);
   }
 
