@@ -24,7 +24,8 @@ public class WebSockConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/ws")
-        .setAllowedOriginPatterns("*");
+        .setAllowedOriginPatterns("*")
+        .withSockJS().setHeartbeatTime(1_800_000);
   }
 
   @Override
@@ -32,6 +33,5 @@ public class WebSockConfig implements WebSocketMessageBrokerConfigurer {
     config.enableSimpleBroker("/sub");
     config.setApplicationDestinationPrefixes("/pub");
   }
-
 
 }

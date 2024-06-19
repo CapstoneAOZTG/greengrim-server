@@ -1,9 +1,9 @@
 package com.greengrim.green.core.chat.controller;
 
 import com.greengrim.green.core.chat.ChatMessage;
+import com.greengrim.green.core.chat.dto.ChatResponseDto.MessageInfos;
 import com.greengrim.green.core.chat.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -29,7 +29,7 @@ public class ChatController {
 
   @Operation(summary = "메세지 조회")
   @GetMapping("/chat/message")
-  public ResponseEntity<List<ChatMessage>> getMessage(
+  public ResponseEntity<MessageInfos> getMessage(
       @RequestParam(value = "roomId") Long roomId,
       @RequestParam(value = "createdAt") String createdAt) {
     return ResponseEntity.ok(chatService.getMessages(roomId, createdAt));
