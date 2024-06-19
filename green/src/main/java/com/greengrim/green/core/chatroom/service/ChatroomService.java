@@ -59,6 +59,7 @@ public class ChatroomService{
         .roomId(chatroom.getId())
         .senderId(member.getId())
         .message(member.getNickName() + "님이 입장했습니다.")
+        .isChild(false)
         .build());
     log.info("SUBSCRIBED {}, {}", member.getNickName(), chatroom.getId());
   }
