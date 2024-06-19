@@ -10,9 +10,11 @@ import org.springframework.data.repository.query.Param;
 
 public interface ChatRepository extends MongoRepository<ChatMessage, String> {
 
-  List<ChatMessage> findTop100ByRoomIdAndCreatedAtLessThanEqualOrderByCreatedAtDesc(Long roomId, String createdAt);
+  List<ChatMessage> findTop100ByRoomIdAndCreatedAtLessThanOrderByCreatedAtDesc(Long roomId, String createdAt);
 
   List<ChatMessage> findTop100ByRoomIdOrderByCreatedAtDesc(Long roomId);
+
+  boolean existsByRoomIdAndCreatedAtLessThan(Long roomId, String specificDate);
 
   ChatMessage findFirstByRoomIdOrderByCreatedAtDesc(Long roomId);
 
@@ -23,5 +25,4 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String> {
   void updateProfileAndNicknameBySenderId(@Param("senderId") Long senderId,
                                           @Param("basicUrl") String basicUrl,
                                           @Param("basicNickName") String basicNickName);
-
 }

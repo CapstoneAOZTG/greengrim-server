@@ -5,6 +5,7 @@ import static com.greengrim.green.common.constants.ServerConstants.BASIC_PROFILE
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.chat.ChatMessage;
 import com.greengrim.green.core.chat.ChatMessage.MessageType;
+import com.greengrim.green.core.chat.dto.ChatResponseDto.MessageInfos;
 import com.greengrim.green.core.chat.repository.ChatRepository;
 import com.greengrim.green.core.chatroom.Chatroom;
 import com.greengrim.green.core.chatroom.repository.ChatroomRepository;
@@ -67,18 +68,26 @@ public class ChatService {
     chatRepository.save(chatMessage);
   }
 
-  public List<ChatMessage> getMessages(Long roomId, String createdAt) {
+  public MessageInfos getMessages(Long roomId, String createdAt) {
     List<ChatMessage> messages;
     if(createdAt.equals("0"))
       messages = chatRepository.findTop100ByRoomIdOrderByCreatedAtDesc(roomId);
     else
-      messages = chatRepository.findTop100ByRoomIdAndCreatedAtLessThanEqualOrderByCreatedAtDesc(roomId, createdAt);
+      messages = chatRepository.findTop100ByRoomIdAndCreatedAtLessThanOrderByCreatedAtDesc(roomId, createdAt);
 
     for (ChatMessage message : messages) {
-      if (!message.isChild())
-        return messages.subList(messages.indexOf(message), messages.size());
+      if (!message.isChild()) {
+        messages = messages.subList(messages.indexOf(message), messages.size());
+        break;
+      }
     }
-    return messages;
+
+    boolean hasNext;
+    if(messages.isEmpty()) hasNext = false;
+    else hasNext = chatRepository.existsByRoomIdAndCreatedAtLessThan(roomId,
+        messages.get(messages.size() - 1).getCreatedAt());
+
+    return new MessageInfos(messages, hasNext);
   }
 
   @Scheduled(cron = "0 0 0 * * ?")
