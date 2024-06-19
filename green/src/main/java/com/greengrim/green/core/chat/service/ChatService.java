@@ -85,7 +85,7 @@ public class ChatService {
     boolean hasNext;
     if(messages.isEmpty()) hasNext = false;
     else hasNext = chatRepository.existsByRoomIdAndCreatedAtLessThan(roomId,
-        messages.get(messages.size() - 1).getCreatedAt());
+        messages.get(0).getCreatedAt());
 
     return new MessageInfos(messages, hasNext);
   }
