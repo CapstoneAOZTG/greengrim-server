@@ -30,7 +30,7 @@ public class WebSockConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
-    long[] heartbeat = { 10000, 10000 };
+    long[] heartbeat = { 30000, 30000 };
     config.enableSimpleBroker("/sub")
         .setHeartbeatValue(heartbeat)
         .setTaskScheduler(new DefaultManagedTaskScheduler());
