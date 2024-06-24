@@ -54,12 +54,13 @@ public class EnterChallengeService {
     chatroomService.exitChatroom(member, challenge.getChatroom().getId());
     fcmService.unsubscribeChatroom(member, challenge.getChatroom().getId());
 
-    if(challenge.getHeadCount() == 0)
+    if(challenge.getHeadCount() == 0) {
       // 채팅방 삭제
       chatroomService.removeChatroom(challenge.getChatroom());
       // 채팅 메시지 삭제
       chatRepository.deleteByRoomId(challenge.getChatroom().getId());
       // 챌린지, 인증 삭제
       updateChallengeService.deleteChallengeAndCertification(challenge);
+    }
   }
 }
