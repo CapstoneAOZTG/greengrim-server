@@ -1,8 +1,8 @@
 package com.greengrim.green.core.challenge.repository;
 
-import com.greengrim.green.core.challenge.Category;
-import com.greengrim.green.core.challenge.Challenge;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.challenge.entity.Category;
+import com.greengrim.green.core.challenge.entity.Challenge;
+import com.greengrim.green.core.member.entity.Member;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

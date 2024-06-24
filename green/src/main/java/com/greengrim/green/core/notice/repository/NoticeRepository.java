@@ -1,6 +1,6 @@
 package com.greengrim.green.core.notice.repository;
 
-import com.greengrim.green.core.notice.Notice;
+import com.greengrim.green.core.notice.entity.Notice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

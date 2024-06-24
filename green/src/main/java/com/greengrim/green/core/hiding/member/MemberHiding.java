@@ -1,7 +1,7 @@
 package com.greengrim.green.core.hiding.member;
 
 import com.greengrim.green.common.entity.BaseTime;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

@@ -1,7 +1,7 @@
 package com.greengrim.green.core.notice.dto;
 
 import com.greengrim.green.common.entity.Time;
-import com.greengrim.green.core.notice.Notice;
+import com.greengrim.green.core.notice.entity.Notice;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

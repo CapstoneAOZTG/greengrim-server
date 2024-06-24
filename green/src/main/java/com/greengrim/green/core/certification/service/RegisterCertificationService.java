@@ -1,17 +1,17 @@
 package com.greengrim.green.core.certification.service;
 
 import com.greengrim.green.common.fcm.FcmService;
-import com.greengrim.green.core.alarm.AlarmService;
-import com.greengrim.green.core.alarm.AlarmType;
-import com.greengrim.green.core.certification.Certification;
+import com.greengrim.green.core.alarm.entity.AlarmType;
+import com.greengrim.green.core.alarm.service.RegisterAlarmService;
+import com.greengrim.green.core.certification.entity.Certification;
 import com.greengrim.green.core.certification.dto.CertificationRequestDto.RegisterCertification;
 import com.greengrim.green.core.certification.dto.CertificationResponseDto.registerCertificationResponse;
 import com.greengrim.green.core.certification.repository.CertificationRepository;
-import com.greengrim.green.core.challenge.Challenge;
+import com.greengrim.green.core.challenge.entity.Challenge;
 import com.greengrim.green.core.challenge.service.GetChallengeService;
-import com.greengrim.green.core.history.HistoryOption;
-import com.greengrim.green.core.history.HistoryService;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.history.entity.HistoryOption;
+import com.greengrim.green.core.history.service.RegisterHistoryService;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +23,9 @@ import org.springframework.stereotype.Service;
 public class RegisterCertificationService {
 
     private final GetChallengeService getChallengeService;
-    private final HistoryService historyService;
+    private final RegisterHistoryService registerHistoryService;
     private final FcmService fcmService;
-    private final AlarmService alarmService;
+    private final RegisterAlarmService registerAlarmService;
     private final MemberRepository memberRepository;
     private final CertificationRepository certificationRepository;
 
@@ -70,14 +70,14 @@ public class RegisterCertificationService {
         member.setCarbonReduction(challenge.getCategory().getCarbonReduction());
         memberRepository.save(member);
         // history 저장
-        historyService.register(member.getId(), challenge.getId(), challenge.getTitle(),
+        registerHistoryService.register(member.getId(), challenge.getId(), challenge.getTitle(),
                 challenge.getImgUrl(), HistoryOption.CERTIFICATION, point, member.getPoint());
 
         String certificationTitle = round + "회차 인증";
         // FCM 전송
         fcmService.sendGetCertificationPoint(member, certificationId, certificationTitle);
         // 알람 저장
-        alarmService.register(member, AlarmType.POINT_CERTIFICATION, certificationId, challenge.getImgUrl(), certificationTitle, null);
+        registerAlarmService.register(member, AlarmType.POINT_CERTIFICATION, certificationId, challenge.getImgUrl(), certificationTitle, null);
     }
 
     /**
@@ -91,12 +91,12 @@ public class RegisterCertificationService {
         memberRepository.save(member);
         // history 저장
         String title = challenge.getTitle() + " 챌린지 성공";
-        historyService.register(member.getId(), challenge.getId(), title,
+        registerHistoryService.register(member.getId(), challenge.getId(), title,
                 challenge.getImgUrl(), HistoryOption.CHALLENGE_SUCCESS, successPoint, member.getPoint());
         // FCM 전송
         fcmService.sendSuccessChallenge(member, challenge.getId(), challenge.getTitle());
         // 알람 저장
-        alarmService.register(member, AlarmType.CHALLENGE_SUCCESS, challenge.getId(), challenge.getImgUrl(), challenge.getTitle(), null);
+        registerAlarmService.register(member, AlarmType.CHALLENGE_SUCCESS, challenge.getId(), challenge.getImgUrl(), challenge.getTitle(), null);
     }
 
     /**

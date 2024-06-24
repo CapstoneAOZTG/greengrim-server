@@ -1,6 +1,6 @@
 package com.greengrim.green.core.chatroom.repository;
 
-import com.greengrim.green.core.chatroom.Chatroom;
+import com.greengrim.green.core.chatroom.entity.Chatroom;
 import jakarta.annotation.Resource;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,9 @@
 package com.greengrim.green.common.fcm;
 
 import com.google.firebase.messaging.Message;
-import com.greengrim.green.core.alarm.AlarmType;
-import com.greengrim.green.core.chat.ChatMessage;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.alarm.entity.AlarmType;
+import com.greengrim.green.core.chat.entity.ChatMessage;
+import com.greengrim.green.core.member.entity.Member;
 import org.springframework.stereotype.Component;
 
 @Component

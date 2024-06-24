@@ -1,12 +1,12 @@
 package com.greengrim.green.core.challenge.service;
 
-import com.greengrim.green.core.challenge.Challenge;
+import com.greengrim.green.core.challenge.entity.Challenge;
 import com.greengrim.green.core.challenge.dto.ChallengeRequestDto.RegisterChallenge;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeInfo;
 import com.greengrim.green.core.challenge.repository.ChallengeRepository;
-import com.greengrim.green.core.chatroom.Chatroom;
+import com.greengrim.green.core.chatroom.entity.Chatroom;
 import com.greengrim.green.core.chatroom.service.ChatroomService;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

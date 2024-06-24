@@ -3,8 +3,9 @@ package com.greengrim.green.core.challenge.controller;
 import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeInfo;
 import com.greengrim.green.core.challenge.service.EnterChallengeService;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visitor/challenges")
+@Tag(name = "챌린지")
 public class EnterChallengeController {
 
   private final EnterChallengeService enterChallengeService;

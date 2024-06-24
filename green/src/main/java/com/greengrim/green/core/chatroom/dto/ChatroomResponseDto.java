@@ -1,6 +1,6 @@
 package com.greengrim.green.core.chatroom.dto;
 
-import com.greengrim.green.core.chatroom.Chatroom;
+import com.greengrim.green.core.chatroom.entity.Chatroom;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

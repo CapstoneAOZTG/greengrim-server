@@ -1,7 +1,7 @@
 package com.greengrim.green.common.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.greengrim.green.core.chat.ChatMessage;
+import com.greengrim.green.core.chat.entity.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;

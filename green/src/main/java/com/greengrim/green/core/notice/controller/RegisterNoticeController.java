@@ -4,6 +4,7 @@ import com.greengrim.green.core.notice.dto.NoticeRequestDto.RegisterNotice;
 import com.greengrim.green.core.notice.dto.NoticeResponseDto.NoticeDetailInfo;
 import com.greengrim.green.core.notice.service.RegisterNoticeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/manager/notices")
+@Tag(name = "공지사항")
 public class RegisterNoticeController {
 
     private final RegisterNoticeService registerNoticeService;

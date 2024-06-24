@@ -1,8 +1,8 @@
 package com.greengrim.green.core.certification.repository;
 
-import com.greengrim.green.core.certification.Certification;
-import com.greengrim.green.core.challenge.Challenge;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.certification.entity.Certification;
+import com.greengrim.green.core.challenge.entity.Challenge;
+import com.greengrim.green.core.member.entity.Member;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -83,5 +83,7 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
     Optional<Long> findCertificationForVerification(@Param("memberId") Long memberId);
 
     List<Certification> findByMember(@Param("member") Member member);
+
+    List<Certification> findByChallenge(@Param("challenge") Challenge challenge);
 
 }

@@ -1,11 +1,12 @@
 package com.greengrim.green.core.nft.controller;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.nft.dto.NftRequestDto.NftModifyInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
 import com.greengrim.green.core.nft.usecase.UpdateNftUseCase;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member/nfts")
+@Tag(name = "NFT")
 public class UpdateNftController {
 
     private final UpdateNftUseCase updateNftUseCase;

@@ -1,8 +1,8 @@
 package com.greengrim.green.core.chatroom.service;
 
-import com.greengrim.green.core.chatparticipant.Chatparticipant;
-import com.greengrim.green.core.chatparticipant.ChatparticipantService;
-import com.greengrim.green.core.chatroom.Chatroom;
+import com.greengrim.green.core.chatparticipant.entity.Chatparticipant;
+import com.greengrim.green.core.chatparticipant.service.ChatparticipantService;
+import com.greengrim.green.core.chatroom.entity.Chatroom;
 import com.greengrim.green.core.chatroom.repository.ChatroomRedisRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

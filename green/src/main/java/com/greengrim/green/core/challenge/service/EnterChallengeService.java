@@ -3,10 +3,11 @@ package com.greengrim.green.core.challenge.service;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.ChallengeErrorCode;
 import com.greengrim.green.common.fcm.FcmService;
-import com.greengrim.green.core.challenge.Challenge;
+import com.greengrim.green.core.challenge.entity.Challenge;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeInfo;
+import com.greengrim.green.core.chat.repository.ChatRepository;
 import com.greengrim.green.core.chatroom.service.ChatroomService;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,9 @@ public class EnterChallengeService {
   private final GetChallengeService getChallengeService;
   private final ChatroomService chatroomService;
   private final FcmService fcmService;
+  private final UpdateChallengeService updateChallengeService;
+
+  private final ChatRepository chatRepository;
 
   /**
    * 챌린지 참가 - 채팅방 입장
@@ -51,6 +55,11 @@ public class EnterChallengeService {
     fcmService.unsubscribeChatroom(member, challenge.getChatroom().getId());
 
     if(challenge.getHeadCount() == 0)
+      // 채팅방 삭제
       chatroomService.removeChatroom(challenge.getChatroom());
+      // 채팅 메시지 삭제
+      chatRepository.deleteByRoomId(challenge.getChatroom().getId());
+      // 챌린지, 인증 삭제
+      updateChallengeService.deleteChallengeAndCertification(challenge);
   }
 }

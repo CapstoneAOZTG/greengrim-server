@@ -1,6 +1,6 @@
 package com.greengrim.green.core.challenge.dto;
 
-import com.greengrim.green.core.challenge.Category;
+import com.greengrim.green.core.challenge.entity.Category;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -42,5 +42,17 @@ public class ChallengeRequestDto {
         private Long chatroomId;
         @NotNull
         private String lastVisit;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    public static class ModifyChallenge {
+        @NotNull
+        @Size(min = 2, max = 50)
+        private String title;           // 제목
+        @Size(min = 2, max = 200)
+        private String description;     // 설명
+        private String imgUrl;          // 대표 사진
     }
 }

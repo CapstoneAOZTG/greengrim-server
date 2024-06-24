@@ -2,7 +2,7 @@ package com.greengrim.green.core.member.dto;
 
 import static com.greengrim.green.common.util.UtilService.formatIntToString;
 
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

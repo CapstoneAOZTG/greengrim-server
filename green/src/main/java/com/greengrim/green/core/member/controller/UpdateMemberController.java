@@ -1,12 +1,13 @@
 package com.greengrim.green.core.member.controller;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.core.member.Member;
-import com.greengrim.green.core.member.MemberAlarm;
+import com.greengrim.green.core.member.entity.Member;
+import com.greengrim.green.core.member.entity.MemberAlarm;
 import com.greengrim.green.core.member.dto.MemberRequestDto.ModifyProfile;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
 import com.greengrim.green.core.member.service.UpdateMemberService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visitor/members")
+@Tag(name = "멤버")
 public class UpdateMemberController {
 
     private final UpdateMemberService updateMemberService;

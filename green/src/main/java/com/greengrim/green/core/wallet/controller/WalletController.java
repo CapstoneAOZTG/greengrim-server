@@ -1,11 +1,12 @@
 package com.greengrim.green.core.wallet.controller;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.wallet.dto.WalletRequestDto.WalletRequest;
 import com.greengrim.green.core.wallet.dto.WalletResponseDto.WalletDetailInfo;
 import com.greengrim.green.core.wallet.service.WalletService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "지갑")
 public class WalletController {
 
     private final WalletService walletService;

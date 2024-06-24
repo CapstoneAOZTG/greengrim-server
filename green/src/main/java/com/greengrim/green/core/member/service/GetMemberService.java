@@ -2,7 +2,7 @@ package com.greengrim.green.core.member.service;
 
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.MemberErrorCode;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.member.dto.MemberResponseDto.HomeInfo;
 import com.greengrim.green.core.member.dto.MemberResponseDto.MemberInfo;
 import com.greengrim.green.core.member.dto.MemberResponseDto.MyInfo;

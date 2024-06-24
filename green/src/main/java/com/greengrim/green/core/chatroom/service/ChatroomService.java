@@ -1,12 +1,12 @@
 package com.greengrim.green.core.chatroom.service;
 
-import com.greengrim.green.core.chat.ChatMessage;
-import com.greengrim.green.core.chat.ChatMessage.MessageType;
+import com.greengrim.green.core.chat.entity.ChatMessage;
+import com.greengrim.green.core.chat.entity.ChatMessage.MessageType;
 import com.greengrim.green.core.chat.service.ChatService;
-import com.greengrim.green.core.chatparticipant.ChatparticipantService;
-import com.greengrim.green.core.chatroom.Chatroom;
+import com.greengrim.green.core.chatparticipant.service.ChatparticipantService;
+import com.greengrim.green.core.chatroom.entity.Chatroom;
 import com.greengrim.green.core.chatroom.repository.ChatroomRepository;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

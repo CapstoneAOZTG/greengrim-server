@@ -2,9 +2,9 @@ package com.greengrim.green.core.challenge.dto;
 
 import static com.greengrim.green.common.entity.Time.calculateTime;
 
-import com.greengrim.green.core.challenge.Category;
-import com.greengrim.green.core.challenge.Challenge;
-import com.greengrim.green.core.chat.ChatMessage;
+import com.greengrim.green.core.challenge.entity.Category;
+import com.greengrim.green.core.challenge.entity.Challenge;
+import com.greengrim.green.core.chat.entity.ChatMessage;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

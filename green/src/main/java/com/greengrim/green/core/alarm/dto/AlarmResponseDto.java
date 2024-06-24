@@ -1,7 +1,7 @@
 package com.greengrim.green.core.alarm.dto;
 
-import com.greengrim.green.core.alarm.Alarm;
-import com.greengrim.green.core.alarm.AlarmType;
+import com.greengrim.green.core.alarm.entity.Alarm;
+import com.greengrim.green.core.alarm.entity.AlarmType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

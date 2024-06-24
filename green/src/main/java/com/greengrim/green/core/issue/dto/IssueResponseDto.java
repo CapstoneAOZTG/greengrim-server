@@ -2,7 +2,7 @@ package com.greengrim.green.core.issue.dto;
 
 import java.util.List;
 
-import com.greengrim.green.core.issue.Issue;
+import com.greengrim.green.core.issue.entity.Issue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,7 @@ package com.greengrim.green.core.hiding.member;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.HidingErrorCode;
 import com.greengrim.green.common.exception.errorCode.MemberErrorCode;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

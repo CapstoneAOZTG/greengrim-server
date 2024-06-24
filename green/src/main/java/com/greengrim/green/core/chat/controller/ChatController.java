@@ -1,9 +1,10 @@
 package com.greengrim.green.core.chat.controller;
 
-import com.greengrim.green.core.chat.ChatMessage;
+import com.greengrim.green.core.chat.entity.ChatMessage;
 import com.greengrim.green.core.chat.dto.ChatResponseDto.MessageInfos;
 import com.greengrim.green.core.chat.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "채팅")
 public class ChatController {
 
   private final ChatService chatService;

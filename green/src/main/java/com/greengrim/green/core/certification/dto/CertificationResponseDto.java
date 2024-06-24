@@ -2,8 +2,8 @@ package com.greengrim.green.core.certification.dto;
 
 import static com.greengrim.green.common.entity.Time.calculateTime;
 
-import com.greengrim.green.core.certification.Certification;
-import com.greengrim.green.core.certification.VerificationFlag;
+import com.greengrim.green.core.certification.entity.Certification;
+import com.greengrim.green.core.certification.entity.VerificationFlag;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeInfoForCertification;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeTitleInfo;
 import com.greengrim.green.core.member.dto.MemberResponseDto.MemberSimpleInfo;

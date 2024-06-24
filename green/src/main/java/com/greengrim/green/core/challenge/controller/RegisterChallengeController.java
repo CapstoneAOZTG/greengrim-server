@@ -2,15 +2,16 @@ package com.greengrim.green.core.challenge.controller;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
-import com.greengrim.green.core.challenge.Category;
+import com.greengrim.green.core.challenge.entity.Category;
 import com.greengrim.green.core.challenge.dto.ChallengeRequestDto.RegisterChallenge;
 import com.greengrim.green.core.challenge.dto.ChallengeRequestDto.SearchRequest;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.EnterChallengeInfo;
 import com.greengrim.green.core.challenge.service.GetChallengeService;
 import com.greengrim.green.core.challenge.service.RegisterChallengeService;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visitor/challenges")
+@Tag(name = "챌린지")
 public class RegisterChallengeController {
 
     private final RegisterChallengeService registerChallengeService;

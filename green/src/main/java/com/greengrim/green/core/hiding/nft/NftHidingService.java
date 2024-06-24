@@ -3,7 +3,7 @@ package com.greengrim.green.core.hiding.nft;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.HidingErrorCode;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.greengrim.green.core.hiding.member;
 
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,6 +1,6 @@
 package com.greengrim.green.core.event.dto;
 
-import com.greengrim.green.core.event.Event;
+import com.greengrim.green.core.event.entity.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
