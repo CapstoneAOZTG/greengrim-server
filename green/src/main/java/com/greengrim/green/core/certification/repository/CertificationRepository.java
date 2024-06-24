@@ -84,4 +84,6 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
 
     List<Certification> findByMember(@Param("member") Member member);
 
+    List<Certification> findByChallenge(@Param("challenge") Challenge challenge);
+
 }

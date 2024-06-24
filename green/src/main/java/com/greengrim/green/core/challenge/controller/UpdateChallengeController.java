@@ -32,4 +32,16 @@ public class UpdateChallengeController {
         updateChallengeService.modify(member, id, modifyChallenge);
         return new ResponseEntity<>(200, HttpStatus.OK);
     }
+
+    /**
+     * [DELETE] 챌린지 삭제하기
+     */
+    @Operation(summary = "챌린지 삭제하기")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Integer> delete(
+            @PathVariable("id") Long id,
+            @CurrentMember Member member) {
+        updateChallengeService.delete(member, id);
+        return new ResponseEntity<>(200, HttpStatus.OK);
+    }
 }
