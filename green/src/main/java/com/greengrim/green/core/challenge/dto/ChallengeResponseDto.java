@@ -58,15 +58,18 @@ public class ChallengeResponseDto {
     public static class ChallengeDetailInfo {
         private ChallengeInfo challengeInfo;
         private ChallengeTags challengeTags;
+        private Long chatroomId;
         private String createdAt;
         private boolean isEntered;
         private boolean isMine;
+
 
         public ChallengeDetailInfo(Challenge challenge, boolean isEntered, boolean isMine) {
             this.challengeInfo = new ChallengeInfo(challenge);
             this.challengeTags = new ChallengeTags(challenge);
             this.createdAt = calculateTime(challenge.getCreatedAt(), 1);
             this.isEntered = isEntered;
+            this.chatroomId = challenge.getChatroom().getId();
             this.isMine = isMine;
         }
     }
