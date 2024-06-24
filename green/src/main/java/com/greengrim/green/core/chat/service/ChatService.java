@@ -41,6 +41,7 @@ public class ChatService {
 
   @Transactional
   public void sendChatMessage(ChatMessage chatMessage) {
+    chatMessage.setTime();
 
     // CERT 타입이 아닐 떄
     if(!MessageType.CERT.equals(chatMessage.getType())) {
