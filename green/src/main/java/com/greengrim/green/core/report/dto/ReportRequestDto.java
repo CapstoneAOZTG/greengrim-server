@@ -1,7 +1,6 @@
 package com.greengrim.green.core.report.dto;
 
-import com.greengrim.green.core.report.ReportReason;
-import jakarta.validation.constraints.NotBlank;
+import com.greengrim.green.core.report.entity.ReportReason;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

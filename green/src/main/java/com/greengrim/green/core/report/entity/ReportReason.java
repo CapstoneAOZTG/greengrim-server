@@ -1,4 +1,4 @@
-package com.greengrim.green.core.report;
+package com.greengrim.green.core.report.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
