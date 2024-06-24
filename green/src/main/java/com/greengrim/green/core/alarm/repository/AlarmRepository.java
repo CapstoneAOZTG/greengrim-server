@@ -1,5 +1,6 @@
-package com.greengrim.green.core.alarm;
+package com.greengrim.green.core.alarm.repository;
 
+import com.greengrim.green.core.alarm.entity.Alarm;
 import com.greengrim.green.core.member.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

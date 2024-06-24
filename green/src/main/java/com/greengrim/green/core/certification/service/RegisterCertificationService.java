@@ -1,8 +1,8 @@
 package com.greengrim.green.core.certification.service;
 
 import com.greengrim.green.common.fcm.FcmService;
-import com.greengrim.green.core.alarm.AlarmService;
-import com.greengrim.green.core.alarm.AlarmType;
+import com.greengrim.green.core.alarm.entity.AlarmType;
+import com.greengrim.green.core.alarm.service.RegisterAlarmService;
 import com.greengrim.green.core.certification.Certification;
 import com.greengrim.green.core.certification.dto.CertificationRequestDto.RegisterCertification;
 import com.greengrim.green.core.certification.dto.CertificationResponseDto.registerCertificationResponse;
@@ -25,7 +25,7 @@ public class RegisterCertificationService {
     private final GetChallengeService getChallengeService;
     private final HistoryService historyService;
     private final FcmService fcmService;
-    private final AlarmService alarmService;
+    private final RegisterAlarmService registerAlarmService;
     private final MemberRepository memberRepository;
     private final CertificationRepository certificationRepository;
 
@@ -77,7 +77,7 @@ public class RegisterCertificationService {
         // FCM 전송
         fcmService.sendGetCertificationPoint(member, certificationId, certificationTitle);
         // 알람 저장
-        alarmService.register(member, AlarmType.POINT_CERTIFICATION, certificationId, challenge.getImgUrl(), certificationTitle, null);
+        registerAlarmService.register(member, AlarmType.POINT_CERTIFICATION, certificationId, challenge.getImgUrl(), certificationTitle, null);
     }
 
     /**
@@ -96,7 +96,7 @@ public class RegisterCertificationService {
         // FCM 전송
         fcmService.sendSuccessChallenge(member, challenge.getId(), challenge.getTitle());
         // 알람 저장
-        alarmService.register(member, AlarmType.CHALLENGE_SUCCESS, challenge.getId(), challenge.getImgUrl(), challenge.getTitle(), null);
+        registerAlarmService.register(member, AlarmType.CHALLENGE_SUCCESS, challenge.getId(), challenge.getImgUrl(), challenge.getTitle(), null);
     }
 
     /**

@@ -1,7 +1,8 @@
-package com.greengrim.green.core.alarm;
+package com.greengrim.green.core.alarm.controller;
 
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.oauth.auth.CurrentMember;
+import com.greengrim.green.core.alarm.service.GetAlarmService;
 import com.greengrim.green.core.alarm.dto.AlarmResponseDto.AlarmInfo;
 import com.greengrim.green.core.member.Member;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,9 +18,9 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visitor/alarms")
-public class AlarmController {
+public class GetAlarmController {
 
-    private final AlarmService alarmService;
+    private final GetAlarmService getAlarmService;
 
     /**
      * [GET] 알림 조회
@@ -30,6 +31,6 @@ public class AlarmController {
             @CurrentMember Member member,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size) {
-        return ResponseEntity.ok(alarmService.getAlarms(member, page, size));
+        return ResponseEntity.ok(getAlarmService.getAlarms(member, page, size));
     }
 }

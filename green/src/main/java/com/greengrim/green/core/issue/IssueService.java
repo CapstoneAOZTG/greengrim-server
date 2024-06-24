@@ -5,10 +5,9 @@ import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.IssueErrorCode;
 import com.greengrim.green.common.fcm.FcmService;
-import com.greengrim.green.core.alarm.AlarmService;
-import com.greengrim.green.core.alarm.AlarmType;
+import com.greengrim.green.core.alarm.entity.AlarmType;
+import com.greengrim.green.core.alarm.service.RegisterAlarmService;
 import com.greengrim.green.core.issue.dto.IssueRequestDto.IssueRequest;
-import com.greengrim.green.core.issue.dto.IssueResponseDto;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueDetailInfo;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueListInfo;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.HomeIssues;
@@ -33,7 +32,7 @@ public class IssueService {
     private final IssueRepository issueRepository;
     private final IssuePhotoRepository issuePhotoRepository;
     private final FcmService fcmService;
-    private final AlarmService alarmService;
+    private final RegisterAlarmService registerAlarmService;
 
     private static final int NUMBER_OF_HOME_ISSUES = 5;
 
@@ -61,7 +60,7 @@ public class IssueService {
         String thumbnail = getThumbnail(issue.getId());
 
         fcmService.sendNewIssue(issue.getId(), issue.getTitle());
-        alarmService.register(null, AlarmType.NEW_ISSUE, issue.getId(), thumbnail, issue.getTitle(), null);
+        registerAlarmService.register(null, AlarmType.NEW_ISSUE, issue.getId(), thumbnail, issue.getTitle(), null);
     }
 
     public HomeIssues getHomeIssues() {

@@ -1,4 +1,4 @@
-package com.greengrim.green.core.alarm;
+package com.greengrim.green.core.alarm.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

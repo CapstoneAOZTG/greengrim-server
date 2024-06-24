@@ -3,8 +3,8 @@ package com.greengrim.green.core.nftlike;
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
 import com.greengrim.green.common.fcm.FcmService;
-import com.greengrim.green.core.alarm.AlarmService;
-import com.greengrim.green.core.alarm.AlarmType;
+import com.greengrim.green.core.alarm.entity.AlarmType;
+import com.greengrim.green.core.alarm.service.RegisterAlarmService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.nft.Nft;
 import com.greengrim.green.core.nft.repository.NftRepository;
@@ -22,7 +22,7 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final NftRepository nftRepository;
     private final FcmService fcmService;
-    private final AlarmService alarmService;
+    private final RegisterAlarmService registerAlarmService;
 
     public void save(Like like) {
         likeRepository.save(like);
@@ -77,6 +77,6 @@ public class LikeService {
     public void newLike(Member member, Nft nft) {
         nft.plusLikeCount();
         fcmService.sendNftLike(nft.getMember(), nft.getId(), member.getNickName());
-        alarmService.register(nft.getMember(), AlarmType.NFT_LIKE, nft.getId(), nft.getImgUrl(), member.getNickName(), member.getId());
+        registerAlarmService.register(nft.getMember(), AlarmType.NFT_LIKE, nft.getId(), nft.getImgUrl(), member.getNickName(), member.getId());
     }
 }

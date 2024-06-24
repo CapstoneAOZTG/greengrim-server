@@ -4,8 +4,8 @@ import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.CertificationErrorCode;
 import com.greengrim.green.common.exception.errorCode.VerificationErrorCode;
 import com.greengrim.green.common.fcm.FcmService;
-import com.greengrim.green.core.alarm.AlarmService;
-import com.greengrim.green.core.alarm.AlarmType;
+import com.greengrim.green.core.alarm.service.RegisterAlarmService;
+import com.greengrim.green.core.alarm.entity.AlarmType;
 import com.greengrim.green.core.certification.Certification;
 import com.greengrim.green.core.certification.repository.CertificationRepository;
 import com.greengrim.green.core.history.HistoryOption;
@@ -27,7 +27,7 @@ public class VerificationService {
     private final VerificationRepository verificationRepository;
     private final MemberRepository memberRepository;
     private final HistoryService historyService;
-    private final AlarmService alarmService;
+    private final RegisterAlarmService registerAlarmService;
     private final FcmService fcmService;
 
     private final static int VERIFICATION_POINT = 10;
@@ -57,7 +57,7 @@ public class VerificationService {
         // FCM 전송
         fcmService.sendGetVerificationPoint(member);
         // 알림 저장
-        alarmService.register(member, AlarmType.POINT_VERIFICATION, certification.getId(), certification.getImgUrl(), null, null);
+        registerAlarmService.register(member, AlarmType.POINT_VERIFICATION, certification.getId(), certification.getImgUrl(), null, null);
         // 상호 검증 처리하기
         verifyCertification(certification);
     }
