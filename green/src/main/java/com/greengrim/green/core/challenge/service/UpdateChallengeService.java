@@ -41,10 +41,23 @@ public class UpdateChallengeService {
 
         // 인원이 2명 이상이면 삭제 불가
         checkDeleteCondition(challenge);
+        // 챌린지와 인증 삭제
+        deleteChallengeAndCertification(challenge);
+    }
+
+    // 챌린지와 인증 삭제
+    @Transactional
+    public void deleteChallengeAndCertification(Challenge challenge) {
         // 챌린지 soft delete
         challenge.setStatusFalse();
         // 그 챌린지의 인증들 soft delete
         deleteCertifications(challenge);
+    }
+
+    // 인증들 삭제
+    @Transactional
+    public void deleteCertifications(Challenge challenge) {
+        updateCertificationService.setCertificationStatusFalseByChallenge(challenge);
     }
 
     private void checkIsMine(Long ownerId, Long memberId) {
@@ -60,8 +73,5 @@ public class UpdateChallengeService {
         }
     }
 
-    // 인증들 삭제
-    private void deleteCertifications(Challenge challenge) {
-        updateCertificationService.setCertificationStatusFalseByChallenge(challenge);
-    }
+
 }

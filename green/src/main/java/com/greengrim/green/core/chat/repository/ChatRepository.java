@@ -14,4 +14,6 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String> {
   ChatMessage findFirstByRoomIdOrderByCreatedAtDesc(Long roomId);
 
   Long countByRoomIdAndCreatedAtGreaterThanAndType(Long roomId, String createdAt, String type);
+
+  void deleteByRoomId(Long id);
 }
