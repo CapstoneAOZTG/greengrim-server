@@ -1,7 +1,5 @@
 package com.greengrim.green.core.chat.service;
 
-import static com.greengrim.green.common.constants.ServerConstants.BASIC_PROFILE_IMG_URL;
-
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.chat.ChatMessage;
 import com.greengrim.green.core.chat.ChatMessage.MessageType;
@@ -43,7 +41,6 @@ public class ChatService {
 
   @Transactional
   public void sendChatMessage(ChatMessage chatMessage) {
-    chatMessage.setTime();
 
     // CERT 타입이 아닐 떄
     if(!MessageType.CERT.equals(chatMessage.getType())) {
@@ -82,12 +79,7 @@ public class ChatService {
       }
     }
 
-    boolean hasNext;
-    if(messages.isEmpty()) hasNext = false;
-    else hasNext = chatRepository.existsByRoomIdAndCreatedAtLessThan(roomId,
-        messages.get(0).getCreatedAt());
-
-    return new MessageInfos(messages, hasNext);
+    return new MessageInfos(messages);
   }
 
   @Scheduled(cron = "0 0 0 * * ?")
@@ -98,10 +90,7 @@ public class ChatService {
     for(Chatroom chatroom : chatrooms) {
       chatMessage.setDateMessage(chatroom.getId());
       redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
+      chatRepository.save(chatMessage);
     }
   }
-
-  public void deleteMember(Member member) {
-    chatRepository.updateProfileAndNicknameBySenderId(member.getId(), BASIC_PROFILE_IMG_URL, "알수없음");
-  }
-}
+ }

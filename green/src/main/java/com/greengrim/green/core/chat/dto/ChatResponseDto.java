@@ -11,7 +11,6 @@ public class ChatResponseDto {
     @AllArgsConstructor
     public static class MessageInfos {
         private List<ChatMessage> messages;
-        private boolean hasNext;
     }
 
 }
