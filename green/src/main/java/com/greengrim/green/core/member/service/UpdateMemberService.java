@@ -61,8 +61,6 @@ public class UpdateMemberService  {
         updateCertificationService.setCertificationStatusFalseByMember(member);
         // NFT soft delete
         updateNftService.setCertificationStatusFalseByMember(member);
-        // 채팅 메세지 delete
-        chatService.deleteMember(member);
         // 멤버 soft delete
         member.setStatusFalse();
     }

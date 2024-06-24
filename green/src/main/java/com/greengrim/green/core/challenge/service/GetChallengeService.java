@@ -27,6 +27,7 @@ import com.greengrim.green.core.member.Member;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -101,6 +102,7 @@ public class GetChallengeService {
         Page<Challenge> challenges;
         List<ChallengeInfo> challengeInfoList = new ArrayList<>();
         Long exceptionId1 = null; Long exceptionId2 = null;
+
         // 1번 일주일 내 인증이 가장 많은
         challenges = challengeRepository.findMostCertifiedChallengesWithinAWeek(
                 member.getId(),
@@ -117,6 +119,7 @@ public class GetChallengeService {
         challenges.forEach(challenge -> challengeInfoList.add(
                 new ChallengeInfo(challenge,
                         challenge.getHeadCount() + HotChallengeOption.MOST_HEADCOUNT.getSubTitle())));
+
         if(challengeInfoList.size() == 1) {
             exceptionId2 = challengeInfoList.get(0).getId();
         } else if(challengeInfoList.size() == 2) {
@@ -136,6 +139,7 @@ public class GetChallengeService {
      */
     public PageResponseDto<List<ChallengeSimpleInfo>> getMoreHotChallenges(Member member, HotChallengeOption option,
                                                                            int page, int size) {
+
         Pageable pageable = PageRequest.of(page, size);
         Page<Challenge> challenges = null;
         switch (option) {
@@ -169,11 +173,8 @@ public class GetChallengeService {
         if(myChallengesRequests.isEmpty()) {
             for (Challenge challenge : myChallenges) {
                 Long chatroomId = challenge.getChatroom().getId();
-                log.info("chatroomId = {}", chatroomId);
                 ChatroomInfo chatroomInfo = new ChatroomInfo(chatroomId);
-                log.info("chatroomInfo = {}", chatroomInfo);
                 myChallengeInfos.add(new MyChallengeInfo(challenge, chatroomInfo));
-                log.info("myChallengeInfos = {}", myChallengeInfos);
             }
             return myChallengeInfos;
         }
@@ -181,11 +182,8 @@ public class GetChallengeService {
         for (Challenge challenge : myChallenges) {
 
             Long chatroomId = challenge.getChatroom().getId();
-            log.info("chatroomId = {}", chatroomId);
-
             ChatMessage chatMessage = chatRepository.
                 findFirstByRoomIdOrderByCreatedAtDesc(chatroomId);
-            log.info("chatMessage = {}", chatMessage.getMessage());
 
             Long newMessageCount = chatRepository.
                 countByRoomIdAndCreatedAtGreaterThanAndType(
@@ -193,17 +191,12 @@ public class GetChallengeService {
                     visitMap.get(chatroomId),
                     "TALK");
 
-            log.info("messageCount = {}", newMessageCount);
-
             ChatroomInfo chatroomInfo = new ChatroomInfo(chatroomId, chatMessage, newMessageCount);
-            log.info("chatroomInfo = {}", chatroomInfo);
             myChallengeInfos.add(new MyChallengeInfo(challenge, chatroomInfo));
-            log.info("myChallengeInfos = {}", myChallengeInfos);
         }
 
-        myChallengeInfos.sort((info1, info2) ->
-            info1.getChatroomInfo().getCreatedAt().
-                compareTo(info2.getChatroomInfo().getCreatedAt()));
+        myChallengeInfos.sort(Comparator.comparing(
+            info -> info.getChatroomInfo().getCreatedAt(), Comparator.reverseOrder()));
 
         return myChallengeInfos;
     }
