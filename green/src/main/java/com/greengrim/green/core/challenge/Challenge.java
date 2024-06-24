@@ -77,4 +77,10 @@ public class Challenge extends BaseTime {
     public void setStatusFalse() {
         this.status = false;
     }
+
+    public void modify(String title, String description, String imgUrl) {
+        this.title = title;
+        this.description = description;
+        this.imgUrl = imgUrl;
+    }
 }
