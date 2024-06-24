@@ -8,8 +8,9 @@ import com.greengrim.green.core.alarm.service.RegisterAlarmService;
 import com.greengrim.green.core.alarm.entity.AlarmType;
 import com.greengrim.green.core.certification.Certification;
 import com.greengrim.green.core.certification.repository.CertificationRepository;
-import com.greengrim.green.core.history.HistoryOption;
-import com.greengrim.green.core.history.HistoryService;
+import com.greengrim.green.core.history.entity.HistoryOption;
+import com.greengrim.green.core.history.service.GetHistoryService;
+import com.greengrim.green.core.history.service.RegisterHistoryService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import com.greengrim.green.core.verification.dto.VerificationRequestDto.RegisterVerification;
@@ -28,7 +29,7 @@ public class VerificationService {
     private final CertificationRepository certificationRepository;
     private final VerificationRepository verificationRepository;
     private final MemberRepository memberRepository;
-    private final HistoryService historyService;
+    private final RegisterHistoryService registerHistoryService;
     private final RegisterAlarmService registerAlarmService;
     private final FcmService fcmService;
 
@@ -53,7 +54,7 @@ public class VerificationService {
         // 출석체크 보상 주기
         member.plusPoint(VERIFICATION_POINT);
         memberRepository.save(member);
-        historyService.register(member.getId(), certification.getId(), VERIFICATION_HISTORY_TITLE,
+        registerHistoryService.register(member.getId(), certification.getId(), VERIFICATION_HISTORY_TITLE,
                 certification.getImgUrl(), HistoryOption.VERIFICATION, VERIFICATION_POINT, member.getPoint());
 
         // FCM 전송

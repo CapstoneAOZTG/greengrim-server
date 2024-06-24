@@ -1,6 +1,7 @@
-package com.greengrim.green.core.history;
+package com.greengrim.green.core.history.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
+import com.greengrim.green.core.history.entity.HistoryOption;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

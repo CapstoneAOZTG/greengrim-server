@@ -1,7 +1,7 @@
 package com.greengrim.green.core.history.dto;
 
-import com.greengrim.green.core.history.History;
-import com.greengrim.green.core.history.HistoryOption;
+import com.greengrim.green.core.history.entity.History;
+import com.greengrim.green.core.history.entity.HistoryOption;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

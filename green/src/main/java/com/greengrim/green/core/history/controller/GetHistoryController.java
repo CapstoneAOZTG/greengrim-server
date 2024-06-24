@@ -1,7 +1,8 @@
-package com.greengrim.green.core.history;
+package com.greengrim.green.core.history.controller;
 
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.oauth.auth.CurrentMember;
+import com.greengrim.green.core.history.service.GetHistoryService;
 import com.greengrim.green.core.history.dto.HistoryResponseDto.HistoryInfo;
 import com.greengrim.green.core.member.Member;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/visitor/points")
 @Tag(name = "포인트")
-public class HistoryController {
+public class GetHistoryController {
 
-    private final HistoryService historyService;
+    private final GetHistoryService getHistoryService;
 
     /**
      * [GET] 내 포인트 조회
@@ -32,7 +33,7 @@ public class HistoryController {
             @CurrentMember Member member,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size) {
-        return ResponseEntity.ok(historyService.getMyHistory(member.getId(), page, size));
+        return ResponseEntity.ok(getHistoryService.getMyHistory(member.getId(), page, size));
     }
 
 }

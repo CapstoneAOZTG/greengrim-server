@@ -9,8 +9,8 @@ import com.greengrim.green.core.certification.dto.CertificationResponseDto.regis
 import com.greengrim.green.core.certification.repository.CertificationRepository;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.challenge.service.GetChallengeService;
-import com.greengrim.green.core.history.HistoryOption;
-import com.greengrim.green.core.history.HistoryService;
+import com.greengrim.green.core.history.entity.HistoryOption;
+import com.greengrim.green.core.history.service.RegisterHistoryService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class RegisterCertificationService {
 
     private final GetChallengeService getChallengeService;
-    private final HistoryService historyService;
+    private final RegisterHistoryService registerHistoryService;
     private final FcmService fcmService;
     private final RegisterAlarmService registerAlarmService;
     private final MemberRepository memberRepository;
@@ -70,7 +70,7 @@ public class RegisterCertificationService {
         member.setCarbonReduction(challenge.getCategory().getCarbonReduction());
         memberRepository.save(member);
         // history 저장
-        historyService.register(member.getId(), challenge.getId(), challenge.getTitle(),
+        registerHistoryService.register(member.getId(), challenge.getId(), challenge.getTitle(),
                 challenge.getImgUrl(), HistoryOption.CERTIFICATION, point, member.getPoint());
 
         String certificationTitle = round + "회차 인증";
@@ -91,7 +91,7 @@ public class RegisterCertificationService {
         memberRepository.save(member);
         // history 저장
         String title = challenge.getTitle() + " 챌린지 성공";
-        historyService.register(member.getId(), challenge.getId(), title,
+        registerHistoryService.register(member.getId(), challenge.getId(), title,
                 challenge.getImgUrl(), HistoryOption.CHALLENGE_SUCCESS, successPoint, member.getPoint());
         // FCM 전송
         fcmService.sendSuccessChallenge(member, challenge.getId(), challenge.getTitle());

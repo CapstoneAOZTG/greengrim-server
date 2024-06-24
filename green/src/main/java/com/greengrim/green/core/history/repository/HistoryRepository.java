@@ -1,5 +1,6 @@
-package com.greengrim.green.core.history;
+package com.greengrim.green.core.history.repository;
 
+import com.greengrim.green.core.history.entity.History;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

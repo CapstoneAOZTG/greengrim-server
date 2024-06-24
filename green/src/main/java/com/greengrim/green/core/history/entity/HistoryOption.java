@@ -1,4 +1,4 @@
-package com.greengrim.green.core.history;
+package com.greengrim.green.core.history.entity;
 
 public enum HistoryOption {
 
