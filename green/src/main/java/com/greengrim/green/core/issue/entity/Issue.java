@@ -1,4 +1,4 @@
-package com.greengrim.green.core.issue;
+package com.greengrim.green.core.issue.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
 import jakarta.persistence.*;

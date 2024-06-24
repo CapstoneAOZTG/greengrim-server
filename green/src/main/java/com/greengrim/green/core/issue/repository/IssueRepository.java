@@ -1,5 +1,6 @@
-package com.greengrim.green.core.issue;
+package com.greengrim.green.core.issue.repository;
 
+import com.greengrim.green.core.issue.entity.Issue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.greengrim.green.core.issue;
+package com.greengrim.green.core.issue.service;
 
 
 import com.greengrim.green.common.entity.dto.PageResponseDto;
@@ -7,6 +7,7 @@ import com.greengrim.green.common.exception.errorCode.IssueErrorCode;
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.alarm.entity.AlarmType;
 import com.greengrim.green.core.alarm.service.RegisterAlarmService;
+import com.greengrim.green.core.issue.entity.Issue;
 import com.greengrim.green.core.issue.dto.IssueRequestDto.IssueRequest;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueDetailInfo;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueListInfo;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import com.greengrim.green.core.issue.photo.IssuePhoto;
 import com.greengrim.green.core.issue.photo.IssuePhotoRepository;
+import com.greengrim.green.core.issue.repository.IssueRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

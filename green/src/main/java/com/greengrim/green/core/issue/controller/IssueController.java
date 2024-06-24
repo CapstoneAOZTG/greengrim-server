@@ -1,6 +1,7 @@
-package com.greengrim.green.core.issue;
+package com.greengrim.green.core.issue.controller;
 
 import com.greengrim.green.common.entity.dto.PageResponseDto;
+import com.greengrim.green.core.issue.service.IssueService;
 import com.greengrim.green.core.issue.dto.IssueRequestDto.IssueRequest;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueDetailInfo;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueListInfo;
