@@ -1,8 +1,8 @@
-package com.greengrim.green.core.certification;
+package com.greengrim.green.core.certification.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
-import com.greengrim.green.core.challenge.Challenge;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.challenge.entity.Challenge;
+import com.greengrim.green.core.member.entity.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

@@ -1,7 +1,7 @@
-package com.greengrim.green.core.member;
+package com.greengrim.green.core.member.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
-import com.greengrim.green.core.wallet.Wallet;
+import com.greengrim.green.core.wallet.entity.Wallet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

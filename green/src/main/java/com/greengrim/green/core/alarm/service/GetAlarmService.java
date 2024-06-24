@@ -4,7 +4,7 @@ import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.core.alarm.dto.AlarmResponseDto.AlarmInfo;
 import com.greengrim.green.core.alarm.entity.Alarm;
 import com.greengrim.green.core.alarm.repository.AlarmRepository;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

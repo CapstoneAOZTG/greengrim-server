@@ -3,7 +3,7 @@ package com.greengrim.green.core.nft.controller;
 import com.greengrim.green.common.entity.NftSortOption;
 import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.nft.entity.NftGrade;
 import com.greengrim.green.core.nft.dto.NftResponseDto.HotNftInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftAndMemberInfo;

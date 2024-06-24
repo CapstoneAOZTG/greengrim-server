@@ -4,7 +4,7 @@ package com.greengrim.green.core.alarm.service;
 import com.greengrim.green.core.alarm.entity.Alarm;
 import com.greengrim.green.core.alarm.entity.AlarmType;
 import com.greengrim.green.core.alarm.repository.AlarmRepository;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.greengrim.green.core.chat.repository;
 
-import com.greengrim.green.core.chat.ChatMessage;
+import com.greengrim.green.core.chat.entity.ChatMessage;
 import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

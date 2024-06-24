@@ -3,8 +3,8 @@ package com.greengrim.green.core.challenge.controller;
 import com.greengrim.green.common.entity.SortOption;
 import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.core.challenge.Category;
-import com.greengrim.green.core.challenge.HotChallengeOption;
+import com.greengrim.green.core.challenge.entity.Category;
+import com.greengrim.green.core.challenge.entity.HotChallengeOption;
 import com.greengrim.green.core.challenge.dto.ChallengeRequestDto.MyChallengesRequest;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeDetailInfo;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChallengeSimpleInfo;
@@ -12,7 +12,7 @@ import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.ChatroomTopBa
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.HomeChallenges;
 import com.greengrim.green.core.challenge.dto.ChallengeResponseDto.MyChallengeInfo;
 import com.greengrim.green.core.challenge.service.GetChallengeService;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 

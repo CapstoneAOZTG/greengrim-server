@@ -1,7 +1,7 @@
 package com.greengrim.green.core.nft.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.nft.dto.NftRequestDto.NftModifyInfo;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

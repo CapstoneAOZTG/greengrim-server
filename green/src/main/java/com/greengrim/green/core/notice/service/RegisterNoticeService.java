@@ -1,7 +1,7 @@
 package com.greengrim.green.core.notice.service;
 
 import com.greengrim.green.common.fcm.FcmService;
-import com.greengrim.green.core.notice.Notice;
+import com.greengrim.green.core.notice.entity.Notice;
 import com.greengrim.green.core.notice.dto.NoticeRequestDto.RegisterNotice;
 import com.greengrim.green.core.notice.dto.NoticeResponseDto.NoticeDetailInfo;
 import com.greengrim.green.core.notice.repository.NoticeRepository;

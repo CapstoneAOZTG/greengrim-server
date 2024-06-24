@@ -1,4 +1,4 @@
-package com.greengrim.green.core.member;
+package com.greengrim.green.core.member.entity;
 
 public enum Role {
     ROLE_VISITOR("지갑 미보유 회원"),

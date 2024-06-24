@@ -1,7 +1,7 @@
 package com.greengrim.green.common.fcm;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

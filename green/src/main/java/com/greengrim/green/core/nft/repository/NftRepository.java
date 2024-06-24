@@ -1,6 +1,6 @@
 package com.greengrim.green.core.nft.repository;
 
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.nft.entity.Nft;
 import com.greengrim.green.core.nft.entity.NftGrade;
 import java.time.LocalDateTime;

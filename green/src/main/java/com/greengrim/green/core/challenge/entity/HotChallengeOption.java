@@ -1,4 +1,4 @@
-package com.greengrim.green.core.challenge;
+package com.greengrim.green.core.challenge.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

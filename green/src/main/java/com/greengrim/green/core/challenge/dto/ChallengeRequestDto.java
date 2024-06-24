@@ -1,6 +1,6 @@
 package com.greengrim.green.core.challenge.dto;
 
-import com.greengrim.green.core.challenge.Category;
+import com.greengrim.green.core.challenge.entity.Category;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

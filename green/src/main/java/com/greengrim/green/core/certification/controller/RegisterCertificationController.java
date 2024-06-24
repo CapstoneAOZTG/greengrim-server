@@ -4,7 +4,7 @@ import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.certification.dto.CertificationRequestDto.RegisterCertification;
 import com.greengrim.green.core.certification.dto.CertificationResponseDto.registerCertificationResponse;
 import com.greengrim.green.core.certification.service.RegisterCertificationService;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

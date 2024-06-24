@@ -1,7 +1,7 @@
 package com.greengrim.green.core.nft.controller;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.nft.dto.NftRequestDto.NftModifyInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;
 import com.greengrim.green.core.nft.usecase.UpdateNftUseCase;

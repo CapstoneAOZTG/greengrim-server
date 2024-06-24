@@ -2,10 +2,10 @@ package com.greengrim.green.core.certification.service;
 
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.CertificationErrorCode;
-import com.greengrim.green.core.certification.Certification;
+import com.greengrim.green.core.certification.entity.Certification;
 import com.greengrim.green.core.certification.repository.CertificationRepository;
-import com.greengrim.green.core.challenge.Challenge;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.challenge.entity.Challenge;
+import com.greengrim.green.core.member.entity.Member;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;

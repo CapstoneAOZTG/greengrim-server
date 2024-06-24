@@ -5,7 +5,7 @@ import com.greengrim.green.common.exception.errorCode.NftErrorCode;
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.alarm.entity.AlarmType;
 import com.greengrim.green.core.alarm.service.RegisterAlarmService;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.nft.entity.Nft;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nftlike.dto.LikeRequestDto.RegisterLike;

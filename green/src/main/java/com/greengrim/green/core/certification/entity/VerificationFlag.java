@@ -1,4 +1,4 @@
-package com.greengrim.green.core.certification;
+package com.greengrim.green.core.certification.entity;
 
 public enum VerificationFlag {
 

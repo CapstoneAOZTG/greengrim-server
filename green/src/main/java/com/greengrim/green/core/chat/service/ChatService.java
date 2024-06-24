@@ -1,13 +1,13 @@
 package com.greengrim.green.core.chat.service;
 
 import com.greengrim.green.common.fcm.FcmService;
-import com.greengrim.green.core.chat.ChatMessage;
-import com.greengrim.green.core.chat.ChatMessage.MessageType;
+import com.greengrim.green.core.chat.entity.ChatMessage;
+import com.greengrim.green.core.chat.entity.ChatMessage.MessageType;
 import com.greengrim.green.core.chat.dto.ChatResponseDto.MessageInfos;
 import com.greengrim.green.core.chat.repository.ChatRepository;
-import com.greengrim.green.core.chatroom.Chatroom;
+import com.greengrim.green.core.chatroom.entity.Chatroom;
 import com.greengrim.green.core.chatroom.repository.ChatroomRepository;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.member.service.GetMemberService;
 import jakarta.transaction.Transactional;
 import java.util.List;

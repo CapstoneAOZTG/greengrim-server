@@ -1,4 +1,4 @@
-package com.greengrim.green.core.chatroom;
+package com.greengrim.green.core.chatroom.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
 import jakarta.persistence.Entity;

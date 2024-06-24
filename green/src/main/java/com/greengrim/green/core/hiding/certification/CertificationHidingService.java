@@ -4,7 +4,7 @@ import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.CertificationErrorCode;
 import com.greengrim.green.common.exception.errorCode.HidingErrorCode;
 import com.greengrim.green.core.certification.repository.CertificationRepository;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

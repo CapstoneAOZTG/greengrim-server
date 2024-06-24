@@ -1,8 +1,8 @@
 package com.greengrim.green.core.member.controller;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.core.member.Member;
-import com.greengrim.green.core.member.MemberAlarm;
+import com.greengrim.green.core.member.entity.Member;
+import com.greengrim.green.core.member.entity.MemberAlarm;
 import com.greengrim.green.core.member.dto.MemberRequestDto.ModifyProfile;
 import com.greengrim.green.core.member.dto.MemberResponseDto;
 import com.greengrim.green.core.member.service.UpdateMemberService;

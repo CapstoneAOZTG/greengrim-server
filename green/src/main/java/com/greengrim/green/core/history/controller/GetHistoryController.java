@@ -4,7 +4,7 @@ import com.greengrim.green.common.entity.dto.PageResponseDto;
 import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.history.service.GetHistoryService;
 import com.greengrim.green.core.history.dto.HistoryResponseDto.HistoryInfo;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 

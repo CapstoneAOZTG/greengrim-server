@@ -1,7 +1,7 @@
 package com.greengrim.green.core.report.controller;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.report.entity.ReportType;
 import com.greengrim.green.core.report.dto.ReportRequestDto.RegisterReport;
 import com.greengrim.green.core.report.service.RegisterReportService;

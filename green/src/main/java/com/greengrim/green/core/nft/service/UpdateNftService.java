@@ -2,7 +2,7 @@ package com.greengrim.green.core.nft.service;
 
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.nft.entity.Nft;
 import com.greengrim.green.core.nft.dto.NftRequestDto.NftModifyInfo;
 import com.greengrim.green.core.nft.dto.NftResponseDto.NftDetailInfo;

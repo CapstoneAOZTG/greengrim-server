@@ -4,7 +4,7 @@ import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
 import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.common.web3j.Abi;
-import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.member.entity.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import com.greengrim.green.core.nft.entity.Nft;
 import com.greengrim.green.core.nft.entity.NftGrade;

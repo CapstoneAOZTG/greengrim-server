@@ -1,4 +1,4 @@
-package com.greengrim.green.core.chat;
+package com.greengrim.green.core.chat.entity;
 
 import com.greengrim.green.common.entity.Time;
 import jakarta.persistence.Column;

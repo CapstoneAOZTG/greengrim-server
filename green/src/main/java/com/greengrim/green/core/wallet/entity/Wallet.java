@@ -1,4 +1,4 @@
-package com.greengrim.green.core.wallet;
+package com.greengrim.green.core.wallet.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
 import jakarta.persistence.Entity;
