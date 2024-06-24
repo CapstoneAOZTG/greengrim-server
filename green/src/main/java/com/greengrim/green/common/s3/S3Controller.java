@@ -4,6 +4,7 @@ import com.greengrim.green.common.s3.dto.S3Result;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "S3")
 public class S3Controller {
 
     private final S3Service s3Service;
