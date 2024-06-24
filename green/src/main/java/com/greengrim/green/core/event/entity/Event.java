@@ -1,4 +1,4 @@
-package com.greengrim.green.core.event;
+package com.greengrim.green.core.event.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
 import jakarta.persistence.Entity;
