@@ -1,4 +1,4 @@
-package com.greengrim.green.core.nftlike;
+package com.greengrim.green.core.nftlike.service;
 
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.NftErrorCode;
@@ -6,10 +6,12 @@ import com.greengrim.green.common.fcm.FcmService;
 import com.greengrim.green.core.alarm.entity.AlarmType;
 import com.greengrim.green.core.alarm.service.RegisterAlarmService;
 import com.greengrim.green.core.member.Member;
-import com.greengrim.green.core.nft.Nft;
+import com.greengrim.green.core.nft.entity.Nft;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.nftlike.dto.LikeRequestDto.RegisterLike;
 import com.greengrim.green.core.nftlike.dto.LikeResponseDto.PushLikeInfo;
+import com.greengrim.green.core.nftlike.entity.Like;
+import com.greengrim.green.core.nftlike.repository.LikeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -4,7 +4,7 @@ import static com.greengrim.green.common.entity.Time.calculateTime;
 import static com.greengrim.green.common.util.UtilService.formatIntToString;
 
 import com.greengrim.green.core.member.dto.MemberResponseDto.MemberSimpleInfo;
-import com.greengrim.green.core.nft.Nft;
+import com.greengrim.green.core.nft.entity.Nft;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

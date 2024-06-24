@@ -15,7 +15,7 @@ import com.greengrim.green.core.hiding.member.MemberHidingService;
 import com.greengrim.green.core.hiding.nft.NftHidingService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
-import com.greengrim.green.core.nft.Nft;
+import com.greengrim.green.core.nft.entity.Nft;
 import com.greengrim.green.core.nft.repository.NftRepository;
 import com.greengrim.green.core.report.entity.Report;
 import com.greengrim.green.core.report.entity.ReportType;

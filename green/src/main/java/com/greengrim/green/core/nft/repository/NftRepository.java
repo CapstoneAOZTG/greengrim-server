@@ -1,8 +1,8 @@
 package com.greengrim.green.core.nft.repository;
 
 import com.greengrim.green.core.member.Member;
-import com.greengrim.green.core.nft.Nft;
-import com.greengrim.green.core.nft.NftGrade;
+import com.greengrim.green.core.nft.entity.Nft;
+import com.greengrim.green.core.nft.entity.NftGrade;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

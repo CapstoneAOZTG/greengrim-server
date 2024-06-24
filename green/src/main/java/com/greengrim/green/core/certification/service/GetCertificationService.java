@@ -13,7 +13,7 @@ import com.greengrim.green.core.certification.dto.CertificationResponseDto.Certi
 import com.greengrim.green.core.certification.repository.CertificationRepository;
 import com.greengrim.green.core.challenge.Challenge;
 import com.greengrim.green.core.member.Member;
-import com.greengrim.green.core.verification.VerificationService;
+import com.greengrim.green.core.verification.service.VerificationService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

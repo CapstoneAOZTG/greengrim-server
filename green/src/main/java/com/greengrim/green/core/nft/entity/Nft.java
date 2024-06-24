@@ -1,4 +1,4 @@
-package com.greengrim.green.core.nft;
+package com.greengrim.green.core.nft.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
 import com.greengrim.green.core.member.Member;

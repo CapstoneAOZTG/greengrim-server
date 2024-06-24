@@ -1,7 +1,8 @@
-package com.greengrim.green.core.nftlike;
+package com.greengrim.green.core.nftlike.controller;
 
 import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.member.Member;
+import com.greengrim.green.core.nftlike.service.LikeService;
 import com.greengrim.green.core.nftlike.dto.LikeRequestDto.RegisterLike;
 import com.greengrim.green.core.nftlike.dto.LikeResponseDto.PushLikeInfo;
 import io.swagger.v3.oas.annotations.Operation;

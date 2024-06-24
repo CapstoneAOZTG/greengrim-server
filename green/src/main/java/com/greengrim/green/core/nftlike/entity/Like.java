@@ -1,7 +1,7 @@
-package com.greengrim.green.core.nftlike;
+package com.greengrim.green.core.nftlike.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
-import com.greengrim.green.core.nft.Nft;
+import com.greengrim.green.core.nft.entity.Nft;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package com.greengrim.green.core.verification;
+package com.greengrim.green.core.verification.entity;
 
 import com.greengrim.green.common.entity.BaseTime;
 import jakarta.persistence.Entity;

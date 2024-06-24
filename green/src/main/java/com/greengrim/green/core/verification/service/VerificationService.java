@@ -1,4 +1,4 @@
-package com.greengrim.green.core.verification;
+package com.greengrim.green.core.verification.service;
 
 import com.greengrim.green.common.exception.BaseException;
 import com.greengrim.green.common.exception.errorCode.CertificationErrorCode;
@@ -13,6 +13,8 @@ import com.greengrim.green.core.history.HistoryService;
 import com.greengrim.green.core.member.Member;
 import com.greengrim.green.core.member.repository.MemberRepository;
 import com.greengrim.green.core.verification.dto.VerificationRequestDto.RegisterVerification;
+import com.greengrim.green.core.verification.entity.Verification;
+import com.greengrim.green.core.verification.repository.VerificationRepository;
 import jakarta.transaction.Transactional;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
