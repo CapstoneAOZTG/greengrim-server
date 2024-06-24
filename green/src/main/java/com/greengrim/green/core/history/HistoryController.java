@@ -6,6 +6,8 @@ import com.greengrim.green.core.history.dto.HistoryResponseDto.HistoryInfo;
 import com.greengrim.green.core.member.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visitor/points")
+@Tag(name = "포인트")
 public class HistoryController {
 
     private final HistoryService historyService;

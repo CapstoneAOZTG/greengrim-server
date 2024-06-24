@@ -11,6 +11,7 @@ import com.greengrim.green.core.challenge.service.GetChallengeService;
 import com.greengrim.green.core.challenge.service.RegisterChallengeService;
 import com.greengrim.green.core.member.Member;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visitor/challenges")
+@Tag(name = "챌린지")
 public class RegisterChallengeController {
 
     private final RegisterChallengeService registerChallengeService;

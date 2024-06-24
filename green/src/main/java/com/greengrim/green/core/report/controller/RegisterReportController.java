@@ -6,6 +6,7 @@ import com.greengrim.green.core.report.ReportType;
 import com.greengrim.green.core.report.dto.ReportRequestDto.RegisterReport;
 import com.greengrim.green.core.report.service.RegisterReportService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visitor/reports")
+@Tag(name = "신고하기")
 public class RegisterReportController {
 
     private final RegisterReportService registerReportService;

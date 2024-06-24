@@ -6,6 +6,7 @@ import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueDetailInfo;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.IssueListInfo;
 import com.greengrim.green.core.issue.dto.IssueResponseDto.HomeIssues;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "이슈")
 public class IssueController {
 
     private final IssueService issueService;

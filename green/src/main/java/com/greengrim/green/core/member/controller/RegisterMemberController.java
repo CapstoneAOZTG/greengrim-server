@@ -7,6 +7,7 @@ import com.greengrim.green.core.member.dto.MemberResponseDto.CheckNickNameRes;
 import com.greengrim.green.core.member.dto.MemberResponseDto.LoginInfo;
 import com.greengrim.green.core.member.service.RegisterMemberService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "멤버")
 public class RegisterMemberController {
 
     private final RegisterMemberService registerMemberService;
