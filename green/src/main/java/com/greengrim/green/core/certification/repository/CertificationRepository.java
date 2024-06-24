@@ -45,6 +45,7 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
             + "LEFT JOIN CertificationHiding ch ON c.id = ch.certificationId AND ch.memberId = :memberId "
             + "WHERE date_format(c.createdAt, '%Y-%m-%d') = :date "
             + "AND c.challenge.id = :challengeId "
+            + "AND c.status = true "
             + "AND mh.hiddenMember IS NULL "
             + "AND ch.certificationId IS NULL "
             + "ORDER BY c.createdAt")
@@ -59,6 +60,7 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
             + "LEFT JOIN CertificationHiding ch ON c.id = ch.certificationId AND ch.memberId = :memberId "
             + "WHERE date_format(c.createdAt, '%Y-%m-%d') = :date "
             + "AND c.member.id = :targetId "
+            + "AND c.status = true "
             + "AND mh.hiddenMember IS NULL "
             + "AND ch.certificationId IS NULL "
             + "ORDER BY c.createdAt")

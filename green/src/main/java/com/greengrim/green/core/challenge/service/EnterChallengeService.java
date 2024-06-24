@@ -59,8 +59,8 @@ public class EnterChallengeService {
       chatroomService.removeChatroom(challenge.getChatroom());
       // 채팅 메시지 삭제
       chatRepository.deleteByRoomId(challenge.getChatroom().getId());
-      // 챌린지, 인증 삭제
-      updateChallengeService.deleteChallengeAndCertification(challenge);
+      // 챌린지 삭제
+      challenge.setStatusFalse();
     }
   }
 }
