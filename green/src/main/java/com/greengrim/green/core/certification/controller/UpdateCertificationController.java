@@ -4,6 +4,7 @@ import com.greengrim.green.common.oauth.auth.CurrentMember;
 import com.greengrim.green.core.certification.service.UpdateCertificationService;
 import com.greengrim.green.core.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional
 @RequiredArgsConstructor
 @RequestMapping("/visitor/certifications")
+@Tag(name = "인증")
 public class UpdateCertificationController {
 
     private final UpdateCertificationService updateCertificationService;

@@ -6,6 +6,7 @@ import com.greengrim.green.core.alarm.service.GetAlarmService;
 import com.greengrim.green.core.alarm.dto.AlarmResponseDto.AlarmInfo;
 import com.greengrim.green.core.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visitor/alarms")
+@Tag(name = "알림")
 public class GetAlarmController {
 
     private final GetAlarmService getAlarmService;

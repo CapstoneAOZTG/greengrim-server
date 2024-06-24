@@ -6,6 +6,7 @@ import com.greengrim.green.core.certification.dto.CertificationResponseDto.regis
 import com.greengrim.green.core.certification.service.RegisterCertificationService;
 import com.greengrim.green.core.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional
 @RequiredArgsConstructor
 @RequestMapping("/visitor/certifications")
+@Tag(name = "인증")
 public class RegisterCertificationController {
 
     private final RegisterCertificationService registerCertificationService;
