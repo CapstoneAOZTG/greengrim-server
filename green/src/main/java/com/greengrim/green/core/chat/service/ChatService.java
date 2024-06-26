@@ -87,7 +87,7 @@ public class ChatService {
   public void sendDateMessage() {
     ChatMessage chatMessage = new ChatMessage();
 
-    List<Chatroom> chatrooms = chatroomRepository.findAll();
+    List<Chatroom> chatrooms = chatroomRepository.findAllByStatusIsTrue();
     for(Chatroom chatroom : chatrooms) {
       chatMessage.setDateMessage(chatroom.getId());
       redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);

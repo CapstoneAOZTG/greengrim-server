@@ -51,11 +51,11 @@ public class ChatMessage  {
     this.roomId = roomId;
     this.senderId = null;
     this.certId = null;
-    this.message = now.format(Time.CHAT_DATE_FORMATTER);
+    this.message = "";
     this.nickName = "";
     this.profileImg = "";
     this.certImg = "";
-    this.sentDate = "";
+    this.sentDate = now.format(Time.CHAT_DATE_FORMATTER);;
     this.sentTime = "";
     this.isChild = false;
     this.createdAt = now.format(Time.CHAT_CREATED_AT_FORMATTER);
