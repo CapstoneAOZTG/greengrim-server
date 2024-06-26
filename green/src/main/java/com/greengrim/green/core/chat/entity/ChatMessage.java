@@ -58,5 +58,6 @@ public class ChatMessage  {
     this.sentDate = "";
     this.sentTime = "";
     this.isChild = false;
+    this.createdAt = now.format(Time.CHAT_CREATED_AT_FORMATTER);
   }
 }
